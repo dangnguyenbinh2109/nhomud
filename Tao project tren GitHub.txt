@@ -1,0 +1,16 @@
+1//Tao project tren GitHub
+-tao repo
+-open git bash -> git clone + link https
+-git status
+-git add . -- them tat ca cac files
+-git commit -m "ur message" -- upload files
+-git status -- kiem tra files commit
+2//Tao project tren GitHub (da co san files)
+-tao repo
+-open git bash 
+-git init
+-git status
+-git add.
+-git commit -m "ur mess"
+-git remote add origin https://...
+-git push origin master
