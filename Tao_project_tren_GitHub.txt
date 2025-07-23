@@ -5,6 +5,7 @@
 -git add . -- them tat ca cac files
 -git commit -m "ur message" -- upload files
 -git status -- kiem tra files commit
+-git push origin main
 2//Tao project tren GitHub (da co san files)
 -tao repo
 -open git bash 
