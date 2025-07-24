@@ -59,96 +59,108 @@ PlanbookAI giải quyết các vấn đề chính mà giáo viên THPT đang g�
 
 ```
 planbook-ai/
-├── backend/                    # Flask API Server
-│   ├── app/
-│   │   ├── __init__.py        # Flask app factory
-│   │   ├── models/            # Database models
-│   │   │   ├── __init__.py
-│   │   │   ├── user.py        # User model
-│   │   │   ├── lesson.py      # Lesson plan model
-│   │   │   ├── grade.py       # Grade model
-│   │   │   └── attendance.py  # Attendance model
-│   │   ├── routes/            # API endpoints
-│   │   │   ├── __init__.py
-│   │   │   ├── auth.py        # Authentication routes
-│   │   │   ├── users.py       # User management
-│   │   │   ├── lessons.py     # Lesson planning
-│   │   │   ├── grades.py      # Grade management
-│   │   │   └── reports.py     # Report generation
-│   │   ├── services/          # Business logic
-│   │   │   ├── __init__.py
-│   │   │   ├── auth_service.py
-│   │   │   ├── lesson_service.py
-│   │   │   ├── ai_service.py  # AI integration
-│   │   │   └── report_service.py
-│   │   ├── utils/             # Utility functions
-│   │   │   ├── __init__.py
-│   │   │   ├── decorators.py  # Custom decorators
-│   │   │   ├── validators.py  # Input validation
-│   │   │   └── helpers.py     # Helper functions
-│   │   └── config.py          # Configuration settings
-│   ├── migrations/            # Database migrations
-│   ├── tests/                # Unit and integration tests
+├── .gitignore
+├── README.md
+├ requirements.txt
+├── docker-compose.yml
+├── Tao_project_tren_GitHub.txt
+├── TCP_client.py
+├── TCP_server.py
+├── UDP_client.py
+├── UDP_server.py
+│
+├── docs/                          # Tài liệu dự án
+│   ├── API.md
+│   ├── CONTRIBUTING.md
+│   └── SETUP.md
+│
+├── backend/                       # Flask API Server
+│   ├── .env.example               # Mẫu biến môi trường
+│   ├── requirements.txt           # Thư viện Python
+│   ├── run.py                     # Điểm khởi chạy ứng dụng
+│   ├── migrations/                # (sẽ do Alembic sinh ra)
+│   ├── tests/                     # Unit & integration tests
 │   │   ├── __init__.py
 │   │   ├── test_auth.py
-│   │   ├── test_lessons.py
-│   │   └── test_grades.py
-│   ├── requirements.txt      # Python dependencies
-│   ├── .env.example         # Environment variables template
-│   └── run.py              # Application entry point
-├── frontend/                # React Application
-│   ├── public/
+│   │   ├── test_grades.py
+│   │   └── test_lessons.py
+│   │
+│   └── app/                       # Mã nguồn chính
+│       ├── __init__.py            # Flask app factory
+│       ├── config.py              # Thiết lập cấu hình
+│       │
+│       ├── models/                # Database models
+│       │   ├── __init__.py
+│       │   ├── attendance.py
+│       │   ├── grade.py
+│       │   ├── lesson.py
+│       │   └── user.py
+│       │
+│       ├── routes/                # REST endpoints
+│       │   ├── __init__.py
+│       │   ├── auth.py
+│       │   ├── grades.py
+│       │   ├── lessons.py
+│       │   ├── reports.py
+│       │   └── users.py
+│       │
+│       ├── services/              # Business logic
+│       │   ├── __init__.py
+│       │   ├── ai_service.py
+│       │   ├── auth_service.py
+│       │   ├── lesson_service.py
+│       │   └── report_service.py
+│       │
+│       └── utils/                 # Hàm tiện ích & middleware
+│           ├── __init__.py
+│           ├── decorators.py
+│           ├── helpers.py
+│           └── validators.py
+│
+├── frontend/                      # Ứng dụng React 18+
+│   ├── .env.example
+│   ├── .gitignore
+│   ├── README.md
+│   ├── package.json
+│   ├── package-lock.json
+│   │
+│   ├── public/                    # Tài nguyên tĩnh
+│   │   ├── favicon.ico
 │   │   ├── index.html
-│   │   └── favicon.ico
-│   ├── src/
-│   │   ├── components/      # Reusable components
-│   │   │   ├── common/      # Common UI components
-│   │   │   │   ├── Button/
-│   │   │   │   ├── Input/
-│   │   │   │   ├── Modal/
-│   │   │   │   └── Loading/
-│   │   │   └── features/    # Feature-specific components
-│   │   │       ├── Auth/
-│   │   │       ├── Lessons/
-│   │   │       ├── Grades/
-│   │   │       └── Reports/
-│   │   ├── pages/          # Page components
-│   │   │   ├── Dashboard/
-│   │   │   ├── LessonPlanning/
-│   │   │   ├── GradeManagement/
-│   │   │   ├── Attendance/
-│   │   │   └── Reports/
-│   │   ├── hooks/          # Custom React hooks
-│   │   │   ├── useAuth.js
-│   │   │   ├── useApi.js
-│   │   │   └── useLocalStorage.js
-│   │   ├── services/       # API services
-│   │   │   ├── api.js      # Axios configuration
-│   │   │   ├── authService.js
-│   │   │   ├── lessonService.js
-│   │   │   └── gradeService.js
-│   │   ├── contexts/       # React contexts
-│   │   │   ├── AuthContext.js
-│   │   │   └── AppContext.js
-│   │   ├── utils/          # Utility functions
-│   │   │   ├── constants.js
-│   │   │   ├── helpers.js
-│   │   │   └── validation.js
-│   │   ├── assets/         # Static assets
-│   │   │   ├── images/
-│   │   │   ├── icons/
-│   │   │   └── styles/
-│   │   ├── App.js         # Main App component
-│   │   └── index.js       # Entry point
-│   ├── package.json       # Node.js dependencies
-│   └── .env.example      # Environment variables
-├── docs/                 # Documentation
-│   ├── API.md           # API documentation
-│   ├── SETUP.md         # Setup guide
-│   └── CONTRIBUTING.md  # Contributing guidelines
-├── docker-compose.yml   # Docker configuration
-├── .gitignore          # Git ignore rules
-└── README.md           # Project documentation
+│   │   ├── logo192.png
+│   │   ├── logo512.png
+│   │   ├── manifest.json
+│   │   └── robots.txt
+│   │
+│   └── src/
+│       ├── App.css
+│       ├── App.js
+│       ├── App.test.js
+│       ├── index.css
+│       ├── index.js
+│       ├── logo.svg
+│       ├── reportWebVitals.js
+│       ├── setupTests.js
+│       │
+│       ├── contexts/              # React Context API
+│       │   ├── AppContext.js
+│       │   └── AuthContext.js
+│       │
+│       ├── hooks/                 # Custom hooks
+│       │   ├── useApi.js
+│       │   ├── useAuth.js
+│       │   └── useLocalStorage.js
+│       │
+│       ├── services/              # Gọi API
+│       │   ├── api.js
+│       │   ├── authService.js
+│       │   ├── gradeService.js
+│       │   └── lessonService.js
+│       │
+│       └── utils/                 # Hàm tiện ích
+│           ├── constants.js
+│           ├── helpers.js
+│           └── validation.js
 ```
 
 ## 🚀 Cài Đặt và Chạy
