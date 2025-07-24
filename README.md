@@ -161,7 +161,7 @@ planbook-ai/
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/your-username/planbook-ai.git
+git clone https://github.com/dangnguyenbinh2109/nhomud.git
 cd planbook-ai
 ```
 
@@ -432,7 +432,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - **Email**: support@planbook-ai.com
 - **Website**: https://planbook-ai.com
-- **Issues**: [GitHub Issues](https://github.com/your-username/planbook-ai/issues)
+- **Issues**: [GitHub Issues](https://github.com/dangnguyenbinh2109/nhomud/issues)
 
 ## 🎯 Roadmap
 
