@@ -1,0 +1,172 @@
+# Dự án WebApp PBA
+# Architecture
+
+```bash
+────────────────────────────────────────────────────────────────────────────────
+├── .git/ 🚫 (auto-hidden)
+├── Backend/
+│   ├── docs/
+│   │   └── flask-clean-architecture.md
+│   ├── src/
+│   │   ├── .venv/ 🚫 (auto-hidden)
+│   │   ├── __pycache__/ 🚫 (auto-hidden)
+│   │   ├── api/
+│   │   │   ├── __pycache__/ 🚫 (auto-hidden)
+│   │   │   ├── controllers/
+│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
+│   │   │   │   ├── auth_controller.py
+│   │   │   │   ├── course_controller.py
+│   │   │   │   └── todo_controller.py
+│   │   │   ├── schemas/
+│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
+│   │   │   │   ├── ...  # Marshmallow schemas
+│   │   │   │   ├── todo.py
+│   │   │   │   └── user.py
+│   │   │   ├── middleware.py
+│   │   │   ├── requests.py
+│   │   │   ├── responses.py
+│   │   │   ├── routes.py
+│   │   │   └── swagger.py
+│   │   ├── domain/
+│   │   │   ├── models/
+│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
+│   │   │   │   ├── ...  # Business logic models
+│   │   │   │   ├── course.py
+│   │   │   │   ├── icourse_repository.py
+│   │   │   │   ├── itodo_repository.py
+│   │   │   │   ├── todo.py
+│   │   │   │   └── user.py
+│   │   │   ├── constants.py
+│   │   │   └── exceptions.py
+│   │   ├── infrastructure/
+│   │   │   ├── databases/
+│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── base.py
+│   │   │   │   ├── mssql.py
+│   │   │   │   └── mysql.py
+│   │   │   ├── models/
+│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
+│   │   │   │   ├── __init__.py
+│   │   │   │   ├── appointment_model.py
+│   │   │   │   ├── consultant_model.py
+│   │   │   │   ├── course_model.py
+│   │   │   │   ├── course_register_model.py
+│   │   │   │   ├── feedback_model.py
+│   │   │   │   ├── program_model.py
+│   │   │   │   ├── survey_model.py
+│   │   │   │   ├── todo_model.py
+│   │   │   │   └── user_model.py
+│   │   │   ├── repositories/
+│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
+│   │   │   │   ├── course_repository.py
+│   │   │   │   ├── todo_repository.py
+│   │   │   │   └── user_repository.py
+│   │   │   └── services/
+│   │   │       └── ...  # Services that use third party libraries or services (e.g. email service)
+│   │   ├── scripts/
+│   │   │   └── run_postgres.sh
+│   │   ├── services/
+│   │   │   ├── __pycache__/ 🚫 (auto-hidden)
+│   │   │   ├── ...  # Services for interacting with the domain (business logic)
+│   │   │   ├── course_service.py
+│   │   │   └── todo_service.py
+│   │   ├── .env 🚫 (auto-hidden)
+│   │   ├── README.md
+│   │   ├── app.py
+│   │   ├── app_logging.py
+│   │   ├── config.py
+│   │   ├── cors.py
+│   │   ├── create_app.py
+│   │   ├── default.db
+│   │   ├── dependency_container.py
+│   │   ├── error_handler.py
+│   │   ├── migrations
+│   │   ├── requirements.txt
+│   │   └── swagger_config.json
+│   ├── .gitignore
+│   ├── README.md
+│   └── default.db
+├── Frontend/
+│   ├── node_modules/ 🚫 (auto-hidden)
+│   ├── public/
+│   │   └── vite.svg
+│   ├── src/
+│   │   ├── assets/
+│   │   │   └── react.svg
+│   │   ├── App.css
+│   │   ├── App.jsx
+│   │   ├── index.css
+│   │   └── main.jsx
+│   ├── .gitignore
+│   ├── README.md
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── package-lock.json
+│   ├── package.json
+│   └── vite.config.js
+├── .gitignore
+├── README.md
+└── setup.sh
+
+────────────────────────────────────────────────────────────────────────────────
+Generated by FileTree Pro Extension
+```
+
+## Download source code (CMD)
+    git clone https://github.com/dangnguyenbinh2109/nhomud.git
+## Run app
+
+ - Bước 1: Setup Project (Chỉ cần setup 1 lần)
+     ## SetUp (Git Bash):
+     		sh setup.sh
+ - Bước 2: Chạy Project:
+     ## Run (Git Bash):
+    		sh run.sh
+
+     Truy câp http://localhost:6868/docs
+     Backend Truy câp http://localhost:6868
+     Frontend Truy cập http://localhost:5173/
+
+
+
+## Create file .env in folder Backend/src/.env
+    
+    # Flask settings
+    FLASK_ENV=development
+    SECRET_KEY=your_secret_key
+    
+    # SQL Server settings
+    DB_USER=sa
+    DB_PASSWORD=Aa@123456
+    DB_HOST=127.0.0.1
+    DB_PORT=1433
+    DB_NAME=FlaskApiDB
+    
+    
+    DATABASE_URI = "mssql+pymssql://sa:Aa%40123456@127.0.0.1:1433/FlaskApiDB"
+    
+**Code name:** `virgo-14`
+
+## I. Tổng quan dự án
+
+### Mục tiêu
+
+Mục tiêu của dự án là xây dựng PlanbookAI – cổng công cụ AI hỗ trợ giáo viên trung học phổ thông trong việc lập kế hoạch bài giảng, tạo và chấm bài thi, quản lý tài nguyên giảng dạy, từ đó giảm tải công việc thủ công, nâng cao hiệu quả và chất lượng giảng dạy.
+
+### Phạm vi
+
+Phát triển PlanbookAI tập trung hỗ trợ giáo viên Hóa học trung học phổ thông với các chức năng chính gồm: quản lý ngân hàng câu hỏi, tạo bài tập và đề thi trắc nghiệm, chấm điểm tự động bằng OCR, lưu trữ và tổ chức tài nguyên giảng dạy, đồng thời cung cấp phân tích kết quả học tập của học sinh.
+
+### Giả định và ràng buộc
+
+- Giáo viên và người dùng mục tiêu có kỹ năng cơ bản về máy tính và Internet.
+- Hạ tầng mạng và thiết bị (máy tính, máy quét, camera) đáp ứng yêu cầu vận hành hệ thống.
+- Dữ liệu câu hỏi, tài liệu giảng dạy được cung cấp đầy đủ và hợp lệ từ phía người dùng.
+- Thời gian phát triển giới hạn, nên giai đoạn đầu chỉ áp dụng cho môn Hóa học THPT.
+- Hệ thống phải tuân thủ kiến trúc và công nghệ đã chọn (Spring Boot, ReactJS, MySQL, RESTful API).
+- Chức năng OCR ban đầu chỉ hỗ trợ định dạng đề thi trắc nghiệm.
+- Tài nguyên và dữ liệu được lưu trữ phải đảm bảo tính bảo mật và quyền riêng tư.
+## II. Yêu cầu chức năng
+### Các tác nhân
+- Gồm 4 tác nhân chính: Admin, Manager, Staff, Teacher.
