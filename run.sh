@@ -10,7 +10,7 @@ ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 # Chạy Backend
 echo "[1/2] Starting Backend (Flask)..."
 cd "$ROOT_DIR/Backend" || {
-    echo "❌ Không tìm thấy thư mục Backend/src"
+    echo "❌ Không tìm thấy thư mục Backend"
     exit 1
 }
 
@@ -23,7 +23,7 @@ else
 fi
 
 # Chạy Flask server ở background
-python app.py &
+python ./src/app.py &
 BACKEND_PID=$!
 
 # Chạy Frontend
