@@ -9,7 +9,7 @@ ROOT_DIR="$(cd "$(dirname "$0")" && pwd)"
 
 # Chạy Backend
 echo "[1/2] Starting Backend (Flask)..."
-cd "$ROOT_DIR/Backend/src" || {
+cd "$ROOT_DIR/Backend" || {
     echo "❌ Không tìm thấy thư mục Backend/src"
     exit 1
 }

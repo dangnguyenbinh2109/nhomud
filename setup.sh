@@ -5,14 +5,14 @@ echo "================================"
 
 # Backend
 echo "[1/3] Cài đặt môi trường Backend..."
-cd Backend/src || exit
+cd Backend || exit
 if [ ! -d "venv" ]; then
     echo "Tạo virtual environment..."
     py -m venv .venv
 fi
 . .venv/Scripts/activate
 echo "Cài đặt thư viện Python..."
-pip install -r requirements.txt
+pip install -r src/requirements.txt
 cd ../..
 
 # Frontend
