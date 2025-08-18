@@ -170,3 +170,5 @@ Phát triển PlanbookAI tập trung hỗ trợ giáo viên Hóa học trung h�
 ## II. Yêu cầu chức năng
 ### Các tác nhân
 - Gồm 4 tác nhân chính: Admin, Manager, Staff, Teacher.
+
+- hinh anh
