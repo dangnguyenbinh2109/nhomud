@@ -574,4 +574,83 @@ stop
 
 ## ảnh quy trình phê duyệt
 
+### Luồng xử lý (cần ảnh và code plantUML á dưới đây là mấy luồng cơ bản á thêm nữa hong thì hong bt nua)
+## 1. Luồng xử lý Đăng nhập & phân quyền
+## 2. Luồng xử lý Tạo đề thi trắc nghiệm (Teacher)
+## 3. Luồng xử lý Chấm thi bằng OCR (Teacher)
 
+
+## III. Yêu cầu phi chức năng
+
+### 1. Hiệu suất
+* Thời gian tải trang không quá 3 giây. 
+* Thời gian phản hồi API không quá 1 giây.  
+* Hỗ trợ đồng thời ít nhất 30 người dùng.  
+* Hệ thống phản hồi nhanh và có khả năng mở rộng linh hoạt.  
+
+### 2. Bảo mật
+* Sử dụng JWT (JSON Web Token) cho xác thực và phân quyền.  
+* Mã hóa dữ liệu nhạy cảm trong cơ sở dữ liệu.  
+* Bảo vệ chống tấn công SQL Injection, XSS, CSRF.  
+* Logging đầy đủ các hoạt động quan trọng.  
+* Backup dữ liệu định kỳ.  
+
+### 3. Khả năng mở rộng
+* Kiến trúc module hóa, dễ thêm tính năng mới.  
+* Khả năng tích hợp với hệ thống bên thứ ba (Supabase, Gemini AI, …).  
+* Dễ dàng nâng cấp phiên bản và triển khai bằng Docker, AWS.  
+* Documentation đầy đủ cho developers.  
+
+### 4. Giao diện người dùng
+* Thiết kế responsive cho mọi kích thước màn hình (desktop, tablet, mobile).  
+* Thời gian làm quen sử dụng hệ thống không quá 30 phút.  
+* Giao diện trực quan, nhất quán trên toàn bộ hệ thống.  
+* Hỗ trợ tiếng Việt (có thể mở rộng đa ngôn ngữ).  
+
+### 5. Tương thích
+* Hoạt động trên các trình duyệt phổ biến (Chrome, Firefox, Safari, Edge).  
+* Tương thích với thiết bị di động iOS và Android.  
+* Hỗ trợ các phiên bản trình duyệt trong vòng 2 năm trở lại.  
+* Tối ưu cho kết nối mạng chậm.  
+
+### 6. Độ tin cậy
+* Uptime tối thiểu 99.9%.  
+* Thời gian phục hồi sau sự cố < 4 giờ.  
+* Backup dữ liệu hàng ngày.  
+* Có phương án dự phòng khi hệ thống gặp sự cố.  
+
+### 7. Khả năng bảo trì
+* Code được viết theo chuẩn clean code.  
+* Có tài liệu kỹ thuật chi tiết.  
+* Dễ dàng rollback khi cần thiết.  
+* Cấu trúc dự án rõ ràng để thuận tiện bảo trì và mở rộng.  
+
+## IV. Công nghệ
+
+### 1. Backend
+* **Spring Boot** – phát triển API RESTful.  
+* **Java** – ngôn ngữ lập trình chính cho backend.  
+* **JWT (JSON Web Token)** – xác thực và phân quyền.  
+
+### 2. Frontend
+* **ReactJS** – xây dựng giao diện người dùng.  
+* **TailwindCSS / ShadCN UI** – thiết kế giao diện trực quan, responsive.  
+
+### 3. Cơ sở dữ liệu
+* **MySQL** – lưu trữ dữ liệu quan hệ (ngân hàng câu hỏi, kế hoạch bài học, người dùng…).  
+
+### 4. Tích hợp dịch vụ bên thứ ba
+* **Supabase** – quản lý xác thực, lưu trữ file, backend-as-a-service.  
+* **Gemini AI** – hỗ trợ sinh nội dung AI (bài tập, đề thi, kế hoạch giảng dạy).  
+
+### 5. Triển khai & hạ tầng
+* **Docker** – container hóa ứng dụng.  
+* **AWS** – triển khai trên môi trường cloud, đảm bảo khả năng mở rộng.  
+* **N-Tier Architecture** – tách biệt các tầng (Controller – Service – Repository – Database).  
+
+### 6. Công cụ phát triển
+* **GitHub** – quản lý mã nguồn, version control.  
+* **PlantUML** – vẽ sơ đồ Use Case, Activity, Sequence.  
+* **Postman** – kiểm thử API.  
+## V. Yêu cầu thiết kế
+......
