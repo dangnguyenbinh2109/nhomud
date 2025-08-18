@@ -233,7 +233,7 @@ Teacher -- System : uses
 
 <summary>Code PlantUML</summary>
 
-@startuml "Biểu đồ Use Case tổng quan PlanbookAI"
+```@startuml "Biểu đồ Use Case tổng quan PlanbookAI"
 
 skinparam usecase {
   BackgroundColor Business
@@ -304,7 +304,7 @@ Teacher -- ViewResults
 Teacher -- ManageResources
 
 @enduml
-
+```
 </details>
 
 ## ảnh biểu đồ use case nhá
@@ -316,7 +316,8 @@ Teacher -- ManageResources
 <details>
 
 <summary>Code PlantUML</summary>
-@startuml "Biểu đồ Use Case chức năng Admin"
+
+```@startuml "Biểu đồ Use Case chức năng Admin"
 
 skinparam usecase {
     BackgroundColor BUSINESS
@@ -343,5 +344,125 @@ Admin -- ManageCurriculum
 Admin -- ViewRevenue
 
 @enduml
+```
+</details>
+
+## ảnh use case của phần admin 
+
+### Chức năng Manager
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+```@startuml "Biểu đồ Use Case chức năng Manager"
+
+skinparam usecase {
+    BackgroundColor BUSINESS
+}
+
+skinparam note {
+    BackgroundColor LightSkyBlue
+}
+
+left to right direction
+
+actor Manager
+
+rectangle "PlanbookAI System" {
+    usecase "Quản lý gói dịch vụ" as ManagePackages
+    usecase "Quản lý đơn hàng" as ManageOrders
+    usecase "Phê duyệt nội dung" as ApproveContent
+}
+
+Manager -- ManagePackages
+Manager -- ManageOrders
+Manager -- ApproveContent
+
+@enduml
+```
 
 </details>
+
+## ảnh use case của phần manager
+
+### Chức năng Staff
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+```@startuml "Biểu đồ Use Case chức năng Staff"
+
+skinparam usecase {
+    BackgroundColor BUSINESS
+}
+
+skinparam note {
+    BackgroundColor LightSkyBlue
+}
+
+left to right direction
+
+actor Staff
+
+rectangle "PlanbookAI System" {
+    usecase "Tạo kế hoạch bài học mẫu" as CreateLessonPlans
+    usecase "Xây dựng ngân hàng câu hỏi" as BuildQuestionBank
+    usecase "CRUD mẫu prompt AI" as ManagePrompts
+}
+
+Staff -- CreateLessonPlans
+Staff -- BuildQuestionBank
+Staff -- ManagePrompts
+
+@enduml
+
+```
+</details>
+
+## ảnh của phần staff
+
+### Chức năng Teacher
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+```@startuml "Biểu đồ Use Case chức năng Teacher"
+
+skinparam usecase {
+    BackgroundColor BUSINESS
+}
+
+skinparam note {
+    BackgroundColor LightSkyBlue
+}
+
+left to right direction
+
+actor Teacher
+
+rectangle "PlanbookAI System" {
+    usecase "Tạo kế hoạch bài học & kiểm tra" as CreateLessonAndTests
+    usecase "Tạo đề thi trắc nghiệm" as GenerateExams
+    usecase "Tạo bài tập" as GenerateAssignments
+    usecase "Sử dụng OCR để chấm thi" as UseOCR
+    usecase "Chấm điểm & phản hồi" as GradeAndFeedback
+    usecase "Xem kết quả & phân tích" as ViewResults
+    usecase "Quản lý tài nguyên giảng dạy" as ManageResources
+}
+
+Teacher -- CreateLessonAndTests
+Teacher -- GenerateExams
+Teacher -- GenerateAssignments
+Teacher -- UseOCR
+Teacher -- GradeAndFeedback
+Teacher -- ViewResults
+Teacher -- ManageResources
+
+@enduml
+```
+</details>
+
+## ảnh của phần teacher
