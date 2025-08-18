@@ -466,3 +466,112 @@ Teacher -- ManageResources
 </details>
 
 ## ảnh của phần teacher
+
+### Quy trình hoạt động tiêu biểu
+
+#### Quy trình tạo đề thi trắc nghiệm (Teacher)
+
+<details>
+<summary>Code PlantUML</summary>
+
+```plantuml
+@startuml "Quy trình tạo đề thi trắc nghiệm"
+
+skinparam activity {
+    BackgroundColor LightYellow
+}
+
+|Teacher|
+start
+:Chọn môn học;
+:Chọn chủ đề;
+|#palegreen|System|
+:Hiển thị câu hỏi từ ngân hàng;
+|Teacher|
+:Chọn số lượng câu hỏi;
+:Chọn mức độ khó;
+|System|
+:Tạo đề thi nháp;
+:Hiển thị bản xem trước;
+|Teacher|
+:Chỉnh sửa nếu cần;
+:Xác nhận đề thi;
+|System|
+:Lưu đề thi;
+:Tạo nhiều phiên bản (nếu chọn);
+stop
+@enduml
+```
+</details>
+
+## ảnh quy trình hoạt động của phần tạo đề thi trắc nghiệm nhé (teacher)
+
+### Quy trình chấm thi bằng OCR (Teacher)
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+``` @startuml "Quy trình chấm thi bằng OCR"
+
+skinparam activity {
+    BackgroundColor LightYellow
+}
+
+|Teacher|
+start
+:Tải bài thi của học sinh;
+|#palegreen|System|
+:Sử dụng OCR nhận dạng đáp án;
+:So sánh với đáp án chuẩn;
+:Tính điểm;
+:Tạo báo cáo kết quả;
+|Teacher|
+:Xem kết quả;
+:Thêm phản hồi hoặc chỉnh sửa (nếu cần);
+|System|
+:Lưu kết quả vào hệ thống;
+:Gửi thông báo cho học sinh;
+stop
+@enduml
+```
+</details>
+
+## ảnh quy trình chấm thi
+
+### Quy trình phê duyệt nội dung (Manager)
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+``` @startuml "Quy trình phê duyệt nội dung"
+
+skinparam activity {
+    BackgroundColor LightYellow
+}
+
+|Staff|
+start
+:Tạo nội dung (kế hoạch bài học, câu hỏi, prompt AI);
+|System|
+:Gửi yêu cầu phê duyệt;
+|Manager|
+:Xem xét nội dung;
+if (Đạt yêu cầu?) then (Yes)
+    :Phê duyệt;
+    |System|
+    :Đưa nội dung vào hệ thống chính thức;
+else (No)
+    :Từ chối;
+    |System|
+    :Gửi phản hồi cho Staff;
+endif
+stop
+@enduml
+```
+</details>
+
+## ảnh quy trình phê duyệt
+
+
