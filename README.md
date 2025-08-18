@@ -171,4 +171,60 @@ Phát triển PlanbookAI tập trung hỗ trợ giáo viên Hóa học trung h�
 ### Các tác nhân
 - Gồm 4 tác nhân chính: Admin, Manager, Staff, Teacher.
 
-- hinh anh
+<details>
+<summary>Code PlantUML</summary>
+
+```@startuml "Biểu đồ tác nhân PlanbookAI"
+
+actor Admin
+actor Manager
+actor Staff
+actor Teacher
+
+rectangle "PlanbookAI System" as System {
+}
+
+Admin -- System : manages
+Manager -- System : controls
+Staff -- System : contributes
+Teacher -- System : uses
+
+@enduml
+```
+
+</details>
+
+## ảnh biểu đồ tác nhân:::
+
+### Các chức năng chính
+
+**Admin:**
+
+* **Quản lý người dùng:** Tạo, cập nhật và quản lý tài khoản, phân quyền.  
+* **Cấu hình hệ thống:** Thiết lập các cài đặt và hành vi toàn cục.  
+* **Quản lý khung chương trình:** Thiết kế và quản lý mẫu kế hoạch bài học (mục tiêu, hoạt động, đánh giá...).  
+* **Theo dõi doanh thu:** Xem báo cáo đăng ký, doanh số và tổng doanh thu.  
+
+**Manager:**
+
+* **Quản lý gói dịch vụ/đăng ký:** Tạo, sửa, xóa các gói mà người dùng có thể mua.  
+* **Quản lý đơn hàng:** Xem và theo dõi đơn hàng, trạng thái đăng ký.  
+* **Phê duyệt nội dung:** Kiểm duyệt và phê duyệt nội dung do nhân viên tạo (kế hoạch bài học, ngân hàng câu hỏi, prompt AI) trước khi sử dụng.  
+
+**Staff:**
+
+* **Tạo kế hoạch bài học mẫu:** Xây dựng các kế hoạch bài học dựa trên mẫu.  
+* **Xây dựng ngân hàng câu hỏi:** Tạo câu hỏi phân loại theo môn, chủ đề, cấp độ.  
+* **CRUD mẫu prompt AI:** Tạo, đọc, cập nhật, xóa các mẫu prompt để AI sinh nội dung giáo dục.  
+
+**Teacher:**
+
+* **Tạo kế hoạch bài học & nội dung kiểm tra:** Soạn bài dạy cá nhân hóa, sinh đề kiểm tra từ mẫu & AI.  
+* **Tạo đề thi trắc nghiệm:** Sinh đề dựa trên ngân hàng câu hỏi, có thể chọn số lượng, chủ đề, xáo trộn thứ tự.  
+* **Tạo bài tập:** Sinh bài tập đa dạng (trắc nghiệm, điền chỗ trống, trả lời ngắn).  
+* **Sử dụng OCR:** Quét, số hóa và chấm bài kiểm tra (in hoặc viết tay).  
+* **Chấm điểm & phản hồi:** Tự động chấm trắc nghiệm, giáo viên có thể thêm nhận xét (AI gợi ý hoặc thủ công).  
+* **Xem kết quả học sinh & phân tích:** Theo dõi tiến độ, điểm số và điều chỉnh phương pháp giảng dạy.  
+* **Quản lý tài nguyên riêng:** Lưu trữ, tổ chức tài liệu, ngân hàng câu hỏi, kế hoạch dạy học.  
+
+
