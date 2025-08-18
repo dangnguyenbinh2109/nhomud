@@ -227,4 +227,121 @@ Teacher -- System : uses
 * **Xem kết quả học sinh & phân tích:** Theo dõi tiến độ, điểm số và điều chỉnh phương pháp giảng dạy.  
 * **Quản lý tài nguyên riêng:** Lưu trữ, tổ chức tài liệu, ngân hàng câu hỏi, kế hoạch dạy học.  
 
+### Biểu đồ Use Case
 
+<details>
+
+<summary>Code PlantUML</summary>
+
+@startuml "Biểu đồ Use Case tổng quan PlanbookAI"
+
+skinparam usecase {
+  BackgroundColor Business
+}
+
+skinparam note {
+  BackgroundColor LightSkyBlue
+}
+
+left to right direction
+
+actor Admin
+actor Manager
+actor Staff
+actor Teacher
+
+rectangle "PlanbookAI System" {
+
+  rectangle "Chức năng Admin" as A {
+    usecase "Quản lý người dùng" as ManageUsers
+    usecase "Cấu hình hệ thống" as ConfigSystem
+    usecase "Quản lý khung chương trình" as ManageCurriculum
+    usecase "Theo dõi doanh thu" as ViewRevenue
+  }
+
+  rectangle "Chức năng Manager" as B {
+    usecase "Quản lý gói dịch vụ" as ManagePackages
+    usecase "Quản lý đơn hàng" as ManageOrders
+    usecase "Phê duyệt nội dung" as ApproveContent
+  }
+
+  rectangle "Chức năng Staff" as C {
+    usecase "Tạo kế hoạch bài học mẫu" as CreateLessonPlans
+    usecase "Xây dựng ngân hàng câu hỏi" as BuildQuestionBank
+    usecase "CRUD mẫu prompt AI" as ManagePrompts
+  }
+
+  rectangle "Chức năng Teacher" as D {
+    usecase "Tạo kế hoạch bài học & kiểm tra" as CreateLessonAndTests
+    usecase "Tạo đề thi trắc nghiệm" as GenerateExams
+    usecase "Tạo bài tập" as GenerateAssignments
+    usecase "Sử dụng OCR để chấm thi" as UseOCR
+    usecase "Chấm điểm & phản hồi" as GradeAndFeedback
+    usecase "Xem kết quả & phân tích" as ViewResults
+    usecase "Quản lý tài nguyên giảng dạy" as ManageResources
+  }
+}
+
+Admin -- ManageUsers
+Admin -- ConfigSystem
+Admin -- ManageCurriculum
+Admin -- ViewRevenue
+
+Manager -- ManagePackages
+Manager -- ManageOrders
+Manager -- ApproveContent
+
+Staff -- CreateLessonPlans
+Staff -- BuildQuestionBank
+Staff -- ManagePrompts
+
+Teacher -- CreateLessonAndTests
+Teacher -- GenerateExams
+Teacher -- GenerateAssignments
+Teacher -- UseOCR
+Teacher -- GradeAndFeedback
+Teacher -- ViewResults
+Teacher -- ManageResources
+
+@enduml
+
+</details>
+
+## ảnh biểu đồ use case nhá
+
+### Biểu đồ Use Case chi tiết
+
+#### Chức năng Admin
+
+<details>
+
+<summary>Code PlantUML</summary>
+@startuml "Biểu đồ Use Case chức năng Admin"
+
+skinparam usecase {
+    BackgroundColor BUSINESS
+}
+
+skinparam note {
+    BackgroundColor LightSkyBlue
+}
+
+left to right direction
+
+actor Admin
+
+rectangle "PlanbookAI System" {
+    usecase "Quản lý người dùng" as ManageUsers
+    usecase "Cấu hình hệ thống" as ConfigSystem
+    usecase "Quản lý khung chương trình" as ManageCurriculum
+    usecase "Theo dõi doanh thu" as ViewRevenue
+}
+
+Admin -- ManageUsers
+Admin -- ConfigSystem
+Admin -- ManageCurriculum
+Admin -- ViewRevenue
+
+@enduml
+
+</details>
