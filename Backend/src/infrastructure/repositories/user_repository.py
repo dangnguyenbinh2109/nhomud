@@ -36,3 +36,7 @@ class UserRepository:
     def find_by_username(self, user_name: str) -> UserModel:
         return self.db_session.query(UserModel).filter_by(user_name=user_name).first()
     
+    def get_by_id(self, user_id):
+        return self.db_session.query(UserModel).filter_by(id=user_id).first()
+
+    

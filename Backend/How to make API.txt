@@ -2,18 +2,12 @@ api/controllers/ → định nghĩa route.
 
 api/schemas/ → định nghĩa dữ liệu đầu vào dữ liệu đầu ra.
 
-services/user_service.py → viết logic nghiệp vụ.
-
 domain/models/user.py → định nghĩa entity (nếu chưa có).
 
-infrastructure/models/user_model.py → định nghĩa bảng DB (nếu cần).
+services/user_service.py → viết logic nghiệp vụ.
 
-infrastructure/repositories/user_repository.py → viết hàm lưu/xóa/sửa DB.
+infrastructure/models/user_model.py → định nghĩa bảng DataBase
 
-Đăng ký blueprint trong app.py hoặc create_app.py.
+infrastructure/repositories/user_repository.py → viết hàm lưu/xóa/sửa DataBase.
 
-Request → Middleware(api/middleware.py) → Controller(api/controllers/) → 
-Schema Validation(api/schemas/user_schema.py) → Service (Use Case)(services/) → 
-Repository(infrastructure/repositories/) → Database(infrastructure/models/)
-
-Response ← Repository ← Service ← Controller (Schema Serialize) ← Middleware ← Flask ← Client
+Đăng ký blueprint trong app.py
