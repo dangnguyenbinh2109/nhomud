@@ -53,7 +53,6 @@ class UserService:
             )
         
         return None
-<<<<<<< HEAD
     def get_user_by_username(self, user_name: str) -> Optional[User]:
         """
         Lấy thông tin người dùng theo user_name (email).
@@ -70,14 +69,13 @@ class UserService:
                 updated_at=user_model.updated_at
             )
         return None
-    
+
     def update_password(self, user_id: int, new_password: str) -> bool:
         """
         Cập nhật mật khẩu mới cho người dùng.
         """
         hashed_password = generate_password_hash(new_password)
         return self.repository.update_password(user_id, hashed_password)
-=======
+
     def get_user_by_id(self, user_id):
         return self.repository.get_by_id(user_id)
->>>>>>> 03999c78101b531357fa4892263d85d663d84438
