@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 const Auth = () => {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -27,7 +27,7 @@ const Auth = () => {
     }
 
     const data = {
-      user_name: username,
+      user_name: email,
       password: password,
     };
 
@@ -64,10 +64,10 @@ const Auth = () => {
         <h1>Login</h1>
         <div className="input-box">
           <input
-            type="text"
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            placeholder="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
@@ -106,9 +106,11 @@ const Auth = () => {
         </div>
         <div className="remember-forgot">
           {!isRegister && (
-            <label>
+            <><label>
               <input type="checkbox" /> Remember me
-            </label>
+            </label><a href="/forgot-password" style={{ marginLeft: "10px" }}>
+                Forgot Password?
+              </a></>
           )}
         </div>
         <button
