@@ -1,6 +1,6 @@
-api/controllers/user_controller.py → định nghĩa route.
+api/controllers/ → định nghĩa route.
 
-api/schemas/user_schema.py → định nghĩa schema validate input/output.
+api/schemas/ → định nghĩa dữ liệu đầu vào dữ liệu đầu ra.
 
 services/user_service.py → viết logic nghiệp vụ.
 

@@ -1,24 +1,69 @@
 import jwt
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify
 from datetime import datetime, timedelta
 from infrastructure.models.user_model import UserModel
 from infrastructure.databases.mssql import session
+from services.user_service import UserService
+from api.schemas.user import UserSchema, UserPublicSchema
+from config import Config
+from infrastructure.repositories.user_repository import UserRepository
+
+user_repository = UserRepository(session)
+user_service = UserService(user_repository)
+request_schema = UserSchema()
+response_schema = UserPublicSchema()
 
 auth_bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @auth_bp.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
-    user = session.query(UserModel).filter_by(
-        user_name=data['user_name'],
-        password=data['password']
-    ).first()
+    user_name = data.get('user_name')
+    password = data.get('password')
+
+    # Gọi hàm authenticate_user để xác thực người dùng
+    user = user_service.authenticate_user(user_name, password)
+
     if not user:
+        # Nếu user là None, đăng nhập thất bại
         return jsonify({'error': 'Invalid credentials'}), 401
 
+    # Nếu user hợp lệ, tạo JWT
     payload = {
         'user_id': user.id,
-        'exp': datetime.utcnow() + timedelta(hours=2)
+        'exp': datetime.utcnow() + timedelta(hours=2) # Token hết hạn sau 2 giờ
     }
-    token = jwt.encode(payload, current_app.config['SECRET_KEY'], algorithm='HS256')
-    return jsonify({'token': token})
+    
+    token = jwt.encode(payload, Config.SECRET_KEY, algorithm='HS256')
+    
+    return jsonify({
+        'message': 'Login successful',
+        'token': token
+    }), 200
+
+@auth_bp.route('/signup', methods=['POST'])
+def signup():
+    data = request.get_json()
+    user_name = data.get('user_name')
+    password = data.get('password')
+    description = data.get('description')
+
+    current_time = datetime.utcnow() # Lấy thời gian hiện tại
+
+    try:
+        user_service.create_user(
+            user_name=user_name,
+            password=password,
+            description=description,
+            created_at=current_time,
+            updated_at=current_time
+        )
+        return jsonify({'message': 'User created successfully'}), 201
+    except ValueError as e:
+        return jsonify({'error': str(e)}), 409
+    
+@auth_bp.route('/logout', methods=['POST'])
+def logout():
+    return jsonify({
+        'message': 'Logout successful. Please remove the token on the client side.'
+    }), 200

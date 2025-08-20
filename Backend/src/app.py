@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from api.swagger import spec
 from api.controllers.todo_controller import bp as todo_bp
+from api.controllers.auth_controller import auth_bp
 from api.middleware import middleware
 from api.responses import success_response
 from infrastructure.databases import init_db
@@ -8,11 +9,14 @@ from config import Config
 from flasgger import Swagger
 from config import SwaggerConfig
 from flask_swagger_ui import get_swaggerui_blueprint
-
+from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
     Swagger(app)
+
+    CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+
     # Đăng ký blueprint trước
     app.register_blueprint(todo_bp)
 
@@ -25,6 +29,7 @@ def create_app():
         config={'app_name': "Todo API"}
     )
     app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+    app.register_blueprint(auth_bp, url_prefix="/auth")
 
     try:
         init_db(app)

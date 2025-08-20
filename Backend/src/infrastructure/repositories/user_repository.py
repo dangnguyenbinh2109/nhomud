@@ -8,18 +8,31 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from config import Config
 from sqlalchemy import Column, Integer, String, DateTime,Boolean
 from infrastructure.databases import Base
+from infrastructure.models.user_model import UserModel
+from domain.models.user import User
 
 load_dotenv()
 
-class UserModel(Base):
+class UserRepository:
     __tablename__ = 'flask_user'
     __table_args__ = {'extend_existing': True}  # Thêm dòng này
 
-    id = Column(Integer, primary_key=True)
-    user_name = Column(String(18), nullable=False)
-    password = Column(String(18), nullable=False)
-    description = Column(String(255), nullable=True)
-    status = Column(Boolean, nullable=False)
-    created_at = Column(DateTime)
-    updated_at = Column(DateTime) 
+    def __init__(self, db_session):
+        self.db_session = db_session
+
+    def create(self, user: User, hashed_password: str) -> UserModel:
+        new_user_model = UserModel(
+            user_name=user.user_name,
+            password=hashed_password,
+            description=user.description,
+            status=user.status,
+            created_at=user.created_at,
+            updated_at=user.updated_at
+        )
+        self.db_session.add(new_user_model)
+        self.db_session.commit()
+        return new_user_model
+
+    def find_by_username(self, user_name: str) -> UserModel:
+        return self.db_session.query(UserModel).filter_by(user_name=user_name).first()
     
