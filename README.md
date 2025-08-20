@@ -171,4 +171,486 @@ Phát triển PlanbookAI tập trung hỗ trợ giáo viên Hóa học trung h�
 ### Các tác nhân
 - Gồm 4 tác nhân chính: Admin, Manager, Staff, Teacher.
 
-- hinh anh
+<details>
+<summary>Code PlantUML</summary>
+
+```@startuml "Biểu đồ tác nhân PlanbookAI"
+
+actor Admin
+actor Manager
+actor Staff
+actor Teacher
+
+rectangle "PlanbookAI System" as System {
+}
+
+Admin -- System : manages
+Manager -- System : controls
+Staff -- System : contributes
+Teacher -- System : uses
+
+@enduml
+```
+
+</details>
+
+## ảnh biểu đồ tác nhân:::
+
+### Các chức năng chính
+
+**Admin:**
+
+* **Quản lý người dùng:** Tạo, cập nhật và quản lý tài khoản, phân quyền.  
+* **Cấu hình hệ thống:** Thiết lập các cài đặt và hành vi toàn cục.  
+* **Quản lý khung chương trình:** Thiết kế và quản lý mẫu kế hoạch bài học (mục tiêu, hoạt động, đánh giá...).  
+* **Theo dõi doanh thu:** Xem báo cáo đăng ký, doanh số và tổng doanh thu.  
+
+**Manager:**
+
+* **Quản lý gói dịch vụ/đăng ký:** Tạo, sửa, xóa các gói mà người dùng có thể mua.  
+* **Quản lý đơn hàng:** Xem và theo dõi đơn hàng, trạng thái đăng ký.  
+* **Phê duyệt nội dung:** Kiểm duyệt và phê duyệt nội dung do nhân viên tạo (kế hoạch bài học, ngân hàng câu hỏi, prompt AI) trước khi sử dụng.  
+
+**Staff:**
+
+* **Tạo kế hoạch bài học mẫu:** Xây dựng các kế hoạch bài học dựa trên mẫu.  
+* **Xây dựng ngân hàng câu hỏi:** Tạo câu hỏi phân loại theo môn, chủ đề, cấp độ.  
+* **CRUD mẫu prompt AI:** Tạo, đọc, cập nhật, xóa các mẫu prompt để AI sinh nội dung giáo dục.  
+
+**Teacher:**
+
+* **Tạo kế hoạch bài học & nội dung kiểm tra:** Soạn bài dạy cá nhân hóa, sinh đề kiểm tra từ mẫu & AI.  
+* **Tạo đề thi trắc nghiệm:** Sinh đề dựa trên ngân hàng câu hỏi, có thể chọn số lượng, chủ đề, xáo trộn thứ tự.  
+* **Tạo bài tập:** Sinh bài tập đa dạng (trắc nghiệm, điền chỗ trống, trả lời ngắn).  
+* **Sử dụng OCR:** Quét, số hóa và chấm bài kiểm tra (in hoặc viết tay).  
+* **Chấm điểm & phản hồi:** Tự động chấm trắc nghiệm, giáo viên có thể thêm nhận xét (AI gợi ý hoặc thủ công).  
+* **Xem kết quả học sinh & phân tích:** Theo dõi tiến độ, điểm số và điều chỉnh phương pháp giảng dạy.  
+* **Quản lý tài nguyên riêng:** Lưu trữ, tổ chức tài liệu, ngân hàng câu hỏi, kế hoạch dạy học.  
+
+### Biểu đồ Use Case
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+```@startuml "Biểu đồ Use Case tổng quan PlanbookAI"
+
+skinparam usecase {
+  BackgroundColor Business
+}
+
+skinparam note {
+  BackgroundColor LightSkyBlue
+}
+
+left to right direction
+
+actor Admin
+actor Manager
+actor Staff
+actor Teacher
+
+rectangle "PlanbookAI System" {
+
+  rectangle "Chức năng Admin" as A {
+    usecase "Quản lý người dùng" as ManageUsers
+    usecase "Cấu hình hệ thống" as ConfigSystem
+    usecase "Quản lý khung chương trình" as ManageCurriculum
+    usecase "Theo dõi doanh thu" as ViewRevenue
+  }
+
+  rectangle "Chức năng Manager" as B {
+    usecase "Quản lý gói dịch vụ" as ManagePackages
+    usecase "Quản lý đơn hàng" as ManageOrders
+    usecase "Phê duyệt nội dung" as ApproveContent
+  }
+
+  rectangle "Chức năng Staff" as C {
+    usecase "Tạo kế hoạch bài học mẫu" as CreateLessonPlans
+    usecase "Xây dựng ngân hàng câu hỏi" as BuildQuestionBank
+    usecase "CRUD mẫu prompt AI" as ManagePrompts
+  }
+
+  rectangle "Chức năng Teacher" as D {
+    usecase "Tạo kế hoạch bài học & kiểm tra" as CreateLessonAndTests
+    usecase "Tạo đề thi trắc nghiệm" as GenerateExams
+    usecase "Tạo bài tập" as GenerateAssignments
+    usecase "Sử dụng OCR để chấm thi" as UseOCR
+    usecase "Chấm điểm & phản hồi" as GradeAndFeedback
+    usecase "Xem kết quả & phân tích" as ViewResults
+    usecase "Quản lý tài nguyên giảng dạy" as ManageResources
+  }
+}
+
+Admin -- ManageUsers
+Admin -- ConfigSystem
+Admin -- ManageCurriculum
+Admin -- ViewRevenue
+
+Manager -- ManagePackages
+Manager -- ManageOrders
+Manager -- ApproveContent
+
+Staff -- CreateLessonPlans
+Staff -- BuildQuestionBank
+Staff -- ManagePrompts
+
+Teacher -- CreateLessonAndTests
+Teacher -- GenerateExams
+Teacher -- GenerateAssignments
+Teacher -- UseOCR
+Teacher -- GradeAndFeedback
+Teacher -- ViewResults
+Teacher -- ManageResources
+
+@enduml
+```
+</details>
+
+## ảnh biểu đồ use case nhá
+
+### Biểu đồ Use Case chi tiết
+
+#### Chức năng Admin
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+```@startuml "Biểu đồ Use Case chức năng Admin"
+
+skinparam usecase {
+    BackgroundColor BUSINESS
+}
+
+skinparam note {
+    BackgroundColor LightSkyBlue
+}
+
+left to right direction
+
+actor Admin
+
+rectangle "PlanbookAI System" {
+    usecase "Quản lý người dùng" as ManageUsers
+    usecase "Cấu hình hệ thống" as ConfigSystem
+    usecase "Quản lý khung chương trình" as ManageCurriculum
+    usecase "Theo dõi doanh thu" as ViewRevenue
+}
+
+Admin -- ManageUsers
+Admin -- ConfigSystem
+Admin -- ManageCurriculum
+Admin -- ViewRevenue
+
+@enduml
+```
+</details>
+
+## ảnh use case của phần admin 
+
+### Chức năng Manager
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+```@startuml "Biểu đồ Use Case chức năng Manager"
+
+skinparam usecase {
+    BackgroundColor BUSINESS
+}
+
+skinparam note {
+    BackgroundColor LightSkyBlue
+}
+
+left to right direction
+
+actor Manager
+
+rectangle "PlanbookAI System" {
+    usecase "Quản lý gói dịch vụ" as ManagePackages
+    usecase "Quản lý đơn hàng" as ManageOrders
+    usecase "Phê duyệt nội dung" as ApproveContent
+}
+
+Manager -- ManagePackages
+Manager -- ManageOrders
+Manager -- ApproveContent
+
+@enduml
+```
+
+</details>
+
+## ảnh use case của phần manager
+
+### Chức năng Staff
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+```@startuml "Biểu đồ Use Case chức năng Staff"
+
+skinparam usecase {
+    BackgroundColor BUSINESS
+}
+
+skinparam note {
+    BackgroundColor LightSkyBlue
+}
+
+left to right direction
+
+actor Staff
+
+rectangle "PlanbookAI System" {
+    usecase "Tạo kế hoạch bài học mẫu" as CreateLessonPlans
+    usecase "Xây dựng ngân hàng câu hỏi" as BuildQuestionBank
+    usecase "CRUD mẫu prompt AI" as ManagePrompts
+}
+
+Staff -- CreateLessonPlans
+Staff -- BuildQuestionBank
+Staff -- ManagePrompts
+
+@enduml
+
+```
+</details>
+
+## ảnh của phần staff
+
+### Chức năng Teacher
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+```@startuml "Biểu đồ Use Case chức năng Teacher"
+
+skinparam usecase {
+    BackgroundColor BUSINESS
+}
+
+skinparam note {
+    BackgroundColor LightSkyBlue
+}
+
+left to right direction
+
+actor Teacher
+
+rectangle "PlanbookAI System" {
+    usecase "Tạo kế hoạch bài học & kiểm tra" as CreateLessonAndTests
+    usecase "Tạo đề thi trắc nghiệm" as GenerateExams
+    usecase "Tạo bài tập" as GenerateAssignments
+    usecase "Sử dụng OCR để chấm thi" as UseOCR
+    usecase "Chấm điểm & phản hồi" as GradeAndFeedback
+    usecase "Xem kết quả & phân tích" as ViewResults
+    usecase "Quản lý tài nguyên giảng dạy" as ManageResources
+}
+
+Teacher -- CreateLessonAndTests
+Teacher -- GenerateExams
+Teacher -- GenerateAssignments
+Teacher -- UseOCR
+Teacher -- GradeAndFeedback
+Teacher -- ViewResults
+Teacher -- ManageResources
+
+@enduml
+```
+</details>
+
+## ảnh của phần teacher
+
+### Quy trình hoạt động tiêu biểu
+
+#### Quy trình tạo đề thi trắc nghiệm (Teacher)
+
+<details>
+<summary>Code PlantUML</summary>
+
+```plantuml
+@startuml "Quy trình tạo đề thi trắc nghiệm"
+
+skinparam activity {
+    BackgroundColor LightYellow
+}
+
+|Teacher|
+start
+:Chọn môn học;
+:Chọn chủ đề;
+|#palegreen|System|
+:Hiển thị câu hỏi từ ngân hàng;
+|Teacher|
+:Chọn số lượng câu hỏi;
+:Chọn mức độ khó;
+|System|
+:Tạo đề thi nháp;
+:Hiển thị bản xem trước;
+|Teacher|
+:Chỉnh sửa nếu cần;
+:Xác nhận đề thi;
+|System|
+:Lưu đề thi;
+:Tạo nhiều phiên bản (nếu chọn);
+stop
+@enduml
+```
+</details>
+
+## ảnh quy trình hoạt động của phần tạo đề thi trắc nghiệm nhé (teacher)
+
+### Quy trình chấm thi bằng OCR (Teacher)
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+``` @startuml "Quy trình chấm thi bằng OCR"
+
+skinparam activity {
+    BackgroundColor LightYellow
+}
+
+|Teacher|
+start
+:Tải bài thi của học sinh;
+|#palegreen|System|
+:Sử dụng OCR nhận dạng đáp án;
+:So sánh với đáp án chuẩn;
+:Tính điểm;
+:Tạo báo cáo kết quả;
+|Teacher|
+:Xem kết quả;
+:Thêm phản hồi hoặc chỉnh sửa (nếu cần);
+|System|
+:Lưu kết quả vào hệ thống;
+:Gửi thông báo cho học sinh;
+stop
+@enduml
+```
+</details>
+
+## ảnh quy trình chấm thi
+
+### Quy trình phê duyệt nội dung (Manager)
+
+<details>
+
+<summary>Code PlantUML</summary>
+
+``` @startuml "Quy trình phê duyệt nội dung"
+
+skinparam activity {
+    BackgroundColor LightYellow
+}
+
+|Staff|
+start
+:Tạo nội dung (kế hoạch bài học, câu hỏi, prompt AI);
+|System|
+:Gửi yêu cầu phê duyệt;
+|Manager|
+:Xem xét nội dung;
+if (Đạt yêu cầu?) then (Yes)
+    :Phê duyệt;
+    |System|
+    :Đưa nội dung vào hệ thống chính thức;
+else (No)
+    :Từ chối;
+    |System|
+    :Gửi phản hồi cho Staff;
+endif
+stop
+@enduml
+```
+</details>
+
+## ảnh quy trình phê duyệt
+
+### Luồng xử lý (cần ảnh và code plantUML á dưới đây là mấy luồng cơ bản á thêm nữa hong thì hong bt nua)
+## 1. Luồng xử lý Đăng nhập & phân quyền
+## 2. Luồng xử lý Tạo đề thi trắc nghiệm (Teacher)
+## 3. Luồng xử lý Chấm thi bằng OCR (Teacher)
+
+
+## III. Yêu cầu phi chức năng
+
+### 1. Hiệu suất
+* Thời gian tải trang không quá 3 giây. 
+* Thời gian phản hồi API không quá 1 giây.  
+* Hỗ trợ đồng thời ít nhất 30 người dùng.  
+* Hệ thống phản hồi nhanh và có khả năng mở rộng linh hoạt.  
+
+### 2. Bảo mật
+* Sử dụng JWT (JSON Web Token) cho xác thực và phân quyền.  
+* Mã hóa dữ liệu nhạy cảm trong cơ sở dữ liệu.  
+* Bảo vệ chống tấn công SQL Injection, XSS, CSRF.  
+* Logging đầy đủ các hoạt động quan trọng.  
+* Backup dữ liệu định kỳ.  
+
+### 3. Khả năng mở rộng
+* Kiến trúc module hóa, dễ thêm tính năng mới.  
+* Khả năng tích hợp với hệ thống bên thứ ba (Supabase, Gemini AI, …).  
+* Dễ dàng nâng cấp phiên bản và triển khai bằng Docker, AWS.  
+* Documentation đầy đủ cho developers.  
+
+### 4. Giao diện người dùng
+* Thiết kế responsive cho mọi kích thước màn hình (desktop, tablet, mobile).  
+* Thời gian làm quen sử dụng hệ thống không quá 30 phút.  
+* Giao diện trực quan, nhất quán trên toàn bộ hệ thống.  
+* Hỗ trợ tiếng Việt (có thể mở rộng đa ngôn ngữ).  
+
+### 5. Tương thích
+* Hoạt động trên các trình duyệt phổ biến (Chrome, Firefox, Safari, Edge).  
+* Tương thích với thiết bị di động iOS và Android.  
+* Hỗ trợ các phiên bản trình duyệt trong vòng 2 năm trở lại.  
+* Tối ưu cho kết nối mạng chậm.  
+
+### 6. Độ tin cậy
+* Uptime tối thiểu 99.9%.  
+* Thời gian phục hồi sau sự cố < 4 giờ.  
+* Backup dữ liệu hàng ngày.  
+* Có phương án dự phòng khi hệ thống gặp sự cố.  
+
+### 7. Khả năng bảo trì
+* Code được viết theo chuẩn clean code.  
+* Có tài liệu kỹ thuật chi tiết.  
+* Dễ dàng rollback khi cần thiết.  
+* Cấu trúc dự án rõ ràng để thuận tiện bảo trì và mở rộng.  
+
+## IV. Công nghệ
+
+### 1. Backend
+* **Spring Boot** – phát triển API RESTful.  
+* **Java** – ngôn ngữ lập trình chính cho backend.  
+* **JWT (JSON Web Token)** – xác thực và phân quyền.  
+
+### 2. Frontend
+* **ReactJS** – xây dựng giao diện người dùng.  
+* **TailwindCSS / ShadCN UI** – thiết kế giao diện trực quan, responsive.  
+
+### 3. Cơ sở dữ liệu
+* **MySQL** – lưu trữ dữ liệu quan hệ (ngân hàng câu hỏi, kế hoạch bài học, người dùng…).  
+
+### 4. Tích hợp dịch vụ bên thứ ba
+* **Supabase** – quản lý xác thực, lưu trữ file, backend-as-a-service.  
+* **Gemini AI** – hỗ trợ sinh nội dung AI (bài tập, đề thi, kế hoạch giảng dạy).  
+
+### 5. Triển khai & hạ tầng
+* **Docker** – container hóa ứng dụng.  
+* **AWS** – triển khai trên môi trường cloud, đảm bảo khả năng mở rộng.  
+* **N-Tier Architecture** – tách biệt các tầng (Controller – Service – Repository – Database).  
+
+### 6. Công cụ phát triển
+* **GitHub** – quản lý mã nguồn, version control.  
+* **PlantUML** – vẽ sơ đồ Use Case, Activity, Sequence.  
+* **Postman** – kiểm thử API.  
+## V. Yêu cầu thiết kế
+......
