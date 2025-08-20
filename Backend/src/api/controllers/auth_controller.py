@@ -7,6 +7,7 @@ from services.user_service import UserService
 from api.schemas.user import UserSchema, UserPublicSchema
 from config import Config
 from infrastructure.repositories.user_repository import UserRepository
+from api.middleware import token_required
 
 user_repository = UserRepository(session)
 user_service = UserService(user_repository)
@@ -67,3 +68,13 @@ def logout():
     return jsonify({
         'message': 'Logout successful. Please remove the token on the client side.'
     }), 200
+
+
+#Dùng để test token @token_required
+@auth_bp.route('/me', methods=['GET'])
+@token_required
+def get_current_user(user_id):
+    user = user_service.get_user_by_id(user_id)
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+    return jsonify(response_schema.dump(user)), 200
