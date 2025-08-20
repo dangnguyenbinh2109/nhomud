@@ -9,13 +9,12 @@ from config import Config
 from flasgger import Swagger
 from config import SwaggerConfig
 from flask_swagger_ui import get_swaggerui_blueprint
-from flask_cors import CORS
+from cors import init_cors
 
 def create_app():
     app = Flask(__name__)
     Swagger(app)
-
-    CORS(app, resources={r"/*": {"origins": "http://localhost:5173"}})
+    init_cors(app)
 
     # Đăng ký blueprint trước
     app.register_blueprint(todo_bp)
