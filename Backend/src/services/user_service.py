@@ -10,63 +10,73 @@ class UserService:
 
     def create_user(
         self,
-        user_name: str,
+        username: str,
         password: str,
-        description: Optional[str] = None,
-        created_at: datetime = None,
-        updated_at: datetime = None
+        email: Optional[str] = None,
+        role_id: Optional[int] = None
     ) -> User:
-        existing_user = self.repository.find_by_username(user_name)
+        # Kiểm tra username đã tồn tại
+        existing_user = self.repository.find_by_username(username)
         if existing_user:
             raise ValueError("Username already exists.")
         
+        # Hash password
         hashed_password = generate_password_hash(password)
         
+        # Tạo domain object
         new_user = User(
-            user_name=user_name,
-            password=password, # Lưu mật khẩu gốc vào đối tượng domain
-            description=description,
-            status=True,
-            created_at=created_at,
-            updated_at=updated_at
+            user_id=None,
+            username=username,
+            password_hash=hashed_password,
+            email=email,
+            role_id=role_id,
+            created_at=datetime.utcnow()
         )
         
         # Lưu vào DB thông qua repository
-        return self.repository.create(new_user, hashed_password) # Sửa ở đây
-    
-    def authenticate_user(self, user_name: str, password: str) -> Optional[User]:
+        created_user_model = self.repository.create(new_user, hashed_password)
+
+        # Chuyển về domain object (không trả mật khẩu)
+        return User(
+            user_id=created_user_model.user_id,
+            username=created_user_model.username,
+            password_hash=created_user_model.password_hash,
+            email=created_user_model.email,
+            role_id=created_user_model.role_id,
+            created_at=created_user_model.created_at
+        )
+
+    def authenticate_user(self, username: str, password: str) -> Optional[User]:
         """
-        Xác thực người dùng dựa trên user_name và mật khẩu.
+        Xác thực người dùng dựa trên username và mật khẩu.
         """
-        user_model = self.repository.find_by_username(user_name)
+        user_model = self.repository.find_by_username(username)
         
-        if user_model and check_password_hash(user_model.password, password):
-            # Nếu xác thực thành công, trả về đối tượng User domain
+        if user_model and check_password_hash(user_model.password_hash, password):
             return User(
-                id=user_model.id, # Lấy id từ UserModel và truyền vào User
-                user_name=user_model.user_name,
-                password=user_model.password,
-                description=user_model.description,
-                status=user_model.status,
-                created_at=user_model.created_at,
-                updated_at=user_model.updated_at
+                user_id=user_model.user_id,
+                username=user_model.username,
+                password_hash=user_model.password_hash,
+                email=user_model.email,
+                role_id=user_model.role_id,
+                created_at=user_model.created_at
             )
         
         return None
-    def get_user_by_username(self, user_name: str) -> Optional[User]:
+
+    def get_user_by_username(self, username: str) -> Optional[User]:
         """
-        Lấy thông tin người dùng theo user_name (email).
+        Lấy thông tin người dùng theo username.
         """
-        user_model = self.repository.find_by_username(user_name)
+        user_model = self.repository.find_by_username(username)
         if user_model:
             return User(
-                id=user_model.id,
-                user_name=user_model.user_name,
-                password=user_model.password,
-                description=user_model.description,
-                status=user_model.status,
-                created_at=user_model.created_at,
-                updated_at=user_model.updated_at
+                user_id=user_model.user_id,
+                username=user_model.username,
+                password_hash=user_model.password_hash,
+                email=user_model.email,
+                role_id=user_model.role_id,
+                created_at=user_model.created_at
             )
         return None
 
@@ -77,5 +87,15 @@ class UserService:
         hashed_password = generate_password_hash(new_password)
         return self.repository.update_password(user_id, hashed_password)
 
-    def get_user_by_id(self, user_id):
-        return self.repository.get_by_id(user_id)
+    def get_user_by_id(self, user_id: int) -> Optional[User]:
+        user_model = self.repository.get_by_id(user_id)
+        if user_model:
+            return User(
+                user_id=user_model.user_id,
+                username=user_model.username,
+                password_hash=user_model.password_hash,
+                email=user_model.email,
+                role_id=user_model.role_id,
+                created_at=user_model.created_at
+            )
+        return None

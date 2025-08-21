@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from api.swagger import spec
 from api.controllers.todo_controller import bp as todo_bp
 from api.controllers.auth_controller import auth_bp
+from api.controllers.flaskauth_controller import flaskauth_bp
 from api.middleware import middleware
 from api.responses import success_response
 from infrastructure.databases import init_db
@@ -29,6 +30,7 @@ def create_app():
     )
     app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
     app.register_blueprint(auth_bp, url_prefix="/auth")
+    app.register_blueprint(flaskauth_bp, url_prefix="/flaskauth")
 
     try:
         init_db(app)

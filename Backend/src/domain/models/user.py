@@ -1,24 +1,40 @@
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
-from infrastructure.databases.base import Base
 from datetime import datetime
 from typing import Optional
-class User:
-    def __init__(self, user_name: str, password: str, id: Optional[int] = None, description: Optional[str] = None, status: bool = True, created_at: Optional[datetime] = None, updated_at: Optional[datetime] = None):
-        self.id = id
-        self.user_name = user_name
-        self.password = password
-        self.description = description
-        self.status = status
-        self.created_at = created_at
-        self.updated_at = updated_at
 
-    def to_dict(self):
-        """Chuyển đổi đối tượng User thành dictionary."""
+class User:
+    def __init__(
+        self,
+        user_id: Optional[int],
+        username: str,
+        password_hash: str,
+        email: Optional[str] = None,
+        role_id: Optional[int] = None,
+        created_at: Optional[datetime] = None
+    ):
+        self.user_id = user_id
+        self.username = username
+        self.password_hash = password_hash
+        self.email = email
+        self.role_id = role_id
+        self.created_at = created_at or datetime.utcnow()
+
+    def change_password(self, new_password_hash: str):
+        self.password_hash = new_password_hash
+
+    def change_email(self, new_email: str):
+        self.email = new_email
+
+    def assign_role(self, role_id: int):
+        self.role_id = role_id
+
+    def to_dict(self) -> dict:
         return {
-            "id": self.id,
-            "user_name": self.user_name,
-            "description": self.description,
-            "status": self.status,
-            "created_at": self.created_at.isoformat() if self.created_at else None,
-            "updated_at": self.updated_at.isoformat() if self.updated_at else None
+            "user_id": self.user_id,
+            "username": self.username,
+            "email": self.email,
+            "role_id": self.role_id,
+            "created_at": self.created_at.isoformat() if self.created_at else None
         }
+
+    def __repr__(self):
+        return f"<User user_id={self.user_id} username='{self.username}'>"
