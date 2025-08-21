@@ -1,13 +1,13 @@
-api/controllers/ → định nghĩa route.
+domain/models/ → định nghĩa entity (nếu chưa có).
+
+infrastructure/models/ → định nghĩa bảng DataBase
+
+infrastructure/repositories/ → viết hàm lưu/xóa/sửa DataBase.
 
 api/schemas/ → định nghĩa dữ liệu đầu vào dữ liệu đầu ra.
 
-domain/models/user.py → định nghĩa entity (nếu chưa có).
+services/ → viết logic nghiệp vụ.
 
-services/user_service.py → viết logic nghiệp vụ.
-
-infrastructure/models/user_model.py → định nghĩa bảng DataBase
-
-infrastructure/repositories/user_repository.py → viết hàm lưu/xóa/sửa DataBase.
+api/controllers/ → định nghĩa route.
 
 Đăng ký blueprint trong app.py
