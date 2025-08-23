@@ -43,7 +43,7 @@ class UserService:
         if user_model and check_password_hash(user_model.password, password):
             # Nếu xác thực thành công, trả về đối tượng User domain
             return User(
-                id=user_model.id, # Lấy id từ UserModel và truyền vào User
+                id=user_model.id, # Lấy id từ FlaskUserModel và truyền vào User
                 user_name=user_model.user_name,
                 password=user_model.password,
                 description=user_model.description,

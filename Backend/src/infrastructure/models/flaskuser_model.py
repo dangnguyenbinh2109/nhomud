@@ -1,7 +1,7 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from infrastructure.databases.base import Base
 
-class UserModel(Base):
+class FlaskUserModel(Base):
     __tablename__ = 'flask_user'
     # __table_args__ = {'extend_existing': True}  # Thêm dòng này
 
