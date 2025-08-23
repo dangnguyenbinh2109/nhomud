@@ -1,7 +1,7 @@
 import jwt
 from flask import Blueprint, request, jsonify
 from datetime import datetime, timedelta
-from infrastructure.models.flaskuser_model import UserModel
+from infrastructure.models.flaskuser_model import FlaskUserModel
 from infrastructure.databases.mssql import session
 from services.flaskuser_service import UserService
 from api.schemas.flaskuser import UserSchema, UserPublicSchema

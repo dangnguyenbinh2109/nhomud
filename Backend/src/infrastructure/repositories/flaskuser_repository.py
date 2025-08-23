@@ -8,7 +8,7 @@ from sqlalchemy.orm import sessionmaker, declarative_base
 from config import Config
 from sqlalchemy import Column, Integer, String, DateTime,Boolean
 from infrastructure.databases import Base
-from infrastructure.models.flaskuser_model import UserModel
+from infrastructure.models.flaskuser_model import FlaskUserModel
 from domain.models.flaskuser import User
 
 load_dotenv()
@@ -20,8 +20,8 @@ class UserRepository:
     def __init__(self, db_session):
         self.db_session = db_session
 
-    def create(self, user: User, hashed_password: str) -> UserModel:
-        new_user_model = UserModel(
+    def create(self, user: User, hashed_password: str) -> FlaskUserModel:
+        new_user_model = FlaskUserModel(
             user_name=user.user_name,
             password=hashed_password,
             description=user.description,
@@ -33,10 +33,10 @@ class UserRepository:
         self.db_session.commit()
         return new_user_model
 
-    def find_by_username(self, user_name: str) -> UserModel:
-        return self.db_session.query(UserModel).filter_by(user_name=user_name).first()
+    def find_by_username(self, user_name: str) -> FlaskUserModel:
+        return self.db_session.query(FlaskUserModel).filter_by(user_name=user_name).first()
     
     def get_by_id(self, user_id):
-        return self.db_session.query(UserModel).filter_by(id=user_id).first()
+        return self.db_session.query(FlaskUserModel).filter_by(id=user_id).first()
 
     
