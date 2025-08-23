@@ -73,13 +73,8 @@ def signup():
     password = data.get('password')
     email = data.get('email')
 
-    # Lấy role "teacher" hoặc tạo nếu chưa có
+    # Lấy role "teacher"
     role = session.query(Role).filter_by(name="teacher").first()
-    if not role:
-        role = Role(name="teacher")
-        session.add(role)
-        session.flush()
-
     role_id = role.role_id
 
     try:

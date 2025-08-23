@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from sqlalchemy.orm import Session
 from infrastructure.models.user_model import UserModel
 from domain.models.user import User
@@ -27,3 +27,31 @@ class UserRepository:
 
     def get_by_id(self, user_id: int) -> Optional[UserModel]:
         return self.db_session.query(UserModel).filter_by(user_id=user_id).first()
+
+    def get_all(self) -> List[UserModel]:
+        return self.db_session.query(UserModel).all()
+
+    def update(self, user_id: int, data: dict) -> Optional[UserModel]:
+        user = self.get_by_id(user_id)
+        if not user:
+            return None
+        for key, value in data.items():
+            setattr(user, key, value)
+        self.db_session.commit()
+        return user
+    
+    def delete(self, user_id: int) -> bool:
+        user = self.get_by_id(user_id)
+        if not user:
+            return False
+        self.db_session.delete(user)
+        self.db_session.commit()
+        return True
+
+    def update_password(self, user_id: int, hashed_password: str) -> bool:
+        user = self.get_by_id(user_id)
+        if not user:
+            return False
+        user.password_hash = hashed_password
+        self.db_session.commit()
+        return True

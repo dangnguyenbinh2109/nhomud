@@ -107,3 +107,34 @@ class UserService:
                 created_at=user_model.created_at
             )
         return None
+    
+    def get_all_users(self):
+        return self.repository.get_all()
+
+    def update_user(self, user_id: int, email: Optional[str] = None, role_id: Optional[int] = None, password: Optional[str] = None) -> Optional[User]:
+        data = {}
+        if email:
+            if not is_email(email):
+                raise ValueError("Email không hợp lệ.")
+            data["email"] = email
+        if role_id:
+            data["role_id"] = role_id
+        if password:
+            from werkzeug.security import generate_password_hash
+            data["password_hash"] = generate_password_hash(password)
+
+        updated_user = self.repository.update(user_id, data)
+        if not updated_user:
+            return None
+
+        return User(
+            user_id=updated_user.user_id,
+            username=updated_user.username,
+            password_hash=updated_user.password_hash,
+            email=updated_user.email,
+            role_id=updated_user.role_id,
+            created_at=updated_user.created_at
+        )
+
+    def delete_user(self, user_id: int) -> bool:
+        return self.repository.delete(user_id)

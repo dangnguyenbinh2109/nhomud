@@ -3,6 +3,9 @@ import jwt
 from flask import  request, jsonify
 from functools import wraps
 from config import Config
+from infrastructure.databases.mssql import session
+from infrastructure.models.user_model import UserModel
+from infrastructure.models.role_model import Role
 
 def log_request_info(app):
     app.logger.debug('Headers: %s', request.headers)
@@ -37,40 +40,56 @@ def middleware(app):
     def options_route():
         return handle_options_request()
     
-def token_required(f):
-    @wraps(f)
-    def decorated(*args, **kwargs):
-        token = None
+def token_required(f=None, *, roles=None):
+    def decorator(func):
+        @wraps(func)
+        def decorated(*args, **kwargs):
+            token = None
+            # Lấy token từ header Authorization
+            if 'Authorization' in request.headers:
+                auth_header = request.headers['Authorization']
+                if auth_header.startswith('Bearer '):
+                    token = auth_header.split(' ')[1]
 
-        # Lấy token từ header Authorization
-        if 'Authorization' in request.headers:
-            auth_header = request.headers['Authorization']
-            if auth_header.startswith('Bearer '):
-                token = auth_header.split(' ')[1]
+            if not token:
+                return jsonify({
+                    "error_code": "TOKEN_MISSING",
+                    "message": "Token is missing!"
+                }), 401
 
-        if not token:
-            return jsonify({
-                "error_code": "TOKEN_MISSING",
-                "message": "Token is missing!"
-            }), 401
+            try:
+                payload = jwt.decode(token, Config.SECRET_KEY, algorithms=['HS256'])
+                user_id = payload['user_id']
+            except jwt.ExpiredSignatureError:
+                return jsonify({
+                    "error_code": "TOKEN_EXPIRED",
+                    "message": "Access token expired!"
+                }), 401
+            except jwt.InvalidTokenError:
+                return jsonify({
+                    "error_code": "TOKEN_INVALID",
+                    "message": "Invalid token!"
+                }), 401
 
-        try:
-            payload = jwt.decode(token, Config.SECRET_KEY, algorithms=['HS256'])
-            user_id = payload['user_id']
-        except jwt.ExpiredSignatureError:
-            return jsonify({
-                "error_code": "TOKEN_EXPIRED",
-                "message": "Access token expired!"
-            }), 401
-        except jwt.InvalidTokenError:
-            return jsonify({
-                "error_code": "TOKEN_INVALID",
-                "message": "Invalid token!"
-            }), 401
+            # Nếu có roles thì check thêm quyền
+            if roles:
+                user = session.query(UserModel).filter_by(user_id=user_id).first()
+                role = session.query(Role).filter_by(role_id=user.role_id).first() if user else None
+                session.close()
 
-        return f(user_id, *args, **kwargs)
+                if not role or role.name not in roles:
+                    return jsonify({
+                        "error_code": "FORBIDDEN",
+                        "message": "Permission denied!"
+                    }), 403
 
-    return decorated
+            return func(user_id, *args, **kwargs)
+        return decorated
+
+    # Nếu decorator được dùng mà không truyền () thì f chính là hàm cần bọc
+    if f:
+        return decorator(f)
+    return decorator
 
 def refresh_token_required(f):
     @wraps(f)

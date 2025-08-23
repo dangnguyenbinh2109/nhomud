@@ -3,6 +3,7 @@ from api.swagger import spec
 from api.controllers.todo_controller import bp as todo_bp
 from api.controllers.auth_controller import auth_bp
 from api.controllers.flaskauth_controller import flaskauth_bp
+from api.controllers.user_controller import user_bp
 from api.middleware import middleware
 from api.responses import success_response
 from infrastructure.databases import init_db
@@ -11,6 +12,7 @@ from flasgger import Swagger
 from config import SwaggerConfig
 from flask_swagger_ui import get_swaggerui_blueprint
 from cors import init_cors
+from infrastructure.databases.seed import seed_roles_and_admin
 
 def create_app():
     app = Flask(__name__)
@@ -31,6 +33,7 @@ def create_app():
     app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(flaskauth_bp, url_prefix="/flaskauth")
+    app.register_blueprint(user_bp, url_prefix="/users")
 
     try:
         init_db(app)
@@ -39,6 +42,9 @@ def create_app():
 
     # Register middleware
     middleware(app)
+
+    with app.app_context():
+        seed_roles_and_admin()   # đảm bảo roles mặc định tồn tại
 
     # Register routes
     with app.test_request_context():
