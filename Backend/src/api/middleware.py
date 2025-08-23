@@ -36,6 +36,7 @@ def middleware(app):
     @app.route('/options', methods=['OPTIONS'])
     def options_route():
         return handle_options_request()
+    
 def token_required(f):
     @wraps(f)
     def decorated(*args, **kwargs):
@@ -48,16 +49,46 @@ def token_required(f):
                 token = auth_header.split(' ')[1]
 
         if not token:
-            return jsonify({'error': 'Token is missing!'}), 401
+            return jsonify({
+                "error_code": "TOKEN_MISSING",
+                "message": "Token is missing!"
+            }), 401
 
         try:
             payload = jwt.decode(token, Config.SECRET_KEY, algorithms=['HS256'])
             user_id = payload['user_id']
         except jwt.ExpiredSignatureError:
-            return jsonify({'error': 'Token has expired!'}), 401
+            return jsonify({
+                "error_code": "TOKEN_EXPIRED",
+                "message": "Access token expired!"
+            }), 401
         except jwt.InvalidTokenError:
-            return jsonify({'error': 'Invalid token!'}), 401
+            return jsonify({
+                "error_code": "TOKEN_INVALID",
+                "message": "Invalid token!"
+            }), 401
 
-        return f(user_id, *args, **kwargs)  # Truyền user_id xuống hàm controller
+        return f(user_id, *args, **kwargs)
+
+    return decorated
+
+def refresh_token_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        auth_header = request.headers.get('Authorization')
+        if not auth_header or not auth_header.startswith("Bearer "):
+            return jsonify({'error': 'Thiếu refresh token'}), 401
+
+        token = auth_header.split(" ")[1]
+        try:
+            decoded = jwt.decode(token, Config.SECRET_KEY, algorithms=['HS256'])
+            if decoded.get('type') != 'refresh':
+                return jsonify({'error': 'Token không hợp lệ'}), 401
+
+            return f(decoded.get('user_id'), *args, **kwargs)
+        except jwt.ExpiredSignatureError:
+            return jsonify({'error': 'Refresh token đã hết hạn'}), 401
+        except jwt.InvalidTokenError:
+            return jsonify({'error': 'Token không hợp lệ'}), 401
 
     return decorated

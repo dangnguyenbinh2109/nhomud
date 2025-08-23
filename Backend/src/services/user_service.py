@@ -3,7 +3,7 @@ from domain.models.user import User
 from infrastructure.repositories.user_repository import UserRepository
 from typing import Optional
 from datetime import datetime
-
+from utils.validators import is_email
 class UserService:
     def __init__(self, repository: UserRepository):
         self.repository = repository
@@ -18,7 +18,10 @@ class UserService:
         # Kiểm tra username đã tồn tại
         existing_user = self.repository.find_by_username(username)
         if existing_user:
-            raise ValueError("Username already exists.")
+            raise ValueError("Tên người dùng đã tồn tại, vui lòng sử dụng tên người dùng khác.")
+        existing_email = self.repository.find_by_email(email)
+        if existing_email:
+            raise ValueError("Email đã tồn tại, vui lòng nhập email khác.")
         
         # Hash password
         hashed_password = generate_password_hash(password)
@@ -50,7 +53,12 @@ class UserService:
         """
         Xác thực người dùng dựa trên username và mật khẩu.
         """
-        user_model = self.repository.find_by_username(username)
+
+        user_model = self.repository.find_by_email(username)
+        if not user_model:
+            user_model = self.repository.find_by_username(username)
+        if not user_model:
+            raise ValueError("Người dùng " + username + " chưa được đăng ký.")
         
         if user_model and check_password_hash(user_model.password_hash, password):
             return User(

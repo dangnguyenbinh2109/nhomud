@@ -22,5 +22,8 @@ class UserRepository:
     def find_by_username(self, username: str) -> Optional[UserModel]:
         return self.db_session.query(UserModel).filter_by(username=username).first()
 
+    def find_by_email(self, email: str) -> Optional[UserModel]:
+        return self.db_session.query(UserModel).filter_by(email=email).first()
+
     def get_by_id(self, user_id: int) -> Optional[UserModel]:
         return self.db_session.query(UserModel).filter_by(user_id=user_id).first()
