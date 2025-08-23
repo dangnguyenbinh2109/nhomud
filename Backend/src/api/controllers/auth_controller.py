@@ -22,12 +22,20 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
-    user = user_service.authenticate_user(username, password)
+    # Xác thực user
+    try:
+        user = user_service.authenticate_user(username, password)
+    except ValueError as e:
+        return jsonify({'status': 'error', 'message': str(e)}), 404
 
     if not user:
-        return jsonify({'error': 'Sai mật khẩu.'}), 401
+        return jsonify({'status': 'error', 'message': 'Sai mật khẩu.'}), 401
 
-    # Token chính (Access Token): 2 giờ
+    # Lấy role name từ role_id
+    role = session.query(Role).filter_by(role_id=user.role_id).first()
+    role_name = role.name if role else None
+
+    # Access Token: 2 giờ
     payload = {
         'user_id': user.user_id,
         'exp': datetime.utcnow() + timedelta(hours=2)
@@ -43,9 +51,14 @@ def login():
     refresh_token = jwt.encode(refresh_payload, Config.SECRET_KEY, algorithm='HS256')
 
     return jsonify({
-        'message': 'Đăng nhập thành công.',
-        'token': token,  # vẫn giữ key là token
-        'refresh_token': refresh_token
+        'status': 'success',
+        'token': token,
+        'refresh_token': refresh_token,
+        'user': {
+            'user_id': user.user_id,
+            'username': user.username,
+            'role': role_name
+        }
     }), 200
 
 @auth_bp.route('/register', methods=['POST'])
@@ -53,32 +66,53 @@ def signup():
     data = request.get_json()
     errors = request_schema.validate(data)
     if errors:
-        # Lấy message đầu tiên của mỗi field
         first_errors = [msgs[0] for msgs in errors.values()]
-        raise ValueError("; ".join(first_errors))
+        return jsonify({'status': 'error', 'message': "; ".join(first_errors)}), 400
 
     username = data.get('username')
     password = data.get('password')
     email = data.get('email')
+
+    # Lấy role "teacher" hoặc tạo nếu chưa có
     role = session.query(Role).filter_by(name="teacher").first()
     if not role:
         role = Role(name="teacher")
         session.add(role)
         session.flush()
-        
-    role_id=role.role_id
+
+    role_id = role.role_id
+
     try:
-        user_service.create_user(username=username, password=password, email=email, role_id=role_id)
-        return jsonify({'message': 'Tạo tài khoản thành công, bạn có thể đăng nhập bây giờ.'}), 201
+        # Tạo user mới
+        user = user_service.create_user(
+            username=username,
+            password=password,
+            email=email,
+            role_id=role_id
+        )
+
+        # Lấy role name từ role_id
+        role_name = role.name
+
+        return jsonify({
+            'status': 'success',
+            'message': 'Tạo tài khoản thành công, bạn có thể đăng nhập bây giờ',
+            'data': {
+                'user_id': user.user_id,
+                'username': user.username,
+                'role': role_name
+            }
+        }), 201
+
     except ValueError as e:
-        return jsonify({'error': str(e)}), 409
+        return jsonify({'status': 'error', 'message': str(e)}), 409
 
 @auth_bp.route('/refresh', methods=['POST'])
 @refresh_token_required
 def refresh_token(user_id):
     new_payload = {
         'user_id': user_id,
-        'exp': datetime.utcnow() + timedelta(seconds=1)
+        'exp': datetime.utcnow() + timedelta(hours=2)
     }
     new_token = jwt.encode(new_payload, Config.SECRET_KEY, algorithm='HS256')
 
