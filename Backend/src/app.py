@@ -12,8 +12,7 @@ from flasgger import Swagger
 from config import SwaggerConfig
 from flask_swagger_ui import get_swaggerui_blueprint
 from cors import init_cors
-from api.controllers.exam_controller import exam_bp
-from api.controllers.assignment_controller import assignment_bp
+from api.controllers.assignment_exam_controller import assignment_bp, exam_bp
 from infrastructure.databases.seed import seed_roles_and_admin
 
 def create_app():
@@ -23,8 +22,6 @@ def create_app():
 
     # Đăng ký blueprint trước
     app.register_blueprint(todo_bp)
-    app.register_blueprint(exam_bp, url_prefix="/exams")
-    app.register_blueprint(assignment_bp, url_prefix="/assignments")
 
      # Thêm Swagger UI blueprint
     SWAGGER_URL = '/docs'
@@ -38,6 +35,8 @@ def create_app():
     app.register_blueprint(auth_bp, url_prefix="/auth")
     app.register_blueprint(flaskauth_bp, url_prefix="/flaskauth")
     app.register_blueprint(user_bp, url_prefix="/users")
+    app.register_blueprint(assignment_bp, url_prefix="/assignments")
+    app.register_blueprint(exam_bp, url_prefix="/exams")
 
     try:
         init_db(app)

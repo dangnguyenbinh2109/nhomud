@@ -1,18 +1,17 @@
-class AssignmentModel:
-    def __init__(self):
-        self.assignments = []
-        self.counter = 200  # bắt đầu id = 200 cho giống yêu cầu
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Text
+from sqlalchemy.orm import relationship
+from infrastructure.databases.base import Base
+from datetime import datetime
 
-    def create(self, data):
-        assignment = {
-            "id": self.counter,
-            "title": data.get("title"),
-            "description": data.get("description"),
-            "lesson_id": data.get("lesson_id")
-        }
-        self.assignments.append(assignment)
-        self.counter += 1
-        return assignment
+class AssignmentModel(Base):
+    __tablename__ = "assignments"
 
-    def get_all(self):
-        return self.assignments
+    assignment_id = Column(Integer, primary_key=True, index=True)
+    title = Column(String(255), nullable=False)
+    description = Column(Text, nullable=True)
+    lesson_id = Column(Integer, ForeignKey("lesson_plans.lesson_id"), nullable=False)
+    created_by = Column(Integer, ForeignKey("users.user_id"), nullable=False)
+    created_at = Column(DateTime, default=datetime.utcnow)
+
+    lesson = relationship("LessonPlanModel", backref="assignments")
+    creator = relationship("UserModel", backref="assignments")
