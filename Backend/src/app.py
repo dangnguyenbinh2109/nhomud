@@ -14,6 +14,7 @@ from flask_swagger_ui import get_swaggerui_blueprint
 from cors import init_cors
 from api.controllers.assignment_exam_controller import assignment_bp, exam_bp
 from infrastructure.databases.seed import seed_roles_and_admin
+from api.controllers.lesson_plan_controller import lesson_bp
 
 def create_app():
     app = Flask(__name__)
@@ -37,6 +38,7 @@ def create_app():
     app.register_blueprint(user_bp, url_prefix="/users")
     app.register_blueprint(assignment_bp, url_prefix="/assignments")
     app.register_blueprint(exam_bp, url_prefix="/exams")
+    app.register_blueprint(lesson_bp, url_prefix="/lesson-plans")
 
     try:
         init_db(app)
