@@ -12,6 +12,7 @@ class QuestionRepository:
             content=question.content,
             subject=question.subject,
             difficulty_level=question.difficulty_level,
+            correct_answer=question.correct_answer,  # Thêm correct_answer
             created_by=question.created_by,
             created_at=question.created_at
         )
@@ -30,7 +31,8 @@ class QuestionRepository:
         if not question:
             return None
         for key, value in data.items():
-            setattr(question, key, value)
+            if key == "correct_answer" or hasattr(question, key):
+                setattr(question, key, value)
         self.db_session.commit()
         return question
 

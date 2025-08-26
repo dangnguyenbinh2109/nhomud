@@ -13,11 +13,11 @@ from config import SwaggerConfig
 from flask_swagger_ui import get_swaggerui_blueprint
 from cors import init_cors
 from api.controllers.assignment_exam_controller import assignment_bp, exam_bp
-from infrastructure.databases.seed import seed_roles_and_admin
+from infrastructure.databases.seed import seed_roles_and_admin, seed_system_config
 from api.controllers.question_controller import question_bp
 from api.controllers.lesson_plan_controller import lesson_bp
 from api.controllers.ocr_controller import ocr_bp
-from api.controllers.admin_config_controller import admin_bp  
+from api.controllers.admin_config_controller import admin_bp
 
 def create_app():
     app = Flask(__name__)
@@ -57,14 +57,14 @@ def create_app():
     with app.app_context():
         seed_roles_and_admin()   # đảm bảo roles mặc định tồn tại
         seed_system_config()
-        
+
     # Register routes
     with app.test_request_context():
         for rule in app.url_map.iter_rules():
             # Thêm các endpoint khác nếu cần
             if rule.endpoint.startswith(('todo.', 'course.', 'user.')):
                 view_func = app.view_functions[rule.endpoint]
-                print(f"Adding path: {rule.rule} -> {view_func}")
+                #print(f"Adding path: {rule.rule} -> {view_func}")
                 spec.path(view=view_func)
 
     @app.route("/swagger.json")
