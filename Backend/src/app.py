@@ -15,6 +15,9 @@ from cors import init_cors
 from api.controllers.assignment_exam_controller import assignment_bp, exam_bp
 from infrastructure.databases.seed import seed_roles_and_admin
 from api.controllers.question_controller import question_bp
+from api.controllers.lesson_plan_controller import lesson_bp
+from api.controllers.ocr_controller import ocr_bp
+from api.controllers.admin_config_controller import admin_bp  
 
 def create_app():
     app = Flask(__name__)
@@ -39,7 +42,10 @@ def create_app():
     app.register_blueprint(assignment_bp, url_prefix="/assignments")
     app.register_blueprint(exam_bp, url_prefix="/exams")
     app.register_blueprint(question_bp, url_prefix="/questions")
-    
+    app.register_blueprint(lesson_bp, url_prefix="/lesson-plans")
+    app.register_blueprint(ocr_bp, url_prefix="/ocr")
+    app.register_blueprint(admin_bp, url_prefix="/admin")
+
     try:
         init_db(app)
     except Exception as e:
@@ -50,7 +56,8 @@ def create_app():
 
     with app.app_context():
         seed_roles_and_admin()   # đảm bảo roles mặc định tồn tại
-
+        seed_system_config()
+        
     # Register routes
     with app.test_request_context():
         for rule in app.url_map.iter_rules():
