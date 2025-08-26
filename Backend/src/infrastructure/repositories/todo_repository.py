@@ -1,7 +1,6 @@
 from domain.models.itodo_repository import ITodoRepository
 from domain.models.todo import Todo
 from typing import List, Optional
-from dotenv import load_dotenv
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
@@ -11,6 +10,9 @@ from infrastructure.databases import Base
 from sqlalchemy.orm import Session
 from infrastructure.models.todo_model import TodoModel
 from infrastructure.databases.mssql import session
+from dotenv import load_dotenv
+from utils.env_loader import load_env
+load_env()
 load_dotenv()
 
 class TodoRepository(ITodoRepository):

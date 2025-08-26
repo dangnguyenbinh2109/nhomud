@@ -2,7 +2,10 @@ from typing import Optional, List
 from sqlalchemy.orm import Session
 from infrastructure.models.question_model import QuestionModel
 from domain.models.question import Question
-
+from dotenv import load_dotenv
+from utils.env_loader import load_env
+load_env()
+load_dotenv()
 class QuestionRepository:
     def __init__(self, db_session: Session):
         self.db_session = db_session

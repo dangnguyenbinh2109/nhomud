@@ -2,7 +2,10 @@
 from sqlalchemy.orm import Session
 from infrastructure.models.ocr_model import OCRResultModel
 from domain.models.ocr_result import OCRResult
-
+from dotenv import load_dotenv
+from utils.env_loader import load_env
+load_env()
+load_dotenv()
 class OCRRepository:
     def __init__(self, db_session: Session):
         self.db_session = db_session

@@ -2,7 +2,10 @@ from typing import List, Optional
 from sqlalchemy.orm import Session
 from infrastructure.models.system_config_model import SystemConfigModel
 from domain.models.system_config import SystemConfig
-
+from dotenv import load_dotenv
+from utils.env_loader import load_env
+load_env()
+load_dotenv()
 class SystemConfigRepository:
     def __init__(self, db_session: Session):
         self.db_session = db_session

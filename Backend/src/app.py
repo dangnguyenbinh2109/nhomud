@@ -18,6 +18,10 @@ from api.controllers.question_controller import question_bp
 from api.controllers.lesson_plan_controller import lesson_bp
 from api.controllers.ocr_controller import ocr_bp
 from api.controllers.admin_config_controller import admin_bp
+from dotenv import load_dotenv
+from utils.env_loader import load_env
+load_env()
+load_dotenv()
 
 def create_app():
     app = Flask(__name__)

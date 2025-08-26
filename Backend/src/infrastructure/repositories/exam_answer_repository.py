@@ -1,6 +1,9 @@
 from sqlalchemy.orm import Session
 from infrastructure.models.exam_answer_model import ExamAnswerModel
-
+from dotenv import load_dotenv
+from utils.env_loader import load_env
+load_env()
+load_dotenv()
 class ExamAnswerRepository:
     def __init__(self, db_session: Session):
         self.db_session = db_session

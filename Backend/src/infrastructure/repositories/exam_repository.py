@@ -3,7 +3,10 @@ from typing import List, Optional
 from infrastructure.models.exam_model import ExamModel
 from infrastructure.models.exam_question_model import ExamQuestionModel
 from domain.models.exam import Exam
-
+from dotenv import load_dotenv
+from utils.env_loader import load_env
+load_env()
+load_dotenv()
 class ExamRepository:
     def __init__(self, db_session: Session):
         self.db_session = db_session
