@@ -33,6 +33,7 @@ def create_question(user_id):
         content=data.get("content"),
         subject=data.get("subject"),
         difficulty_level=data.get("difficulty_level"),
+        correct_answer=data.get("correct_answer"),  # <--- thêm dòng này
         created_by=user_id
     )
 
@@ -41,6 +42,7 @@ def create_question(user_id):
         "message": "Question added successfully",
         "data": public_schema.dump(question)
     }), 201
+
 
 @question_bp.route('/<int:question_id>', methods=['PUT'])
 @token_required(roles=["admin", "staff"])

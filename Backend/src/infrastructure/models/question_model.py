@@ -10,6 +10,7 @@ class QuestionModel(Base):
     content = Column(String, nullable=False)
     subject = Column(String(100), nullable=True)
     difficulty_level = Column(String(50), nullable=True)
+    correct_answer = Column(String(10), nullable=True)  # Thêm cột đáp án đúng
     created_by = Column(Integer, ForeignKey("users.user_id"), nullable=True)
     created_at = Column(DateTime, default=datetime.utcnow)
 

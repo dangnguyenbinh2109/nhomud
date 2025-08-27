@@ -8,6 +8,7 @@ class Question:
         content: str,
         subject: Optional[str] = None,
         difficulty_level: Optional[str] = None,
+        correct_answer: Optional[str] = None,   # Thêm field correct_answer
         created_by: Optional[int] = None,
         created_at: Optional[datetime] = None
     ):
@@ -15,6 +16,7 @@ class Question:
         self.content = content
         self.subject = subject
         self.difficulty_level = difficulty_level
+        self.correct_answer = correct_answer
         self.created_by = created_by
         self.created_at = created_at or datetime.utcnow()
 
@@ -24,6 +26,7 @@ class Question:
             "content": self.content,
             "subject": self.subject,
             "difficulty_level": self.difficulty_level,
+            "correct_answer": self.correct_answer,
             "created_by": self.created_by,
             "created_at": self.created_at.isoformat() if self.created_at else None
         }

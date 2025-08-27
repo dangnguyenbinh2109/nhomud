@@ -2,8 +2,10 @@ from sqlalchemy.orm import Session
 from typing import List, Optional
 from infrastructure.models.assignment_model import AssignmentModel
 from domain.models.assignment import Assignment
-
-
+from dotenv import load_dotenv
+from utils.env_loader import load_env
+load_env()
+load_dotenv()
 class AssignmentRepository:
     def __init__(self, db_session: Session):
         self.db_session = db_session

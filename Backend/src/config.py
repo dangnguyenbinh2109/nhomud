@@ -1,6 +1,10 @@
 # Configuration settings for the Flask application
 
 import os
+from dotenv import load_dotenv
+from utils.env_loader import load_env
+load_env()
+load_dotenv()
 
 class Config:
     """Base configuration."""
@@ -9,8 +13,6 @@ class Config:
     TESTING = os.environ.get('TESTING', 'False').lower() in ['true', '1']
     DATABASE_URI = os.environ.get('DATABASE_URI') or 'mssql+pymssql://sa:Aa%40123456@127.0.0.1:1433/FlaskApiDB'
     CORS_HEADERS = 'Content-Type'
-    GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent"
-    GEMINI_KEY = "AIzaSyCNvYPWvhw321UUcTGmnBMkAibtEfLmVGE"
 
 class DevelopmentConfig(Config):
     """Development configuration."""
