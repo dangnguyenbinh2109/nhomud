@@ -26,7 +26,7 @@ fi
 python ./src/app.py &
 BACKEND_PID=$!
 
-# Chạy Frontend
+# # Chạy Frontend
 # echo "[2/2] Starting Frontend (Vite)..."
 # cd "$ROOT_DIR/Frontend" || {
 #     echo "❌ Không tìm thấy thư mục Frontend"
