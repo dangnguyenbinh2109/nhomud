@@ -18,6 +18,8 @@ from api.controllers.question_controller import question_bp
 from api.controllers.lesson_plan_controller import lesson_bp
 from api.controllers.ocr_controller import ocr_bp
 from api.controllers.admin_config_controller import admin_bp
+from api.controllers.package_controller import package_bp
+from api.controllers.order_controller import order_bp
 from dotenv import load_dotenv
 from utils.env_loader import load_env
 load_env()
@@ -49,7 +51,9 @@ def create_app():
     app.register_blueprint(lesson_bp, url_prefix="/lesson-plans")
     app.register_blueprint(ocr_bp, url_prefix="/ocr")
     app.register_blueprint(admin_bp, url_prefix="/admin")
-
+    app.register_blueprint(package_bp, url_prefix="/packages")
+    app.register_blueprint(order_bp, url_prefix="/orders")
+    
     try:
         init_db(app)
     except Exception as e:

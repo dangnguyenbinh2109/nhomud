@@ -6,6 +6,8 @@ from config import Config
 from infrastructure.databases.mssql import session
 from infrastructure.models.user_model import UserModel
 from infrastructure.models.role_model import Role
+from domain.models.user_subscription import UserSubscription
+from datetime import datetime, timedelta
 
 def log_request_info(app):
     app.logger.debug('Headers: %s', request.headers)
@@ -110,4 +112,21 @@ def refresh_token_required(f):
         except jwt.InvalidTokenError:
             return jsonify({'error': 'Token không hợp lệ'}), 401
 
+    return decorated
+
+def vip_required(f):
+    @wraps(f)
+    def decorated(user_id, *args, **kwargs):
+        subscription = session.query(UserSubscription).filter(
+            UserSubscription.user_id == user_id,
+            UserSubscription.end_date >= datetime.utcnow()
+        ).first()
+
+        if not subscription:
+            return jsonify({
+                "error_code": "VIP_REQUIRED",
+                "message": "Bạn cần nâng cấp VIP để dùng chức năng này."
+            }), 403
+
+        return f(user_id, *args, **kwargs)
     return decorated
