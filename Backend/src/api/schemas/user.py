@@ -9,7 +9,7 @@ class UserCreateSchema(Schema):
     password = fields.String(required=True)
     email = fields.String(required=False)
     role_id = fields.Integer(required=False)
-    role = fields.String(required=True)
+    role = fields.String(required=False)
 
     @validates("email")
     def validate_email(self, value, **kwargs):
