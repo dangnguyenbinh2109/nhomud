@@ -199,7 +199,7 @@ Teacher -- System : uses
 
 </details>
 
-## ảnh biểu đồ tác nhân:::
+![Biểu đồ tác nhân](docs/diagrams/bieu_do_tac_nhan.png)
 
 ### Các chức năng chính
 
