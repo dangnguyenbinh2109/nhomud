@@ -634,7 +634,7 @@ stop
 
 ### 1. Backend
 * **Spring Boot** – phát triển API RESTful.  
-* **Java** – ngôn ngữ lập trình chính cho backend.  
+* **PYTHON** – ngôn ngữ lập trình chính cho backend.  
 * **JWT (JSON Web Token)** – xác thực và phân quyền.  
 
 ### 2. Frontend
