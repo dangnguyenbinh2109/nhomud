@@ -179,21 +179,31 @@ Phát triển PlanbookAI tập trung hỗ trợ giáo viên Hóa học trung h�
 <details>
 <summary>Code PlantUML</summary>
 
-```@startuml "Biểu đồ tác nhân PlanbookAI"
-
-actor Admin
-actor Manager
-actor Staff
+```@startuml
+actor Guest
+actor User
+actor Student
 actor Teacher
+actor Staff
+actor Manager
+actor Admin
 
-rectangle "PlanbookAI System" as System {
+Guest <|-- User
+User <|-- Student
+User <|-- Teacher
+User <|-- Staff
+User <|-- Manager
+User <|-- Admin
+
+rectangle "Hệ thống" as System {
 }
 
-Admin -- System : manages
-Manager -- System : controls
-Staff -- System : contributes
-Teacher -- System : uses
-
+Guest -- System : access (đăng ký / đăng nhập)
+Student -- System : uses (làm bài tập, thi, xem kết quả)
+Teacher -- System : uses (quản lý kế hoạch, bài tập, đề thi, chấm điểm OCR)
+Staff -- System : uses (quản lý ngân hàng câu hỏi)
+Manager -- System : manages (quản lý gói dịch vụ, đơn hàng, duyệt nội dung)
+Admin -- System : manages (quản lý người dùng, cấu hình hệ thống)
 @enduml
 ```
 
@@ -312,7 +322,7 @@ Teacher -- ManageResources
 ```
 </details>
 
-## ảnh biểu đồ use case nhá
+![Biểu đồ usecase tổng quát](docs/diagrams/bieu_do_usecase_tong_quat.png)
 
 ### Biểu đồ Use Case chi tiết
 
