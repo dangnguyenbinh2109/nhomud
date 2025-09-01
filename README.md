@@ -248,75 +248,74 @@ Admin -- System : manages (quản lý người dùng, cấu hình hệ thống)
 
 <summary>Code PlantUML</summary>
 
-```@startuml "Biểu đồ Use Case tổng quan PlanbookAI"
+```@startuml "Use Case Diagram - Hệ thống PlanbookAI"
 
-skinparam usecase {
-  BackgroundColor Business
-}
-
-skinparam note {
-  BackgroundColor LightSkyBlue
-}
-
-left to right direction
-
-actor Admin
-actor Manager
-actor Staff
+actor Guest
+actor User
 actor Teacher
+actor Staff
+actor Manager
+actor Admin
 
-rectangle "PlanbookAI System" {
+Guest <|-- User
+User <|-- Teacher
+User <|-- Staff
+User <|-- Manager
+User <|-- Admin
 
-  rectangle "Chức năng Admin" as A {
-    usecase "Quản lý người dùng" as ManageUsers
-    usecase "Cấu hình hệ thống" as ConfigSystem
-    usecase "Quản lý khung chương trình" as ManageCurriculum
-    usecase "Theo dõi doanh thu" as ViewRevenue
+rectangle "Hệ thống PlanbookAI" {
+  
+  package "Chức năng chung" {
+    usecase "Đăng ký tài khoản mới" as UC_Register
+    usecase "Đăng nhập hệ thống" as UC_Login
   }
 
-  rectangle "Chức năng Manager" as B {
-    usecase "Quản lý gói dịch vụ" as ManagePackages
-    usecase "Quản lý đơn hàng" as ManageOrders
-    usecase "Phê duyệt nội dung" as ApproveContent
+  package "Quản lý nội dung" {
+    usecase "Duyệt nội dung" as UC_ContentApprove
+    usecase "Quản lý ngân hàng câu hỏi" as UC_QuestionBank
+    usecase "Quản lý kế hoạch bài học" as UC_LessonPlan
+    usecase "Quản lý bài tập" as UC_Assignment
+    usecase "Quản lý đề thi" as UC_Exam
   }
 
-  rectangle "Chức năng Staff" as C {
-    usecase "Tạo kế hoạch bài học mẫu" as CreateLessonPlans
-    usecase "Xây dựng ngân hàng câu hỏi" as BuildQuestionBank
-    usecase "CRUD mẫu prompt AI" as ManagePrompts
+  package "Chức năng nâng cao" {
+    usecase "Quản lý gói dịch vụ" as UC_ServicePack
+    usecase "Chấm điểm tự động bằng OCR" as UC_OCR
+    usecase "Quản lý đơn hàng" as UC_Order
   }
 
-  rectangle "Chức năng Teacher" as D {
-    usecase "Tạo kế hoạch bài học & kiểm tra" as CreateLessonAndTests
-    usecase "Tạo đề thi trắc nghiệm" as GenerateExams
-    usecase "Tạo bài tập" as GenerateAssignments
-    usecase "Sử dụng OCR để chấm thi" as UseOCR
-    usecase "Chấm điểm & phản hồi" as GradeAndFeedback
-    usecase "Xem kết quả & phân tích" as ViewResults
-    usecase "Quản lý tài nguyên giảng dạy" as ManageResources
+  package "Chức năng Admin" {
+    usecase "Cấu hình hệ thống" as UC_SystemConfig
+    usecase "Quản lý người dùng" as UC_UserManagement
   }
 }
 
-Admin -- ManageUsers
-Admin -- ConfigSystem
-Admin -- ManageCurriculum
-Admin -- ViewRevenue
+' Liên kết Guest
+Guest --> UC_Register
+Guest --> UC_Login
 
-Manager -- ManagePackages
-Manager -- ManageOrders
-Manager -- ApproveContent
+' Liên kết Student/User chung
+User --> UC_Login
+User --> UC_Register
 
-Staff -- CreateLessonPlans
-Staff -- BuildQuestionBank
-Staff -- ManagePrompts
+' Liên kết Teacher
+Teacher --> UC_LessonPlan
+Teacher --> UC_Assignment
+Teacher --> UC_Exam
+Teacher --> UC_OCR
+Teacher --> UC_Order
 
-Teacher -- CreateLessonAndTests
-Teacher -- GenerateExams
-Teacher -- GenerateAssignments
-Teacher -- UseOCR
-Teacher -- GradeAndFeedback
-Teacher -- ViewResults
-Teacher -- ManageResources
+' Liên kết Staff
+Staff --> UC_QuestionBank
+
+' Liên kết Manager
+Manager --> UC_ContentApprove
+Manager --> UC_ServicePack
+Manager --> UC_Order
+
+' Liên kết Admin
+Admin --> UC_UserManagement
+Admin --> UC_SystemConfig
 
 @enduml
 ```
@@ -332,37 +331,41 @@ Teacher -- ManageResources
 
 <summary>Code PlantUML</summary>
 
-```@startuml "Biểu đồ Use Case chức năng Admin"
-
-skinparam usecase {
-    BackgroundColor BUSINESS
-}
-
-skinparam note {
-    BackgroundColor LightSkyBlue
-}
-
-left to right direction
+```@startuml "Use Case Diagram - Chức năng Admin"
 
 actor Admin
 
-rectangle "PlanbookAI System" {
-    usecase "Quản lý người dùng" as ManageUsers
-    usecase "Cấu hình hệ thống" as ConfigSystem
-    usecase "Quản lý khung chương trình" as ManageCurriculum
-    usecase "Theo dõi doanh thu" as ViewRevenue
+rectangle "Hệ thống PlanbookAI - Chức năng Admin" {
+  
+  package "Quản lý người dùng" {
+    usecase "Thêm người dùng" as UC_AddUser
+    usecase "Cập nhật thông tin" as UC_UpdateUser
+    usecase "Xóa / Khóa tài khoản" as UC_DeleteUser
+    usecase "Gán quyền người dùng" as UC_AssignRole
+  }
+
+  package "Cấu hình hệ thống" {
+    usecase "Quản lý tham số hệ thống" as UC_SystemParams
+    usecase "Quản lý phân quyền" as UC_Permissions
+    usecase "Sao lưu & Phục hồi dữ liệu" as UC_BackupRestore
+  }
 }
 
-Admin -- ManageUsers
-Admin -- ConfigSystem
-Admin -- ManageCurriculum
-Admin -- ViewRevenue
+' Liên kết các Use Case với Admin
+Admin --> UC_AddUser
+Admin --> UC_UpdateUser
+Admin --> UC_DeleteUser
+Admin --> UC_AssignRole
+
+Admin --> UC_SystemParams
+Admin --> UC_Permissions
+Admin --> UC_BackupRestore
 
 @enduml
 ```
 </details>
 
-## ảnh use case của phần admin 
+![Biểu đồ usecase chức năng admin](docs/diagrams/bieu_do_usecase_admin.png)
 
 ### Chức năng Manager
 
@@ -370,36 +373,55 @@ Admin -- ViewRevenue
 
 <summary>Code PlantUML</summary>
 
-```@startuml "Biểu đồ Use Case chức năng Manager"
-
-skinparam usecase {
-    BackgroundColor BUSINESS
-}
-
-skinparam note {
-    BackgroundColor LightSkyBlue
-}
-
-left to right direction
+```@startuml "Use Case Diagram - Chức năng Manager"
 
 actor Manager
 
-rectangle "PlanbookAI System" {
-    usecase "Quản lý gói dịch vụ" as ManagePackages
-    usecase "Quản lý đơn hàng" as ManageOrders
-    usecase "Phê duyệt nội dung" as ApproveContent
+rectangle "Hệ thống PlanbookAI - Chức năng Manager" {
+  
+  package "Quản lý gói dịch vụ" {
+    usecase "Tạo gói dịch vụ" as UC_CreatePackage
+    usecase "Cập nhật gói dịch vụ" as UC_UpdatePackage
+    usecase "Xóa / Ngừng gói dịch vụ" as UC_DeletePackage
+    usecase "Xem danh sách gói dịch vụ" as UC_ViewPackage
+  }
+
+  package "Quản lý đơn hàng" {
+    usecase "Xem đơn hàng" as UC_ViewOrder
+    usecase "Duyệt / Xác nhận đơn hàng" as UC_ApproveOrder
+    usecase "Hủy đơn hàng" as UC_CancelOrder
+    usecase "Xuất báo cáo đơn hàng" as UC_ReportOrder
+  }
+
+  package "Duyệt nội dung" {
+    usecase "Xem nội dung chờ duyệt" as UC_ViewContent
+    usecase "Phê duyệt nội dung" as UC_ApproveContent
+    usecase "Từ chối nội dung" as UC_RejectContent
+  }
 }
 
-Manager -- ManagePackages
-Manager -- ManageOrders
-Manager -- ApproveContent
+' Liên kết với actor Manager
+Manager --> UC_CreatePackage
+Manager --> UC_UpdatePackage
+Manager --> UC_DeletePackage
+Manager --> UC_ViewPackage
+
+Manager --> UC_ViewOrder
+Manager --> UC_ApproveOrder
+Manager --> UC_CancelOrder
+Manager --> UC_ReportOrder
+
+Manager --> UC_ViewContent
+Manager --> UC_ApproveContent
+Manager --> UC_RejectContent
 
 @enduml
 ```
 
 </details>
 
-## ảnh use case của phần manager
+![Biểu đồ usecase chức năng manager](docs/diagrams/bieu_do_usecase_manager.png)
+
 
 ### Chức năng Staff
 
@@ -407,36 +429,58 @@ Manager -- ApproveContent
 
 <summary>Code PlantUML</summary>
 
-```@startuml "Biểu đồ Use Case chức năng Staff"
-
-skinparam usecase {
-    BackgroundColor BUSINESS
-}
-
-skinparam note {
-    BackgroundColor LightSkyBlue
-}
-
-left to right direction
+```@startuml "Use Case Diagram - Chức năng Staff"
 
 actor Staff
 
-rectangle "PlanbookAI System" {
-    usecase "Tạo kế hoạch bài học mẫu" as CreateLessonPlans
-    usecase "Xây dựng ngân hàng câu hỏi" as BuildQuestionBank
-    usecase "CRUD mẫu prompt AI" as ManagePrompts
+rectangle "Hệ thống PlanbookAI - Chức năng Staff" {
+
+  package "Quản lý ngân hàng câu hỏi" {
+    usecase "Thêm câu hỏi" as UC_AddQuestion
+    usecase "Chỉnh sửa câu hỏi" as UC_EditQuestion
+    usecase "Xóa câu hỏi" as UC_DeleteQuestion
+    usecase "Tìm kiếm/Lọc câu hỏi" as UC_SearchQuestion
+    usecase "Xem danh sách câu hỏi" as UC_ViewQuestion
+  }
+
+  package "Quản lý kế hoạch bài học" {
+    usecase "Tạo kế hoạch bài học" as UC_AddLessonPlan
+    usecase "Chỉnh sửa kế hoạch" as UC_EditLessonPlan
+    usecase "Xóa kế hoạch" as UC_DeleteLessonPlan
+    usecase "Xem danh sách kế hoạch" as UC_ViewLessonPlan
+  }
+
+  package "Quản lý bài tập" {
+    usecase "Tạo bài tập" as UC_AddExercise
+    usecase "Chỉnh sửa bài tập" as UC_EditExercise
+    usecase "Xóa bài tập" as UC_DeleteExercise
+    usecase "Xem danh sách bài tập" as UC_ViewExercise
+  }
 }
 
-Staff -- CreateLessonPlans
-Staff -- BuildQuestionBank
-Staff -- ManagePrompts
+' Liên kết actor Staff
+Staff --> UC_AddQuestion
+Staff --> UC_EditQuestion
+Staff --> UC_DeleteQuestion
+Staff --> UC_SearchQuestion
+Staff --> UC_ViewQuestion
+
+Staff --> UC_AddLessonPlan
+Staff --> UC_EditLessonPlan
+Staff --> UC_DeleteLessonPlan
+Staff --> UC_ViewLessonPlan
+
+Staff --> UC_AddExercise
+Staff --> UC_EditExercise
+Staff --> UC_DeleteExercise
+Staff --> UC_ViewExercise
 
 @enduml
 
 ```
 </details>
 
-## ảnh của phần staff
+![Biểu đồ usecase chức năng staff](docs/diagrams/bieu_do_usecase_staff.png)
 
 ### Chức năng Teacher
 
