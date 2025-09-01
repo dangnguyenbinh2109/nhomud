@@ -488,82 +488,114 @@ Staff --> UC_ViewExercise
 
 <summary>Code PlantUML</summary>
 
-```@startuml "Biểu đồ Use Case chức năng Teacher"
-
-skinparam usecase {
-    BackgroundColor BUSINESS
-}
-
-skinparam note {
-    BackgroundColor LightSkyBlue
-}
-
-left to right direction
+```@startuml "Use Case Diagram - Teacher"
 
 actor Teacher
 
-rectangle "PlanbookAI System" {
-    usecase "Tạo kế hoạch bài học & kiểm tra" as CreateLessonAndTests
-    usecase "Tạo đề thi trắc nghiệm" as GenerateExams
-    usecase "Tạo bài tập" as GenerateAssignments
-    usecase "Sử dụng OCR để chấm thi" as UseOCR
-    usecase "Chấm điểm & phản hồi" as GradeAndFeedback
-    usecase "Xem kết quả & phân tích" as ViewResults
-    usecase "Quản lý tài nguyên giảng dạy" as ManageResources
+rectangle "Hệ thống" {
+
+  (Tạo kế hoạch) as UC_AddLessonPlan
+  (Chỉnh sửa kế hoạch) as UC_EditLessonPlan
+  (Xóa kế hoạch) as UC_DeleteLessonPlan
+  (Xem danh sách kế hoạch) as UC_ViewLessonPlan
+
+  (Tạo bài tập) as UC_AddExercise
+  (Chỉnh sửa bài tập) as UC_EditExercise
+  (Xóa bài tập) as UC_DeleteExercise
+  (Xem danh sách bài tập) as UC_ViewExercise
+  (Giao bài tập cho học sinh) as UC_AssignExercise
+
+  (Tạo đề thi) as UC_AddExam
+  (Chỉnh sửa đề thi) as UC_EditExam
+  (Xóa đề thi) as UC_DeleteExam
+  (Xem danh sách đề thi) as UC_ViewExam
+  (Xuất/Import đề thi) as UC_ExportExam
+
+  (Upload bài làm) as UC_UploadAnswer
+  (Nhận dạng OCR) as UC_OCRProcess
+  (So sánh đáp án) as UC_CompareAnswer
+  (Tính điểm tự động) as UC_AutoGrade
+  (Xuất kết quả & báo cáo) as UC_Report
 }
 
-Teacher -- CreateLessonAndTests
-Teacher -- GenerateExams
-Teacher -- GenerateAssignments
-Teacher -- UseOCR
-Teacher -- GradeAndFeedback
-Teacher -- ViewResults
-Teacher -- ManageResources
+Teacher --> UC_AddLessonPlan
+Teacher --> UC_EditLessonPlan
+Teacher --> UC_DeleteLessonPlan
+Teacher --> UC_ViewLessonPlan
+
+Teacher --> UC_AddExercise
+Teacher --> UC_EditExercise
+Teacher --> UC_DeleteExercise
+Teacher --> UC_ViewExercise
+Teacher --> UC_AssignExercise
+
+Teacher --> UC_AddExam
+Teacher --> UC_EditExam
+Teacher --> UC_DeleteExam
+Teacher --> UC_ViewExam
+Teacher --> UC_ExportExam
+
+Teacher --> UC_UploadAnswer
+UC_UploadAnswer --> UC_OCRProcess : <<include>>
+UC_OCRProcess --> UC_CompareAnswer : <<include>>
+UC_CompareAnswer --> UC_AutoGrade : <<include>>
+UC_AutoGrade --> UC_Report : <<include>>
 
 @enduml
 ```
 </details>
 
-## ảnh của phần teacher
+![Biểu đồ usecase chức năng teacher](docs/diagrams/bieu_do_usecase_teacher.png)
+
 
 ### Quy trình hoạt động tiêu biểu
 
-#### Quy trình tạo đề thi trắc nghiệm (Teacher)
+#### Quản lý bài tập (Teacher)
 
 <details>
 <summary>Code PlantUML</summary>
 
-```plantuml
-@startuml "Quy trình tạo đề thi trắc nghiệm"
-
-skinparam activity {
-    BackgroundColor LightYellow
-}
-
+```@startuml
 |Teacher|
 start
-:Chọn môn học;
-:Chọn chủ đề;
-|#palegreen|System|
-:Hiển thị câu hỏi từ ngân hàng;
+:Đăng nhập hệ thống;
+:Truy cập chức năng Quản lý bài tập;
+
+|Hệ thống|
+:Hiển thị menu Quản lý bài tập;
+
 |Teacher|
-:Chọn số lượng câu hỏi;
-:Chọn mức độ khó;
-|System|
-:Tạo đề thi nháp;
-:Hiển thị bản xem trước;
-|Teacher|
-:Chỉnh sửa nếu cần;
-:Xác nhận đề thi;
-|System|
-:Lưu đề thi;
-:Tạo nhiều phiên bản (nếu chọn);
+partition "Lựa chọn hành động" {
+  if ("Tạo bài tập mới?") then (yes)
+    :Nhập nội dung, câu hỏi, đáp án, deadline;
+    |Hệ thống|
+    :Lưu bài tập vào DB;
+  elseif ("Chỉnh sửa bài tập?") then (yes)
+    :Chọn bài tập cần sửa;
+    :Chỉnh sửa nội dung/đáp án/deadline;
+    |Hệ thống|
+    :Cập nhật vào DB;
+  elseif ("Xóa bài tập?") then (yes)
+    :Chọn bài tập cần xóa;
+    :Xác nhận xóa;
+    |Hệ thống|
+    :Xóa khỏi DB;
+  elseif ("Xem danh sách?") then (yes)
+    |Hệ thống|
+    :Hiển thị danh sách bài tập;
+  else ("Giao bài tập")
+    :Chọn bài tập và lớp/học sinh;
+    |Hệ thống|
+    :Gửi thông báo và lưu lịch giao;
+  endif
+}
+
 stop
 @enduml
 ```
 </details>
 
-## ảnh quy trình hoạt động của phần tạo đề thi trắc nghiệm nhé (teacher)
+![Quy trình quản lý bài tập](docs/diagrams/quy_trinh_quan_ly_bai_tap.png)
 
 ### Quy trình chấm thi bằng OCR (Teacher)
 
@@ -571,32 +603,29 @@ stop
 
 <summary>Code PlantUML</summary>
 
-``` @startuml "Quy trình chấm thi bằng OCR"
-
-skinparam activity {
-    BackgroundColor LightYellow
-}
-
+``` @startuml
 |Teacher|
 start
-:Tải bài thi của học sinh;
-|#palegreen|System|
-:Sử dụng OCR nhận dạng đáp án;
-:So sánh với đáp án chuẩn;
-:Tính điểm;
-:Tạo báo cáo kết quả;
+:Đăng nhập hệ thống;
+:Chọn chức năng "Chấm điểm OCR";
+:Upload ảnh bài làm;
+
+|Hệ thống|
+:Nhận file ảnh;
+:Thực hiện OCR -> trích xuất text;
+:So khớp nội dung với đáp án trong DB;
+:Chấm điểm tự động;
+:Hiển thị kết quả chấm cho Teacher;
+: Lưu kết quả vào DB;
+
 |Teacher|
-:Xem kết quả;
-:Thêm phản hồi hoặc chỉnh sửa (nếu cần);
-|System|
-:Lưu kết quả vào hệ thống;
-:Gửi thông báo cho học sinh;
+: Xem kết quả chấm;
 stop
 @enduml
 ```
 </details>
 
-## ảnh quy trình chấm thi
+![Quy trình chấm thi bằng OCR](docs/diagrams/quy_trinh_cham_diem.png)
 
 ### Quy trình phê duyệt nội dung (Manager)
 
