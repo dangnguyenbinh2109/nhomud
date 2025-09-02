@@ -633,40 +633,181 @@ stop
 
 <summary>Code PlantUML</summary>
 
-``` @startuml "Quy trình phê duyệt nội dung"
-
-skinparam activity {
-    BackgroundColor LightYellow
-}
-
-|Staff|
-start
-:Tạo nội dung (kế hoạch bài học, câu hỏi, prompt AI);
-|System|
-:Gửi yêu cầu phê duyệt;
+``` @startuml
 |Manager|
-:Xem xét nội dung;
-if (Đạt yêu cầu?) then (Yes)
-    :Phê duyệt;
-    |System|
-    :Đưa nội dung vào hệ thống chính thức;
-else (No)
-    :Từ chối;
-    |System|
-    :Gửi phản hồi cho Staff;
+start
+:Đăng nhập hệ thống;
+:Chọn chức năng "Duyệt nội dung";
+:Hiển thị danh sách nội dung chờ duyệt;
+:Chọn 1 nội dung để xem chi tiết;
+
+|Manager|
+if (Quyết định duyệt?) then (Phê duyệt)
+  :Phê duyệt nội dung;
+  |Hệ thống|
+  :Cập nhật trạng thái = "Đã duyệt";
+  :Thông báo cho người tạo;
+else (Từ chối)
+  :Nhập lý do từ chối;
+  |Hệ thống|
+  :Cập nhật trạng thái = "Từ chối";
+  :Thông báo cho người tạo;
 endif
+
+|Manager|
 stop
 @enduml
 ```
 </details>
 
-## ảnh quy trình phê duyệt
+![Quy trình phê duyệt nội dung](docs/diagrams/quy_trinh_phe_duyet_noi_dung.png)
 
-### Luồng xử lý (cần ảnh và code plantUML á dưới đây là mấy luồng cơ bản á thêm nữa hong thì hong bt nua)
-## 1. Luồng xử lý Đăng nhập & phân quyền
-## 2. Luồng xử lý Tạo đề thi trắc nghiệm (Teacher)
+### Luồng xử lý
+## 1. Luồng Quản lý người dùng (Admin)
+<details>
+
+<summary>Code PlantUML</summary>
+
+``` @startuml
+actor "Admin" as admin
+participant "Giao diện" as ui
+participant "Hệ thống" as system
+database "CSDL" as db
+
+admin -> ui: 1. Truy cập trang quản lý người dùng
+activate ui
+ui -> system: 2. Gửi yêu cầu lấy danh sách user
+
+activate system
+system -> db: 3. Truy vấn tất cả user
+activate db
+db --> system: 4. Trả về danh sách user
+deactivate db
+system --> ui: 5. Trả về dữ liệu user
+ui --> admin: 6. Hiển thị danh sách người dùng
+
+alt Admin chọn "Thêm/Sửa" user
+    admin -> ui: 7. Nhập thông tin user mới/cập nhật
+    ui -> system: 8. Gửi yêu cầu thêm/sửa user
+    system -> db: 9. Thực hiện thêm/cập nhật dữ liệu
+    db --> system: 10. Xác nhận thành công
+    system --> ui: 11a. Trả về kết quả thành công
+    ui --> admin: 12a. Hiển thị thông báo thành công
+else Admin chọn "Xóa" user
+    admin -> ui: 7b. Xác nhận xóa user
+    ui -> system: 8b. Gửi yêu cầu xóa user
+    system -> db: 9b. Thực hiện xóa dữ liệu user
+    db --> system: 10b. Xác nhận thành công
+    system --> ui: 11b. Trả về kết quả thành công
+    ui --> admin: 12b. Cập nhật danh sách user
+end
+
+deactivate system
+deactivate ui
+@enduml
+```
+</details>
+
+![Luồng quản lý người dùng](docs/diagrams/luong_quan_ly_nguoi_dung.png)
+
+
+## 2. Luồng Quản lý ngân hàng câu hỏi (Staff)
+<details>
+
+<summary>Code PlantUML</summary>
+
+``` @startuml "Biểu đồ trình tự Quản lý ngân hàng câu hỏi (Staff)"
+actor "Nhân viên" as staff
+participant "Giao diện" as ui
+participant "Hệ thống" as system
+database "CSDL" as db
+
+staff -> ui: 1. Truy cập trang ngân hàng câu hỏi
+activate ui
+ui -> system: 2. Gửi yêu cầu lấy danh sách câu hỏi
+
+activate system
+system -> db: 3. Truy vấn danh sách câu hỏi
+activate db
+db --> system: 4. Trả về dữ liệu câu hỏi
+deactivate db
+system --> ui: 5. Trả về danh sách câu hỏi
+ui --> staff: 6. Hiển thị danh sách câu hỏi
+
+alt Thêm mới câu hỏi
+    staff -> ui: 7a. Nhập nội dung + đáp án + mức độ
+    ui -> system: 8a. Gửi yêu cầu thêm mới
+    system -> db: 9a. Lưu dữ liệu câu hỏi
+    db --> system: 10a. Xác nhận lưu thành công
+    system --> ui: 11a. Trả về kết quả thành công
+    ui --> staff: 12a. Hiển thị thông báo thành công
+else Cập nhật câu hỏi
+    staff -> ui: 7b. Chỉnh sửa nội dung/đáp án
+    ui -> system: 8b. Gửi yêu cầu cập nhật
+    system -> db: 9b. Cập nhật dữ liệu câu hỏi
+    db --> system: 10b. Xác nhận cập nhật thành công
+    system --> ui: 11b. Trả về kết quả thành công
+    ui --> staff: 12b. Hiển thị thông báo thành công
+else Xóa câu hỏi
+    staff -> ui: 7c. Chọn câu hỏi cần xóa
+    ui -> system: 8c. Gửi yêu cầu xóa
+    system -> db: 9c. Xóa dữ liệu câu hỏi
+    db --> system: 10c. Xác nhận xóa thành công
+    system --> ui: 11c. Trả về kết quả thành công
+    ui --> staff: 12c. Cập nhật danh sách câu hỏi
+end
+
+deactivate system
+deactivate ui
+@enduml
+```
+</details>
+
+![Luồng quản lý ngân hàng câu hỏi](docs/diagrams/luong_ngan_hang_cau_hoi.png)
+
+
 ## 3. Luồng xử lý Chấm thi bằng OCR (Teacher)
+<details>
 
+<summary>Code PlantUML</summary>
+
+``` @startuml "Biểu đồ trình tự Chấm điểm tự động bằng OCR (Teacher)"
+actor "Giáo viên" as teacher
+participant "Giao diện" as ui
+participant "Hệ thống" as system
+participant "Dịch vụ OCR" as ocr
+database "CSDL" as db
+
+teacher -> ui: 1. Truy cập chức năng chấm điểm tự động
+ui -> teacher: 2. Hiển thị form upload bài làm
+
+teacher -> ui: 3. Upload ảnh/scan bài làm
+ui -> system: 4. Gửi file bài làm
+
+activate system
+system -> ocr: 5. Gọi dịch vụ OCR để nhận diện văn bản
+activate ocr
+ocr --> system: 6. Trả về nội dung đã nhận dạng
+deactivate ocr
+
+system -> db: 7. Lấy đáp án chuẩn từ ngân hàng câu hỏi
+activate db
+db --> system: 8. Trả về dữ liệu đáp án
+deactivate db
+
+system -> system: 9. So sánh bài làm với đáp án\nTính điểm tự động
+system -> db: 10. Lưu kết quả chấm điểm
+db --> system: 11. Xác nhận lưu thành công
+
+system --> ui: 12. Trả về kết quả chấm điểm
+ui --> teacher: 13. Hiển thị điểm + chi tiết bài làm
+
+deactivate system
+@enduml
+```
+</details>
+
+![Luồng chấm điểm bằng OCR](docs/diagrams/luong_cham_diem_ocr.png)
 
 ## III. Yêu cầu phi chức năng
 
