@@ -44,12 +44,11 @@ const Hero = () => (
               viewBox="0 0 400 24"
               className="pointer-events-none absolute left-0 bottom-0 w-[102%] z-0 translate-y-1"
             >
-              {/* mảnh vừa phải */}
               <path
                 d="M2 18 C 40 2, 80 26, 120 10 S 200 6, 240 16 320 4, 398 14"
                 fill="none"
                 stroke="#22c55e"
-                strokeWidth={5} 
+                strokeWidth={5}
                 strokeLinecap="round"
               />
             </svg>
@@ -332,24 +331,80 @@ const LearningManagementSection = () => {
 /* ===================================== */
 const WhyChooseSection = () => {
   const items = [
-    { title: "Hỗ trợ kỹ thuật", desc: "14/7 (8:00–22:00)", color: "blue",
-      icon: (<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" /><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.05.06a2 2 0 1 1-2.83 2.83l-.06-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .31 1.7 1.7 0 0 0-.84 1.46V22a2 2 0 1 1-4 0v-.83A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.87.34l-.06.05A2 2 0 1 1 2.24 17l.05-.06A1.7 1.7 0 0 0 3 15a1.7 1.7 0 0 0-.31-1 1.7 1.7 0 0 0-1.46-.84H1a2 2 0 1 1 0-4h.83A1.7 1.7 0 0 0 3 7a1.7 1.7 0 0 0-.34-1.87l-.05-.06A2 2 0 1 1 5.44 2.24l.06.05A1.7 1.7 0 0 0 7 3c.37 0 .71-.11 1-.31A1.7 1.7 0 0 0 8.83 1H9a2 2 0 1 1 4 0v.83A1.7 1.7 0 0 0 13 3c.37 0 .71.11 1 .31.3.2.64.31 1 .31.53 0 1.04-.21 1.46-.59l.06-.05A2 2 0 1 1 21.76 5l-.05.06A1.7 1.7 0 0 0 21 7c0 .37.11.71.31 1 .2.3.31.64.31 1s-.11.71-.31 1a1.7 1.7 0 0 0-.31 1Z"/></svg>) },
-    { title: "Hỗ trợ đào tạo", desc: "Đào tạo chuyên sâu cho trường/nhóm", color: "pink",
-      icon: (<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" /><path d="M4 4v15.5A2.5 2.5 0 0 0 6.5 22H20V5.5A2.5 2.5 0 0 0 17.5 3H6.5A2.5 2.5 0 0 0 4 5.5" /></svg>) },
-    { title: "Kết nối ổn định", desc: "Thi online đồng thời >200k người", color: "green",
-      icon: (<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12.55a11 11 0 0 1 14 0" /><path d="M8.5 16a6 6 0 0 1 7 0" /><path d="M12 20h.01" /></svg>) },
-    { title: "Cộng đồng sử dụng lớn", desc: "400k+ giáo viên • 9k+ trường", color: "amber",
-      icon: (<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" /><path d="M22 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /></svg>) },
-    { title: "Bảo mật cao", desc: "Mã hoá đầu-cuối, chống gian lận bằng AI", color: "rose",
-      icon: (<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" /><path d="M9 12l2 2 4-4" /></svg>) },
-    { title: "Dễ sử dụng", desc: "Giao diện thân thiện, phù hợp nghiệp vụ", color: "cyan",
-      icon: (<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 3l7 17 2-7 7-2-16-8Z" /></svg>) },
+    {
+      title: "Hỗ trợ kỹ thuật",
+      desc: "14/7 (8:00–22:00)",
+      color: "blue",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2.25">
+          <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+          <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.05.06a2 2 0 1 1-2.83 2.83l-.06-.05A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .31 1.7 1.7 0 0 0-.84 1.46V22a2 2 0 1 1-4 0v-.83A1.7 1.7 0 0 0 7 19.4a1.7 1.7 0 0 0-1.87.34l-.06.05A2 2 0 1 1 2.24 17l.05-.06A1.7 1.7 0 0 0 3 15a1.7 1.7 0 0 0-.31-1 1.7 1.7 0 0 0-1.46-.84H1a2 2 0 1 1 0-4h.83A1.7 1.7 0 0 0 3 7a1.7 1.7 0 0 0-.34-1.87l-.05-.06A2 2 0 1 1 5.44 2.24l.06.05A1.7 1.7 0 0 0 7 3c.37 0 .71-.11 1-.31A1.7 1.7 0 0 0 8.83 1H9a2 2 0 1 1 4 0v.83A1.7 1.7 0 0 0 13 3c.37 0 .71.11 1 .31.3.2.64.31 1 .31.53 0 1.04-.21 1.46-.59l.06-.05A2 2 0 1 1 21.76 5l-.05.06A1.7 1.7 0 0 0 21 7c0 .37.11.71.31 1 .2.3.31.64.31 1s-.11.71-.31 1a1.7 1.7 0 0 0-.31 1Z"/>
+        </svg>
+      ),
+    },
+    {
+      title: "Hỗ trợ đào tạo",
+      desc: "Đào tạo chuyên sâu cho trường/nhóm",
+      color: "pink",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+          <path d="M4 4v15.5A2.5 2.5 0 0 0 6.5 22H20V5.5A2.5 2.5 0 0 0 17.5 3H6.5A2.5 2.5 0 0 0 4 5.5" />
+        </svg>
+      ),
+    },
+    {
+      title: "Kết nối ổn định",
+      desc: "Thi online đồng thời >200k người",
+      color: "emerald",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2.25">
+          <path d="M5 12.55a11 11 0 0 1 14 0" />
+          <path d="M8.5 16a6 6 0 0 1 7 0" />
+          <path d="M12 20h.01" />
+        </svg>
+      ),
+    },
+    {
+      title: "Cộng đồng sử dụng lớn",
+      desc: "400k+ giáo viên • 9k+ trường",
+      color: "amber",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+          <circle cx="9" cy="7" r="4" />
+          <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+          <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+        </svg>
+      ),
+    },
+    {
+      title: "Bảo mật cao",
+      desc: "Mã hoá đầu–cuối, chống gian lận bằng AI",
+      color: "rose",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2.25">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z" />
+          <path d="M9 12l2 2 4-4" />
+        </svg>
+      ),
+    },
+    {
+      title: "Dễ sử dụng",
+      desc: "Giao diện thân thiện, phù hợp nghiệp vụ",
+      color: "cyan",
+      icon: (
+        <svg viewBox="0 0 24 24" className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M3 3l7 17 2-7 7-2-16-8Z" />
+        </svg>
+      ),
+    },
   ];
 
   const pastel = {
     blue: "bg-blue-100 text-blue-600",
     pink: "bg-pink-100 text-pink-600",
-    green: "bg-emerald-100 text-emerald-600",
+    emerald: "bg-emerald-100 text-emerald-600",
     amber: "bg-amber-100 text-amber-600",
     rose: "bg-rose-100 text-rose-600",
     cyan: "bg-cyan-100 text-cyan-600",
@@ -363,10 +418,12 @@ const WhyChooseSection = () => {
           <div className="mx-auto w-16 h-1 bg-slate-900 mt-2 rounded-full" />
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10 gap-y-12">
           {items.map((it, i) => (
             <div key={i} className="text-center">
-              <div className={`w-16 h-16 mx-auto rounded-2xl grid place-items-center ${pastel[it.color]} shadow`} />
+              {/* lớp “bóng” phía sau */}
+              <div className={`w-16 h-16 mx-auto rounded-2xl ${pastel[it.color]} opacity-80 shadow`} />
+              {/* ô chính có icon */}
               <div className="relative -mt-12 mb-3">
                 <div className={`w-16 h-16 mx-auto rounded-2xl grid place-items-center ${pastel[it.color]}`}>
                   {it.icon}
