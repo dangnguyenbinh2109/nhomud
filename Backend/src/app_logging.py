@@ -1,6 +1,6 @@
 import logging
 
-def setup_logging():
+def setup_logging(app):
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -9,5 +9,3 @@ def setup_logging():
             logging.StreamHandler()
         ]
     )
-
-setup_logging() 

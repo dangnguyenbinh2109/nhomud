@@ -1,4 +1,4 @@
-from infrastructure.databases.mssql import SessionLocal
+from infrastructure.databases.mssql import session
 from infrastructure.models.role_model import Role
 from werkzeug.security import generate_password_hash
 from infrastructure.models.user_model import UserModel
@@ -6,8 +6,6 @@ from infrastructure.models.system_config_model import SystemConfigModel
 from datetime import datetime
 
 def seed_roles_and_admin():
-    session = SessionLocal()
-
     try:
         # Seed roles
         default_roles = ["admin", "teacher", "staff", "manager"]
@@ -51,8 +49,6 @@ def seed_roles_and_admin():
         session.close()
 
 def seed_system_config():
-    session = SessionLocal()
-
     try:
         # Các cấu hình mặc định
         default_configs = [

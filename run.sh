@@ -26,15 +26,15 @@ fi
 python ./src/app.py &
 BACKEND_PID=$!
 
-# Chạy Frontend
-echo "[2/2] Starting Frontend (Vite)..."
-cd "$ROOT_DIR/Frontend" || {
-    echo "❌ Không tìm thấy thư mục Frontend"
-    kill $BACKEND_PID
-    exit 1
-}
-npm run dev &
-FRONTEND_PID=$!
+# # Chạy Frontend
+# echo "[2/2] Starting Frontend (Vite)..."
+# cd "$ROOT_DIR/Frontend" || {
+#     echo "❌ Không tìm thấy thư mục Frontend"
+#     kill $BACKEND_PID
+#     exit 1
+# }
+# npm run dev &
+# FRONTEND_PID=$!
 
 echo "✅ Backend (PID: $BACKEND_PID) và Frontend (PID: $FRONTEND_PID) đang chạy."
 echo "Nhấn CTRL+C để dừng tất cả."
