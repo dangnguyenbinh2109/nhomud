@@ -1,9 +1,9 @@
 import { Navigate } from "react-router-dom";
 
-const ProtectedRoute = ({ element, role, allowedRoles }) => {
-    // const userRole = localStorage.getItem("role");
+const ProtectedRoute = ({ element, allowedRoles }) => {
+    const userRole = localStorage.getItem("role");
 
-    const userRole = 'teacher';
+    //const userRole = 'teacher';
     if (!userRole) 
         return <Navigate to="/login" />;
 
