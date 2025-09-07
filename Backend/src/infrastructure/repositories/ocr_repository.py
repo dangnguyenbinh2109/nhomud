@@ -18,7 +18,7 @@ class OCRRepository:
             processed_at=ocr_result.processed_at
         )
         self.db_session.add(model)
-        self.db_session.commit()
+        self.db_session.commit() # Lưu thay đổi vào DB
         self.db_session.refresh(model)  # lấy giá trị auto-increment ocr_id
 
         # gán lại ocr_id cho domain object

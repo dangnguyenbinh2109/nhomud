@@ -1,5 +1,6 @@
 # services/ocr_service.py
 import requests
+import logging
 import re
 from domain.models.ocr_result import OCRResult
 from infrastructure.repositories.ocr_repository import OCRRepository
@@ -63,7 +64,11 @@ class OCRService:
             if match:
                 score = float(match.group(1))
 
-        except Exception:
+        except requests.exceptions.RequestException as e:
+            logging.error(f"Gemini API request failed: {e}")
+            score = 0.0
+        except (KeyError, IndexError) as e:
+            logging.error(f"Error parsing Gemini response: {e}")
             score = 0.0
 
         # Lưu kết quả vào DB
@@ -108,6 +113,9 @@ class OCRService:
             result_json = res.json()
             text = result_json["candidates"][0]["content"]["parts"][0]["text"]
             return text
-        except Exception as e:
-            print("Error reading image:", e)
+        except requests.exceptions.RequestException as e:
+            logging.error(f"Gemini API request failed during text read: {e}")
+            return ""
+        except (KeyError, IndexError) as e:
+            logging.error(f"Error parsing Gemini response during text read: {e}")
             return ""

@@ -215,6 +215,40 @@ def update_exam(user_id, exam_id):
             "details": str(e)
         }), 500
 
+
+@exam_bp.route('/<int:exam_id>', methods=['DELETE'])
+@token_required
+def delete_exam(user_id, exam_id):
+    try:
+        # Tìm exam
+        exam = session.query(ExamModel).filter_by(exam_id=exam_id).first()
+        if not exam:
+            return jsonify({"status": "error", "message": "Exam not found"}), 404
+
+        # Chỉ cho phép người tạo xóa
+        if exam.created_by != user_id:
+            return jsonify({"status": "error", "message": "Chỉ cho phép người tạo xóa."}), 403
+
+        # Xóa các bản ghi liên quan trong ExamQuestionModel trước
+        session.query(ExamQuestionModel).filter_by(exam_id=exam_id).delete()
+
+        # Xóa các bản ghi ocr_results liên quan (cascade delete)
+        from infrastructure.models.ocr_model import OCRResultModel
+        session.query(OCRResultModel).filter_by(exam_id=exam_id).delete()
+
+        # Xóa exam
+        session.delete(exam)
+        session.commit()
+
+        return jsonify({
+            "status": "success",
+            "message": "Exam deleted successfully"
+        }), 200
+
+    except SQLAlchemyError as e:
+        session.rollback()
+        return jsonify({"status": "error", "message": "Database error occurred", "details": str(e)}), 500
+
     
 # ✅ Route tạo question để test
 @exam_bp.route('/questions', methods=['POST'])

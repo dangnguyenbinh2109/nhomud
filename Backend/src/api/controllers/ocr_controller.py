@@ -5,8 +5,13 @@ from infrastructure.repositories.ocr_repository import OCRRepository
 from infrastructure.databases.mssql import session
 from services.ocr_service import OCRService
 from api.middleware import token_required
+from infrastructure.models.ocr_model import OCRResultModel
+from api.schemas.ocr_result import OCRResultSchema
 
 ocr_bp = Blueprint("ocr", __name__, url_prefix="/ocr")
+
+ocr_results_schema = OCRResultSchema(many=True)
+
 
 @ocr_bp.route("/upload", methods=["POST"])
 @token_required
@@ -51,3 +56,23 @@ def upload_exam_sheet(user_id):
             "status": "error",
             "message": f"Đã có lỗi xảy ra. Vui lòng thử lại. Chi tiết: {str(e)}"
         }), 500
+
+
+@ocr_bp.route("/results", methods=["GET"])
+@token_required
+def get_all_ocr_results(user_id):
+    """
+    Lấy tất cả kết quả OCR
+    """
+    try:
+        # Query tất cả kết quả từ database, sắp xếp theo thời gian mới nhất
+        all_results = session.query(OCRResultModel).order_by(OCRResultModel.processed_at.desc()).all()
+
+        return jsonify({
+            "status": "success",
+            "data": ocr_results_schema.dump(all_results)
+        }), 200
+
+    except Exception as e:
+        session.rollback()
+        return jsonify({"status": "error", "message": f"Đã có lỗi xảy ra: {str(e)}"}), 500
