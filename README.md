@@ -211,36 +211,29 @@ Admin -- System : manages (quản lý người dùng, cấu hình hệ thống)
 
 ![Biểu đồ tác nhân](docs/diagrams/bieu_do_tac_nhan.png)
 
-### Các chức năng chính
+# Các tác nhân và chức năng chính trong hệ thống
 
-**Admin:**
+## 1. Admin
+- Quản lý người dùng: Thêm, cập nhật, xóa/khóa tài khoản, gán quyền.
+- Cấu hình hệ thống: Thiết lập tham số hệ thống, quản lý phân quyền, sao lưu và phục hồi dữ liệu.
+- Quản lý khung chương trình: Thiết kế và quản lý mẫu kế hoạch bài học (mục tiêu, hoạt động, đánh giá).
+- Theo dõi doanh thu: Xem báo cáo đăng ký, doanh số và tổng doanh thu.
 
-* **Quản lý người dùng:** Tạo, cập nhật và quản lý tài khoản, phân quyền.  
-* **Cấu hình hệ thống:** Thiết lập các cài đặt và hành vi toàn cục.  
-* **Quản lý khung chương trình:** Thiết kế và quản lý mẫu kế hoạch bài học (mục tiêu, hoạt động, đánh giá...).  
-* **Theo dõi doanh thu:** Xem báo cáo đăng ký, doanh số và tổng doanh thu.  
+## 2. Manager
+- Quản lý gói dịch vụ: Tạo, cập nhật, xóa/ngừng, xem danh sách gói dịch vụ.
+- Quản lý đơn hàng: Xem, duyệt/xác nhận, hủy đơn hàng, xuất báo cáo đơn hàng.
+- Phê duyệt nội dung: Xem nội dung chờ duyệt, phê duyệt hoặc từ chối nội dung.
 
-**Manager:**
+## 3. Staff
+- Quản lý ngân hàng câu hỏi: Thêm, sửa, xóa, tìm kiếm, xem danh sách câu hỏi.
+- Quản lý kế hoạch bài học: Tạo, sửa, xóa, xem danh sách kế hoạch bài học mẫu.
+- Quản lý bài tập: Tạo, sửa, xóa, xem danh sách bài tập.
 
-* **Quản lý gói dịch vụ/đăng ký:** Tạo, sửa, xóa các gói mà người dùng có thể mua.  
-* **Quản lý đơn hàng:** Xem và theo dõi đơn hàng, trạng thái đăng ký.  
-* **Phê duyệt nội dung:** Kiểm duyệt và phê duyệt nội dung do nhân viên tạo (kế hoạch bài học, ngân hàng câu hỏi, prompt AI) trước khi sử dụng.  
-
-**Staff:**
-
-* **Tạo kế hoạch bài học mẫu:** Xây dựng các kế hoạch bài học dựa trên mẫu.  
-* **Xây dựng ngân hàng câu hỏi:** Tạo câu hỏi phân loại theo môn, chủ đề, cấp độ.  
-* **CRUD mẫu prompt AI:** Tạo, đọc, cập nhật, xóa các mẫu prompt để AI sinh nội dung giáo dục.  
-
-**Teacher:**
-
-* **Tạo kế hoạch bài học & nội dung kiểm tra:** Soạn bài dạy cá nhân hóa, sinh đề kiểm tra từ mẫu & AI.  
-* **Tạo đề thi trắc nghiệm:** Sinh đề dựa trên ngân hàng câu hỏi, có thể chọn số lượng, chủ đề, xáo trộn thứ tự.  
-* **Tạo bài tập:** Sinh bài tập đa dạng (trắc nghiệm, điền chỗ trống, trả lời ngắn).  
-* **Sử dụng OCR:** Quét, số hóa và chấm bài kiểm tra (in hoặc viết tay).  
-* **Chấm điểm & phản hồi:** Tự động chấm trắc nghiệm, giáo viên có thể thêm nhận xét (AI gợi ý hoặc thủ công).  
-* **Xem kết quả học sinh & phân tích:** Theo dõi tiến độ, điểm số và điều chỉnh phương pháp giảng dạy.  
-* **Quản lý tài nguyên riêng:** Lưu trữ, tổ chức tài liệu, ngân hàng câu hỏi, kế hoạch dạy học.  
+## 4. Teacher
+- Quản lý kế hoạch bài học: Tạo, sửa, xóa, xem danh sách kế hoạch cá nhân.
+- Quản lý bài tập: Tạo, sửa, xóa, xem danh sách, giao bài tập cho học sinh.
+- Quản lý đề thi: Tạo, sửa, xóa, xem danh sách, xuất/import đề thi.
+- Chấm thi tự động bằng OCR: Upload bài làm, nhận dạng OCR, so sánh đáp án, tự động chấm điểm, xuất báo cáo.
 
 ### Biểu đồ Use Case
 
