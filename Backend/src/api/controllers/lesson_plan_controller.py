@@ -1,12 +1,17 @@
 from flask import Blueprint, request, jsonify
 from infrastructure.databases.mssql import session
-from services.lesson_plan_service import LessonPlanService
 from infrastructure.repositories.lesson_plan_repository import LessonPlanRepository
+from infrastructure.repositories.approval_repository import ApprovalRepository
+from services.lesson_plan_service import LessonPlanService
+from services.approval_service import ApprovalService
 from api.schemas.lesson_plan import LessonPlanCreateSchema, LessonPlanUpdateSchema, LessonPlanPublicSchema
 from api.middleware import token_required
 
+# Khởi tạo repository + service
 lesson_plan_repository = LessonPlanRepository(session)
-lesson_plan_service = LessonPlanService(lesson_plan_repository)
+approval_repository = ApprovalRepository(session)
+approval_service = ApprovalService(approval_repository)
+lesson_plan_service = LessonPlanService(lesson_plan_repository, approval_service)
 
 create_schema = LessonPlanCreateSchema()
 update_schema = LessonPlanUpdateSchema()
@@ -52,7 +57,7 @@ def get_all_lesson_plans(user_id):
 def get_lesson_plan(user_id, lesson_id):
     lesson = lesson_plan_service.get_lesson_plan_by_id(lesson_id)
     if not lesson:
-        return jsonify({"status": "error", "message": "Lesson plan not found"}), 404
+        return jsonify({"status": "error", "message": "Lesson plan not found or not approved"}), 404
     return jsonify({
         "status": "success",
         "message": "Lesson plan retrieved successfully",
@@ -74,7 +79,7 @@ def update_lesson_plan(user_id, lesson_id):
         description=data.get("description")
     )
     if not lesson:
-        return jsonify({"status": "error", "message": "Lesson plan not found"}), 404
+        return jsonify({"status": "error", "message": "Lesson plan not found or not approved"}), 404
 
     return jsonify({
         "status": "success",
@@ -88,7 +93,7 @@ def update_lesson_plan(user_id, lesson_id):
 def delete_lesson_plan(user_id, lesson_id):
     success = lesson_plan_service.delete_lesson_plan(lesson_id)
     if not success:
-        return jsonify({"status": "error", "message": "Lesson plan not found"}), 404
+        return jsonify({"status": "error", "message": "Lesson plan not found or not approved"}), 404
     return jsonify({
         "status": "success",
         "message": "Lesson plan deleted successfully"

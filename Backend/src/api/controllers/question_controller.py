@@ -1,25 +1,40 @@
 from flask import Blueprint, request, jsonify
 from infrastructure.databases.mssql import session
 from infrastructure.repositories.question_repository import QuestionRepository
+from infrastructure.repositories.approval_repository import ApprovalRepository
 from services.question_service import QuestionService
+from services.approval_service import ApprovalService
 from api.schemas.question import QuestionCreateSchema, QuestionUpdateSchema, QuestionPublicSchema
 from api.middleware import token_required
 
+# Khởi tạo repository
 question_repository = QuestionRepository(session)
-question_service = QuestionService(question_repository)
+approval_repository = ApprovalRepository(session)
 
+# Khởi tạo service với dependency injection
+approval_service = ApprovalService(approval_repository)
+question_service = QuestionService(question_repository, approval_service)
+
+# Blueprint
 question_bp = Blueprint('question', __name__, url_prefix='/questions')
 
+# Schemas
 create_schema = QuestionCreateSchema()
 update_schema = QuestionUpdateSchema()
 public_schema = QuestionPublicSchema()
 public_list_schema = QuestionPublicSchema(many=True)
 
+
 @question_bp.route('', methods=['GET'])
-@token_required(roles=["admin", "staff", "teacher"])
+@token_required(roles=["admin", "staff"])
 def get_all_questions(user_id):
     questions = question_service.get_all_questions()
-    return jsonify({"status": "success", "message": "Question added successfully", "questions": public_list_schema.dump(questions)}), 200
+    return jsonify({
+        "status": "success",
+        "message": "Questions retrieved successfully",
+        "questions": public_list_schema.dump(questions)
+    }), 200
+
 
 @question_bp.route('', methods=['POST'])
 @token_required(roles=["admin", "staff"])
@@ -33,13 +48,13 @@ def create_question(user_id):
         content=data.get("content"),
         subject=data.get("subject"),
         difficulty_level=data.get("difficulty_level"),
-        correct_answer=data.get("correct_answer"),  # <--- thêm dòng này
+        correct_answer=data.get("correct_answer"),
         created_by=user_id
     )
 
     return jsonify({
         "status": "success",
-        "message": "Question added successfully",
+        "message": "Question added successfully. Pending approval.",
         "data": public_schema.dump(question)
     }), 201
 
@@ -54,15 +69,23 @@ def update_question(user_id, question_id):
 
     updated_question = question_service.update_question(question_id, data)
     if not updated_question:
-        return jsonify({"status": "error", "message": "Question not found"}), 404
+        return jsonify({"status": "error", "message": "Question not found or not approved"}), 404
 
-    return jsonify({"status": "success", "message": "Question updated successfully", "data": public_schema.dump(updated_question)}), 200
+    return jsonify({
+        "status": "success",
+        "message": "Question updated successfully",
+        "data": public_schema.dump(updated_question)
+    }), 200
+
 
 @question_bp.route('/<int:question_id>', methods=['DELETE'])
 @token_required(roles=["admin", "staff"])
 def delete_question(user_id, question_id):
     deleted = question_service.delete_question(question_id)
     if not deleted:
-        return jsonify({"status": "error", "message": "Question not found"}), 404
+        return jsonify({"status": "error", "message": "Question not found or not approved"}), 404
 
-    return jsonify({"status": "success", "message": "Question deleted"}), 200
+    return jsonify({
+        "status": "success",
+        "message": "Question deleted successfully"
+    }), 200
