@@ -802,77 +802,203 @@ deactivate system
 
 ![Luồng chấm điểm bằng OCR](docs/diagrams/luong_cham_diem_ocr.png)
 
-## III. Yêu cầu phi chức năng
+# III. Yêu cầu Phi Chức Năng (Non-functional Requirements)
 
-### 1. Hiệu suất
-* Thời gian tải trang không quá 3 giây. 
-* Thời gian phản hồi API không quá 1 giây.  
-* Hỗ trợ đồng thời ít nhất 30 người dùng.  
-* Hệ thống phản hồi nhanh và có khả năng mở rộng linh hoạt.  
+## 1. Hiệu năng (Performance)
 
-### 2. Bảo mật
-* Sử dụng JWT (JSON Web Token) cho xác thực và phân quyền.  
-* Mã hóa dữ liệu nhạy cảm trong cơ sở dữ liệu.  
-* Bảo vệ chống tấn công SQL Injection, XSS, CSRF.  
-* Logging đầy đủ các hoạt động quan trọng.  
-* Backup dữ liệu định kỳ.  
+- Hệ thống phải đáp ứng thời gian phản hồi cho mỗi request API < **2 giây** đối với 95% giao dịch.
+- Có khả năng phục vụ đồng thời ít nhất **500 người dùng** mà không sụt giảm hiệu suất đáng kể.
+- Hệ thống OCR xử lý ảnh phải trả kết quả trong vòng **10 giây**/lần chấm điểm.
 
-### 3. Khả năng mở rộng
-* Kiến trúc module hóa, dễ thêm tính năng mới.  
-* Khả năng tích hợp với hệ thống bên thứ ba (Supabase, Gemini AI, …).  
-* Dễ dàng nâng cấp phiên bản và triển khai bằng Docker, AWS.  
-* Documentation đầy đủ cho developers.  
+## 2. Bảo mật (Security)
 
-### 4. Giao diện người dùng
-* Thiết kế responsive cho mọi kích thước màn hình (desktop, tablet, mobile).  
-* Thời gian làm quen sử dụng hệ thống không quá 30 phút.  
-* Giao diện trực quan, nhất quán trên toàn bộ hệ thống.  
-* Hỗ trợ tiếng Việt (có thể mở rộng đa ngôn ngữ).  
+- Toàn bộ API phải xác thực bằng **JWT token**.
+- Mật khẩu người dùng được lưu dưới dạng **băm (hash)**, không lưu mật khẩu rõ ràng.
+- Chỉ người dùng có quyền mới được phép thao tác các API quản trị (admin, manager).
+- Hệ thống phải bảo vệ chống lại các lỗ hổng phổ biến: **SQL Injection, XSS, CSRF**.
+- Tất cả dữ liệu trao đổi giữa client và server phải sử dụng **HTTPS**.
 
-### 5. Tương thích
-* Hoạt động trên các trình duyệt phổ biến (Chrome, Firefox, Safari, Edge).  
-* Tương thích với thiết bị di động iOS và Android.  
-* Hỗ trợ các phiên bản trình duyệt trong vòng 2 năm trở lại.  
-* Tối ưu cho kết nối mạng chậm.  
+## 3. An toàn dữ liệu (Data Safety)
 
-### 6. Độ tin cậy
-* Uptime tối thiểu 99.9%.  
-* Thời gian phục hồi sau sự cố < 4 giờ.  
-* Backup dữ liệu hàng ngày.  
-* Có phương án dự phòng khi hệ thống gặp sự cố.  
+- Toàn bộ dữ liệu phải được sao lưu định kỳ tối thiểu **1 lần/ngày**.
+- Hỗ trợ khả năng khôi phục dữ liệu (backup/restore).
+- Ghi log các thao tác chính: tạo, sửa, xóa dữ liệu.
 
-### 7. Khả năng bảo trì
-* Code được viết theo chuẩn clean code.  
-* Có tài liệu kỹ thuật chi tiết.  
-* Dễ dàng rollback khi cần thiết.  
-* Cấu trúc dự án rõ ràng để thuận tiện bảo trì và mở rộng.  
+## 4. Khả năng mở rộng (Scalability)
+
+- Hệ thống thiết kế theo mô hình **module hóa**, dễ dàng mở rộng chức năng hoặc tích hợp thêm dịch vụ bên ngoài.
+- CSDL và backend có thể mở rộng theo chiều ngang (horizontal scaling) khi số lượng người dùng tăng.
+
+## 5. Khả dụng (Availability)
+
+- Đảm bảo thời gian hoạt động tối thiểu **99.5% uptime** hàng tháng.
+- Có cơ chế tự động phát hiện và khôi phục dịch vụ khi gặp sự cố (auto recovery).
+
+## 6. Khả năng bảo trì (Maintainability)
+
+- Mã nguồn phải được tổ chức rõ ràng, có chú thích đầy đủ.
+- Tài liệu hướng dẫn cài đặt, vận hành, phát triển được cập nhật liên tục trong thư mục `/docs`.
+- Hệ thống phải hỗ trợ kiểm thử tự động (unit test, integration test).
+
+## 7. Khả năng sử dụng (Usability)
+
+- Giao diện thân thiện, dễ sử dụng cho cả giáo viên và quản trị viên.
+- Hỗ trợ đa thiết bị: desktop, tablet, mobile.
+- Có hướng dẫn sử dụng và hỗ trợ trợ giúp trực tuyến.
+
+## 8. Tuân thủ (Compliance)
+
+- Tuân thủ các quy định về bảo vệ dữ liệu cá nhân (nếu áp dụng: **GDPR**, **Nghị định 13/2023/NĐ-CP** của Việt Nam).
+- Có cơ chế xóa dữ liệu cá nhân theo yêu cầu người dùng.
+
 
 ## IV. Công nghệ
 
-### 1. Backend
-* **Spring Boot** – phát triển API RESTful.  
-* **PYTHON** – ngôn ngữ lập trình chính cho backend.  
-* **JWT (JSON Web Token)** – xác thực và phân quyền.  
+---
 
-### 2. Frontend
-* **ReactJS** – xây dựng giao diện người dùng.  
-* **TailwindCSS / ShadCN UI** – thiết kế giao diện trực quan, responsive.  
+## 1. Backend
 
-### 3. Cơ sở dữ liệu
-* **MySQL** – lưu trữ dữ liệu quan hệ (ngân hàng câu hỏi, kế hoạch bài học, người dùng…).  
+- **Ngôn ngữ:** Python (Flask)
+- **Kiến trúc:** Clean Architecture ([docs/flask-clean-architecture.md](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/docs/flask-clean-architecture.md))
+- **ORM:** SQLAlchemy (Flask ORM)
+- **Database:** Microsoft SQL Server (kết nối qua SQLAlchemy, cấu hình ví dụ trong [.env](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/src/.env))
+- **Thư viện chính:** marshmallow (schema), dotenv, ...
+- **Tổ chức code:**  
+  - `api/controllers/` - Định nghĩa route & xử lý request
+  - `api/schemas/` - Định nghĩa input/output schema (marshmallow)
+  - `infrastructure/models/` - Mapping ORM <-> bảng CSDL
+  - `infrastructure/databases/` - Kết nối và khởi tạo DB
+  - `infrastructure/repositories/` - Hàm thao tác DB (CRUD)
+  - `services/` - Xử lý logic nghiệp vụ
+  - `domain/models/` - Định nghĩa entity nghiệp vụ
 
-### 4. Tích hợp dịch vụ bên thứ ba
-* **Supabase** – quản lý xác thực, lưu trữ file, backend-as-a-service.  
-* **Gemini AI** – hỗ trợ sinh nội dung AI (bài tập, đề thi, kế hoạch giảng dạy).  
+- **Xem ví dụ cấu hình & cách chạy:**  
+  - [Backend/README.md](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/README.md)
+  - Hướng dẫn setup môi trường ảo, cài thư viện, chạy app Flask, setup SQL Server qua Docker.
 
-### 5. Triển khai & hạ tầng
-* **Docker** – container hóa ứng dụng.  
-* **AWS** – triển khai trên môi trường cloud, đảm bảo khả năng mở rộng.  
-* **N-Tier Architecture** – tách biệt các tầng (Controller – Service – Repository – Database).  
+---
 
-### 6. Công cụ phát triển
-* **GitHub** – quản lý mã nguồn, version control.  
-* **PlantUML** – vẽ sơ đồ Use Case, Activity, Sequence.  
-* **Postman** – kiểm thử API.  
+## 2. Frontend
+
+- **Framework:** ReactJS
+- **Ngôn ngữ:** JavaScript (ES2020+), JSX
+- **Quản lý chất lượng mã nguồn:** eslint (cấu hình trong [Frontend/eslint.config.js](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Frontend/eslint.config.js))
+- **Thư viện UI:** (Chưa xác định rõ từ code search; có thể sử dụng Ant Design, Material UI, hoặc Bootstrap nếu bổ sung sau.)
+
+---
+
+## 3. DevOps & Hạ tầng
+
+- **Quản lý source code:** GitHub
+- **Cấu hình & CI/CD:** Chưa thấy file pipeline cụ thể trong kết quả tìm kiếm này.
+- **Triển khai DB:** Hướng dẫn pull và chạy SQL Server bằng Docker:
+    ```bash
+    docker pull mcr.microsoft.com/mssql/server:2025-latest
+    docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=Aa123456" -p 1433:1433 --name sql1 --hostname sql1 -d  mcr.microsoft.com/mssql/server:2025-latest
+    ```
+
+---
+
+## 4. OCR Engine
+
+- **Triển khai xử lý OCR:**  
+  - Có module `ocr_service` và các thành phần liên quan (controller, schema, repository, model).  
+  - Kết quả OCR lưu vào bảng `ocr_results` (mapping SQLAlchemy).
+  - Chưa thấy rõ engine OCR là Tesseract hay dịch vụ cloud trong kết quả này.
+
+---
+
+## 5. Tham khảo code thực tế
+
+- [flask-clean-architecture.md](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/docs/flask-clean-architecture.md) - mô tả cấu trúc các layer, mapping code <-> DB.
+- [Backend/How to make API.txt](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/How%20to%20make%20API.txt) - Quy trình xây dựng API, mapping từng thư mục.
+- [infrastructure/models/ocr_model.py](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/src/infrastructure/models/ocr_model.py) - mẫu mapping bảng DB với class Python (SQLAlchemy).
+- [infrastructure/databases/mssql.py](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/src/infrastructure/databases/mssql.py) - cấu hình kết nối SQL Server.
+
+---
+
+**Lưu ý:**  
+- Kết quả trên chỉ là một phần, bạn có thể [xem đầy đủ kết quả về công nghệ, stack tại đây](https://github.com/dangnguyenbinh2109/nhomud/search?q=technology+OR+stack+OR+công+nghệ+OR+backend+OR+frontend+OR+devops+OR+deploy+OR+infrastructure+OR+kiến+trúc+OR+architecture+OR+database+OR+infra+OR+CI+OR+CD+OR+OCR+OR+Tesseract+OR+React+OR+Node+OR+SQL+OR+Docker+OR+cloud&type=code).
+
+---
+
 ## V. Yêu cầu thiết kế
-......
+## 1. Kiến trúc tổng thể
+
+- **Áp dụng kiến trúc đa lớp (multi-layer, clean architecture)**:
+  - Thể hiện rõ trong tài liệu [`Backend/docs/flask-clean-architecture.md`](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/docs/flask-clean-architecture.md) và cấu trúc các thư mục code:
+    - `api/`: Controllers, Schemas, Middleware, Responses.
+    - `infrastructure/`: Databases, Models (SQLAlchemy), Repositories (ORM CRUD).
+    - `domain/`: Models, Business Logic.
+    - `services/`: Xử lý nghiệp vụ.
+    - `app.py`: Khởi tạo ứng dụng, đăng ký blueprint.
+
+- **Tách biệt rõ các tầng**:
+  - API/Controllers chỉ nhận request, gọi service xử lý, trả response.
+  - Service phụ trách nghiệp vụ, gọi repository để thao tác DB.
+  - Repository chỉ xử lý truy vấn, lưu/xóa/sửa DB thông qua ORM.
+  - Models mapping rõ ràng giữa Python class và bảng CSDL (xem ví dụ: [`src/infrastructure/models/ocr_model.py`](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/src/infrastructure/models/ocr_model.py)).
+
+---
+
+## 2. Backend
+
+- **Clean Architecture**:
+  - Đảm bảo mỗi tầng chỉ có một trách nhiệm (Single Responsibility Principle).
+  - Dễ dàng test từng tầng riêng biệt nhờ cấu trúc DI (Dependency Injection) và phân lớp code rõ ràng.
+  - Có thể mở rộng thêm service, repository, schema mà không ảnh hưởng lớn đến các tầng khác.
+
+- **ORM SQLAlchemy**:
+  - Sử dụng SQLAlchemy mapping class Python <-> table SQL (ví dụ: [`src/infrastructure/models/ocr_model.py`](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/src/infrastructure/models/ocr_model.py)).
+  - Khởi tạo DB, session quản lý qua [`src/infrastructure/databases/mssql.py`](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/src/infrastructure/databases/mssql.py).
+  - Migration, tạo bảng tự động hóa qua Base.metadata.
+
+- **Quy trình phát triển API** (theo file [How to make API.txt](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/How%20to%20make%20API.txt)):
+  1. Định nghĩa entity (domain/models)
+  2. Định nghĩa bảng DB (infrastructure/models)
+  3. CRUD DB (infrastructure/repositories)
+  4. Định nghĩa schema input/output (api/schemas)
+  5. Logic nghiệp vụ (services)
+  6. Định nghĩa route (api/controllers)
+  7. Đăng ký blueprint (app.py)
+
+---
+
+## 3. Database
+
+- **Thiết kế chuẩn hóa, mapping rõ ràng**:
+  - Các bảng có khóa chính, khóa ngoại, unique, default (xem chi tiết trong models và migration).
+  - Mapping chặt giữa class Python và bảng DB (ví dụ: OCRResultModel).
+  - Có thể mở rộng/thay đổi DB engine thông qua cấu hình DATABASE_URI.
+
+- **Hỗ trợ migration, backup**:
+  - Hỗ trợ tạo bảng tự động qua SQLAlchemy Base.
+  - Hướng dẫn backup, khôi phục DB trong tài liệu README.
+
+---
+
+## 4. Frontend
+
+- **ReactJS, Component-based**:
+  - Quản lý mã nguồn bằng eslint, cấu hình hiện đại ([Frontend/eslint.config.js](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Frontend/eslint.config.js)).
+  - Cấu trúc code hướng thành phần, dễ mở rộng, bảo trì.
+  - Giao tiếp backend qua API chuẩn hóa.
+
+---
+
+## 5. DevOps & Triển khai
+
+- **Sử dụng GitHub để quản lý source, Docker để triển khai SQL Server** (xem hướng dẫn trong [README.md](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/README.md)).
+- Cấu hình môi trường bằng file `.env`.
+- Sẵn sàng mở rộng để tích hợp CI/CD.
+
+---
+
+## 6. Yêu cầu mở rộng
+
+- Thiết kế module hóa, mỗi chức năng riêng biệt, dễ tích hợp thêm.
+- Chuẩn hóa cấu trúc thư mục, đặt tên file/class nhất quán.
+- Toàn bộ mã nguồn, hướng dẫn, tài liệu hóa đều nằm trong repo, thuận tiện tra cứu.
+
+---
+
