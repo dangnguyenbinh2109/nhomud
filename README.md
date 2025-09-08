@@ -915,12 +915,7 @@ deactivate system
 - [infrastructure/models/ocr_model.py](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/src/infrastructure/models/ocr_model.py) - mẫu mapping bảng DB với class Python (SQLAlchemy).
 - [infrastructure/databases/mssql.py](https://github.com/dangnguyenbinh2109/nhomud/blob/main/Backend/src/infrastructure/databases/mssql.py) - cấu hình kết nối SQL Server.
 
----
 
-**Lưu ý:**  
-- Kết quả trên chỉ là một phần, bạn có thể [xem đầy đủ kết quả về công nghệ, stack tại đây](https://github.com/dangnguyenbinh2109/nhomud/search?q=technology+OR+stack+OR+công+nghệ+OR+backend+OR+frontend+OR+devops+OR+deploy+OR+infrastructure+OR+kiến+trúc+OR+architecture+OR+database+OR+infra+OR+CI+OR+CD+OR+OCR+OR+Tesseract+OR+React+OR+Node+OR+SQL+OR+Docker+OR+cloud&type=code).
-
----
 
 ## V. Yêu cầu thiết kế
 ## 1. Kiến trúc tổng thể
