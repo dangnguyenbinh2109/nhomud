@@ -16,6 +16,7 @@ from api.controllers.ocr_controller import ocr_bp
 from api.controllers.admin_config_controller import admin_bp
 from api.controllers.package_controller import package_bp
 from api.controllers.order_controller import order_bp
+from api.controllers.approval_controller import approval_bp
 from error_handler import register_error_handlers
 from app_logging import setup_logging
 
@@ -41,6 +42,7 @@ def create_app():
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(package_bp, url_prefix="/packages")
     app.register_blueprint(order_bp, url_prefix="/orders")
+    app.register_blueprint(approval_bp, url_prefix="/approvals")
 
     init_db(app)
     middleware(app)

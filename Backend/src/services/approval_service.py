@@ -64,3 +64,10 @@ class ApprovalService:
         """Kiểm tra object có được duyệt chưa"""
         approval = self.repository.get_latest(module, object_id)
         return approval is not None and approval.status == "approved"
+
+    def get_status(self, module: str, object_id: int) -> Optional[str]:
+        """Lấy trạng thái duyệt mới nhất của object"""
+        approval = self.repository.get_latest(module, object_id)
+        if approval:
+            return approval.status
+        return "pending" # Hoặc None nếu bạn muốn. 'pending' có thể an toàn hơn.

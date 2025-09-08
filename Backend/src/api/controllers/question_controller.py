@@ -26,7 +26,7 @@ public_list_schema = QuestionPublicSchema(many=True)
 
 
 @question_bp.route('', methods=['GET'])
-@token_required(roles=["admin", "staff"])
+@token_required(roles=["admin", "staff", "teacher"])
 def get_all_questions(user_id):
     questions = question_service.get_all_questions()
     return jsonify({

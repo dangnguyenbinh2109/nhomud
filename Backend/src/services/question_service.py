@@ -38,6 +38,7 @@ class QuestionService:
             content=created_model.content
         )
 
+        # Trạng thái ban đầu luôn là 'pending'
         return Question(
             question_id=created_model.question_id,
             content=created_model.content,
@@ -45,32 +46,40 @@ class QuestionService:
             difficulty_level=created_model.difficulty_level,
             correct_answer=created_model.correct_answer,
             created_by=created_model.created_by,
-            created_at=created_model.created_at
+            created_at=created_model.created_at,
+            approval_status="pending"
         )
 
     def get_all_questions(self) -> List[Question]:
         models = self.repository.get_all()
-        return [
-            Question(
+        questions_with_status = []
+        for m in models:
+            status = self.approval_service.get_status("question", m.question_id)
+            question = Question(
                 question_id=m.question_id,
                 content=m.content,
                 subject=m.subject,
                 difficulty_level=m.difficulty_level,
                 correct_answer=m.correct_answer,
                 created_by=m.created_by,
-                created_at=m.created_at
+                created_at=m.created_at,
+                approval_status=status
             )
-            for m in models
-            if self.approval_service.is_approved("question", m.question_id)
-        ]
+            questions_with_status.append(question)
+        return questions_with_status
 
     def update_question(self, question_id: int, data: dict) -> Optional[Question]:
-        # Chỉ cho phép sửa nếu đã được duyệt
-        if not self.approval_service.is_approved("question", question_id):
-            return None
+        # Logic nghiệp vụ: Có thể bạn muốn chỉ cho phép sửa khi chưa được duyệt,
+        # hoặc cho phép sửa và tự động gửi lại yêu cầu duyệt.
+        # Ở đây, tôi tạm bỏ qua kiểm tra để cho phép sửa.
+        # status = self.approval_service.get_status("question", question_id)
+        # if status == 'approved':
+        #     return None # Hoặc raise exception
 
         model = self.repository.update(question_id, data)
         if model:
+            # Lấy lại trạng thái sau khi cập nhật
+            status = self.approval_service.get_status("question", model.question_id)
             return Question(
                 question_id=model.question_id,
                 content=model.content,
@@ -78,12 +87,13 @@ class QuestionService:
                 difficulty_level=model.difficulty_level,
                 correct_answer=model.correct_answer,
                 created_by=model.created_by,
-                created_at=model.created_at
+                created_at=model.created_at,
+                approval_status=status
             )
         return None
 
-    def delete_question(self, question_id: int) -> bool:
-        # Chỉ cho phép xóa nếu đã duyệt
-        if not self.approval_service.is_approved("question", question_id):
-            return False
+    def delete_question(self, question_id: int) -> bool: # Tương tự, bạn có thể quyết định logic xóa.
+        # Ví dụ: chỉ cho phép xóa khi chưa được duyệt hoặc đã bị từ chối.
+        # if self.approval_service.is_approved("question", question_id):
+        #     return False
         return self.repository.delete(question_id)

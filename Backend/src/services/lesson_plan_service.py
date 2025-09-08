@@ -34,52 +34,66 @@ class LessonPlanService:
             title=created_model.title,
             description=created_model.description,
             created_by=created_model.created_by,
-            created_at=created_model.created_at
+            created_at=created_model.created_at,
+            approval_status="pending"
         )
 
     def get_lesson_plan_by_id(self, lesson_id: int) -> Optional[LessonPlan]:
-        if not self.approval_service.is_approved("lesson_plan", lesson_id):
-            return None
         model = self.repository.get_by_id(lesson_id)
         if model:
+            status = self.approval_service.get_status("lesson_plan", lesson_id)
             return LessonPlan(
                 lesson_id=model.lesson_id,
                 title=model.title,
                 description=model.description,
                 created_by=model.created_by,
-                created_at=model.created_at
+                created_at=model.created_at,
+                approval_status=status
             )
         return None
 
     def get_all_lesson_plans(self) -> List[LessonPlan]:
         models = self.repository.get_all()
-        return [
-            LessonPlan(
+        lessons_with_status = []
+        for m in models:
+            status = self.approval_service.get_status("lesson_plan", m.lesson_id)
+            lesson = LessonPlan(
                 lesson_id=m.lesson_id,
                 title=m.title,
                 description=m.description,
                 created_by=m.created_by,
-                created_at=m.created_at
+                created_at=m.created_at,
+                approval_status=status
             )
-            for m in models
-            if self.approval_service.is_approved("lesson_plan", m.lesson_id)
-        ]
+            lessons_with_status.append(lesson)
+        return lessons_with_status
 
     def update_lesson_plan(self, lesson_id: int, title: str, description: str) -> Optional[LessonPlan]:
-        if not self.approval_service.is_approved("lesson_plan", lesson_id):
-            return None
+        # Logic nghiệp vụ: Có thể bạn muốn chỉ cho phép sửa khi chưa được duyệt,
+        # hoặc cho phép sửa và gửi lại yêu cầu duyệt.
+        # Ở đây, tôi tạm bỏ qua kiểm tra để cho phép sửa.
+        # status = self.approval_service.get_status("lesson_plan", lesson_id)
+        # if status == 'approved':
+        #     # Có thể trả về lỗi hoặc tạo logic riêng
+        #     return None
+
         model = self.repository.update(lesson_id, title, description)
         if model:
+            # Lấy lại trạng thái sau khi cập nhật
+            status = self.approval_service.get_status("lesson_plan", model.lesson_id)
             return LessonPlan(
                 lesson_id=model.lesson_id,
                 title=model.title,
                 description=model.description,
                 created_by=model.created_by,
-                created_at=model.created_at
+                created_at=model.created_at,
+                approval_status=status
             )
         return None
 
     def delete_lesson_plan(self, lesson_id: int) -> bool:
-        if not self.approval_service.is_approved("lesson_plan", lesson_id):
-            return False
+        # Tương tự, bạn có thể quyết định logic xóa.
+        # Ví dụ: chỉ cho phép xóa khi chưa được duyệt hoặc đã bị từ chối.
+        # if self.approval_service.is_approved("lesson_plan", lesson_id):
+        #     return False
         return self.repository.delete(lesson_id)
