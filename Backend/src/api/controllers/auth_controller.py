@@ -1,13 +1,13 @@
 import jwt
 from flask import Blueprint, request, jsonify
 from datetime import datetime, timedelta
-from infrastructure.databases.mssql import session
-from services.user_service import UserService
-from api.schemas.user import UserCreateSchema, UserPublicSchema
-from config import Config
-from infrastructure.repositories.user_repository import UserRepository
-from infrastructure.models.role_model import Role
-from api.middleware import token_required, refresh_token_required
+from src.infrastructure.databases.mssql import session
+from src.services.user_service import UserService
+from src.api.schemas.user import UserCreateSchema, UserPublicSchema
+from src.config import Config
+from src.infrastructure.repositories.user_repository import UserRepository
+from src.infrastructure.models.role_model import Role
+from src.api.middleware import token_required, refresh_token_required
 
 user_repository = UserRepository(session)
 user_service = UserService(user_repository)

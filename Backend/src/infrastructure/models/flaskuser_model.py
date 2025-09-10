@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
-from infrastructure.databases.base import Base
+from src.infrastructure.databases.base import Base
 
 class FlaskUserModel(Base):
     __tablename__ = 'flask_user'

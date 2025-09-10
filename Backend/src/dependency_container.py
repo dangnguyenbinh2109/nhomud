@@ -3,8 +3,8 @@
 from dependency_injector import containers, providers
 
 # Import your services and repositories here
-# from infrastructure.repositories import SomeRepository
-# from infrastructure.services import SomeService
+# from src.infrastructure.repositories import SomeRepository
+# from src.infrastructure.services import SomeService
 
 class Container(containers.DeclarativeContainer):
     # Define your providers here

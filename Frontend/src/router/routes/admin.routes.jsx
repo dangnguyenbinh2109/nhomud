@@ -1,6 +1,8 @@
 import AdminDashboard from "../../pages/Admin/AdminDashboard";
+import UserManagementPage from "../../pages/Admin/UserManagementPage";
+import SystemConfigPage from "../../pages/Admin/SystemConfigPage";
+import LessonPlanTemplateManagement from "../../pages/Admin/LessonPlanTemplateManagement";
 import Revenue from "../../pages/Admin/Revenue";
-import UserReports from "../../pages/Admin/UserReports";
 
 export const adminRoutes = [
   {
@@ -8,11 +10,19 @@ export const adminRoutes = [
     element: <AdminDashboard />,
   },
   {
-    path: "revenue",
-    element: <Revenue />,
+    path: "user-management",
+    element: <UserManagementPage />,
   },
   {
-    path: "user-reports",
-    element: <UserReports />,
+    path: "system-settings",
+    element: <SystemConfigPage />,
+  },
+  {
+    path: "lesson-plan-templates",
+    element: <LessonPlanTemplateManagement />,
+  },
+  {
+    path: "revenue",
+    element: <Revenue />,
   },
 ];

@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
-from infrastructure.databases.mssql import session
-from services.lesson_plan_service import LessonPlanService
-from infrastructure.repositories.lesson_plan_repository import LessonPlanRepository
-from api.schemas.lesson_plan import LessonPlanCreateSchema, LessonPlanUpdateSchema, LessonPlanPublicSchema
-from api.middleware import token_required
+from src.infrastructure.databases.mssql import session
+from src.services.lesson_plan_service import LessonPlanService
+from src.infrastructure.repositories.lesson_plan_repository import LessonPlanRepository
+from src.api.schemas.lesson_plan import LessonPlanCreateSchema, LessonPlanUpdateSchema, LessonPlanPublicSchema
+from src.api.middleware import token_required
 
 lesson_plan_repository = LessonPlanRepository(session)
 lesson_plan_service = LessonPlanService(lesson_plan_repository)

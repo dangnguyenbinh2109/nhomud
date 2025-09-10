@@ -1,16 +1,16 @@
-from domain.models.icourse_repository import ICourseRepository
-from domain.models.course import Course
-from infrastructure.databases import Base
-from domain.models.todo import Todo
+from src.domain.models.icourse_repository import ICourseRepository
+from src.domain.models.course import Course
+from src.infrastructure.databases import Base
+from src.domain.models.todo import Todo
 from typing import List, Optional
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
-from config import Config
+from src.config import Config
 from sqlalchemy import Column, Integer, String, DateTime
-from infrastructure.databases import Base
+from src.infrastructure.databases import Base
 from dotenv import load_dotenv
-from utils.env_loader import load_env
+from src.utils.env_loader import load_env
 load_env()
 load_dotenv()
 

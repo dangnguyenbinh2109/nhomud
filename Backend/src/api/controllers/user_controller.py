@@ -1,11 +1,11 @@
 from flask import Blueprint, request, jsonify
-from infrastructure.databases.mssql import session
-from services.user_service import UserService
-from api.schemas.user import UserCreateSchema, UserPublicSchema, UserUpdateSchema
-from infrastructure.repositories.user_repository import UserRepository
-from api.middleware import token_required
-from infrastructure.models.role_model import Role
-from infrastructure.models.user_model import UserModel
+from src.infrastructure.databases.mssql import session
+from src.services.user_service import UserService
+from src.api.schemas.user import UserCreateSchema, UserPublicSchema, UserUpdateSchema
+from src.infrastructure.repositories.user_repository import UserRepository
+from src.api.middleware import token_required
+from src.infrastructure.models.role_model import Role
+from src.infrastructure.models.user_model import UserModel
 
 user_repository = UserRepository(session)
 user_service = UserService(user_repository)

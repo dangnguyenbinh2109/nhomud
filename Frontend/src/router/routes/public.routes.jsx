@@ -1,6 +1,8 @@
 import LoginPage from "../../pages/Auth/Login";
-import ResetPassword from "../../pages/Auth/ResetPassword";
 import Home from "../../pages/Home";
+import About from "../../pages/About";
+import Lession from "../../pages/Lession";
+import Contact from "../../pages/Contact";
 
 export const publicRoutes = [
 
@@ -9,13 +11,21 @@ export const publicRoutes = [
         path: "/login",
         element: <LoginPage/>
     },
-    {
-        path: "/reset-password",
-        element: <ResetPassword/>
-    },
 
     {
         path: "/",
         element: <Home/>
+    },
+    {
+        path: "/about",
+        element: <About/>
+    },
+    {
+        path: "/lession",
+        element: <Lession/>
+    },
+    {
+        path: "/contact",
+        element: <Contact/>
     },
 ]

@@ -1,8 +1,8 @@
-from infrastructure.databases.mssql import SessionLocal
-from infrastructure.models.role_model import Role
+from src.infrastructure.databases.mssql import SessionLocal
+from src.infrastructure.models.role_model import Role
 from werkzeug.security import generate_password_hash
-from infrastructure.models.user_model import UserModel
-from infrastructure.models.system_config_model import SystemConfigModel
+from src.infrastructure.models.user_model import UserModel
+from src.infrastructure.models.system_config_model import SystemConfigModel
 from datetime import datetime
 
 def seed_roles_and_admin():

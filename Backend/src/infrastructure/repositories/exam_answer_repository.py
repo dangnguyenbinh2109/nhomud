@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from infrastructure.models.exam_answer_model import ExamAnswerModel
+from src.infrastructure.models.exam_answer_model import ExamAnswerModel
 from dotenv import load_dotenv
-from utils.env_loader import load_env
+from src.utils.env_loader import load_env
 load_env()
 load_dotenv()
 class ExamAnswerRepository:

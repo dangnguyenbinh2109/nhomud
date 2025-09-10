@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
-from infrastructure.databases.mssql import session
-from services.system_config_service import SystemConfigService
-from infrastructure.repositories.system_config_repository import SystemConfigRepository
-from api.schemas.system_config import SystemConfigSchema
-from api.middleware import token_required
+from src.infrastructure.databases.mssql import session
+from src.services.system_config_service import SystemConfigService
+from src.infrastructure.repositories.system_config_repository import SystemConfigRepository
+from src.api.schemas.system_config import SystemConfigSchema
+from src.api.middleware import token_required
 
 repo = SystemConfigRepository(session)
 service = SystemConfigService(repo)

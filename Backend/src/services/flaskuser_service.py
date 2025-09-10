@@ -1,6 +1,6 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from domain.models.flaskuser import User
-from infrastructure.repositories.flaskuser_repository import UserRepository
+from src.domain.models.flaskuser import User
+from src.infrastructure.repositories.flaskuser_repository import UserRepository
 from typing import Optional
 from datetime import datetime
 

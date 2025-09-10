@@ -1,9 +1,9 @@
 from werkzeug.security import generate_password_hash, check_password_hash
-from domain.models.user import User
-from infrastructure.repositories.user_repository import UserRepository
+from src.domain.models.user import User
+from src.infrastructure.repositories.user_repository import UserRepository
 from typing import Optional
 from datetime import datetime
-from utils.validators import is_email
+from src.utils.validators import is_email
 class UserService:
     def __init__(self, repository: UserRepository):
         self.repository = repository

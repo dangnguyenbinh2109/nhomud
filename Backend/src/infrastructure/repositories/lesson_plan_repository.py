@@ -1,9 +1,9 @@
 from typing import Optional, List
 from sqlalchemy.orm import Session
-from infrastructure.models.lesson_plan_model import LessonPlanModel
-from domain.models.lesson_plan import LessonPlan
+from src.infrastructure.models.lesson_plan_model import LessonPlanModel
+from src.domain.models.lesson_plan import LessonPlan
 from dotenv import load_dotenv
-from utils.env_loader import load_env
+from src.utils.env_loader import load_env
 load_env()
 load_dotenv()
 

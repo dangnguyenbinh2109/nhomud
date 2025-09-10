@@ -1,26 +1,23 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MainLayout from "./layouts/MainLayout.jsx";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Login from "./pages/Auth/Login";
-import Dashboard from "./pages/Dashboard";
+import React, { useEffect } from 'react';
+import AppRouter from './router/AppRouter';
+import { useAuth } from './context/AuthContext';
+import { initializeApi } from './utils/api';
+import { Toaster } from 'react-hot-toast';
 
-export default function App() {
+function App() {
+  const { logout } = useAuth();
+
+  useEffect(() => {
+    // Khởi tạo trình xử lý đăng xuất toàn cục cho các lệnh gọi API
+    initializeApi(logout);
+  }, [logout]);
+
   return (
-    <Router>
-      <Routes>
-        {/* Các trang dùng chung Header/Footer */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          {/* thêm các trang khác muốn có header/footer ở đây */}
-        </Route>
-
-        {/* Trang không cần Header/Footer (vd: Login) */}
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<div className="p-6">Not found</div>} />
-      </Routes>
-    </Router>
-  );
+      <>
+        <AppRouter/>
+        <Toaster position="top-right" reverseOrder={false} />
+      </>
+  )
 }
+
+export default App

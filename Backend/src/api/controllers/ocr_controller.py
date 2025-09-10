@@ -1,10 +1,10 @@
 # api/ocr_controller.py
 from flask import Blueprint, request, jsonify
 from sqlalchemy.exc import IntegrityError
-from infrastructure.repositories.ocr_repository import OCRRepository
-from infrastructure.databases.mssql import session
-from services.ocr_service import OCRService
-from api.middleware import token_required
+from src.infrastructure.repositories.ocr_repository import OCRRepository
+from src.infrastructure.databases.mssql import session
+from src.services.ocr_service import OCRService
+from src.api.middleware import token_required
 
 ocr_bp = Blueprint("ocr", __name__, url_prefix="/ocr")
 

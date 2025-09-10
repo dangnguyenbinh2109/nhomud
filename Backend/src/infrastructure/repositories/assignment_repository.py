@@ -1,9 +1,9 @@
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from infrastructure.models.assignment_model import AssignmentModel
-from domain.models.assignment import Assignment
+from src.infrastructure.models.assignment_model import AssignmentModel
+from src.domain.models.assignment import Assignment
 from dotenv import load_dotenv
-from utils.env_loader import load_env
+from src.utils.env_loader import load_env
 load_env()
 load_dotenv()
 class AssignmentRepository:

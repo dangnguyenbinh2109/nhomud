@@ -1,18 +1,18 @@
 from flask import Blueprint, request, jsonify
-from api.schemas.assignment_exam import (
+from src.api.schemas.assignment_exam import (
     AssignmentCreateSchema, AssignmentPublicSchema,
     ExamCreateSchema, ExamPublicSchema
 )
-from infrastructure.databases.mssql import session
-from infrastructure.repositories.assignment_repository import AssignmentRepository
-from infrastructure.repositories.exam_repository import ExamRepository
-from infrastructure.models.lesson_plan_model import LessonPlanModel
-from services.assignment_exam_service import AssignmentExamService
-from api.middleware import token_required
+from src.infrastructure.databases.mssql import session
+from src.infrastructure.repositories.assignment_repository import AssignmentRepository
+from src.infrastructure.repositories.exam_repository import ExamRepository
+from src.infrastructure.models.lesson_plan_model import LessonPlanModel
+from src.services.assignment_exam_service import AssignmentExamService
+from src.api.middleware import token_required
 from sqlalchemy.exc import SQLAlchemyError
-from infrastructure.models.question_model import QuestionModel
-from infrastructure.models.exam_model import ExamModel
-from infrastructure.models.exam_question_model import ExamQuestionModel
+from src.infrastructure.models.question_model import QuestionModel
+from src.infrastructure.models.exam_model import ExamModel
+from src.infrastructure.models.exam_question_model import ExamQuestionModel
 
 
 assignment_bp = Blueprint('assignments', __name__, url_prefix='/assignments')
@@ -232,7 +232,7 @@ def create_question_test(user_id):
 
     try:
         # ✅ Kiểm tra user tồn tại trước khi insert
-        from infrastructure.models.user_model import UserModel
+        from src.infrastructure.models.user_model import UserModel
         user = session.query(UserModel).filter_by(user_id=user_id).first()
         if not user:
             return jsonify({
