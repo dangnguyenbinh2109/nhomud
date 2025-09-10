@@ -1,7 +1,9 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { me } from "@/services/auth";
+import { useAuth } from "../../context/AuthContext";
 
 export default function TeacherHeader() {
+  const { logout } = useAuth() || {};
   const [user, setUser] = useState(null);
   const username = user?.username || localStorage.getItem("username") || "Người dùng";
   const role = user?.role || localStorage.getItem("role") || "teacher";
@@ -23,9 +25,7 @@ export default function TeacherHeader() {
   }, []);
 
   const roleLabel = {
-    admin: "Quản trị viên",
     teacher: "Giáo viên",
-    staff: "Nhân viên học vụ",
     manager: "Quản lý",
   }[role] || role;
 
@@ -47,6 +47,15 @@ export default function TeacherHeader() {
             <button className="relative rounded-lg bg-white/20 p-2 hover:bg-white/30" aria-label="Thông báo">
               <span aria-hidden>🔔</span>
               <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-rose-500 text-xs">3</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => logout?.()}
+              className="rounded-lg bg-white/20 px-3 py-2 text-sm font-medium hover:bg-white/30"
+              title="Đăng xuất"
+              aria-label="Đăng xuất"
+            >
+              🚪 Đăng xuất
             </button>
             <div className="flex items-center gap-2">
               <div className="grid h-10 w-10 place-items-center rounded-full bg-white text-indigo-500 font-bold">

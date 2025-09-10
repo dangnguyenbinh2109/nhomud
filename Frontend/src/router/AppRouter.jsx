@@ -1,20 +1,64 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
+import ProtectedRoute from "./ProtectedRoute";
+import { publicRoutes } from "./routes/public.routes";
+import { teacherRoutes } from "./routes/teacher.routes";
+// Removed staff/admin routes
+import { managerRoutes } from "./routes/manager.routes";
+import MainLayout from "../layouts/MainLayout";
+import DashboardLayout from "../layouts/DashboardLayout";
+import TeacherLayout from "../layouts/TeacherLayout";
+import TeacherDashboard from "../pages/Dashboard/TeacherDashboard";
 
-import MainLayout from "../layouts/MainLayout.jsx";
-import Home from "../pages/Home/index.jsx";
-import AboutPage from "../pages/About/index.jsx";   // file này phải tồn tại
-import LoginPage from "../pages/Auth/Login.jsx";
+const AppRouter = () => {
+  // Teacher's canonical dashboard is "/dashboard"
+  const teacherChildRoutes = teacherRoutes.filter(r => r.path !== 'dashboard');
 
-export default function AppRouter() {
   return (
     <Routes>
+      {/* Public Routes */}
       <Route path="/" element={<MainLayout />}>
-        <Route index element={<Home />} />
-        <Route path="about" element={<AboutPage />} />
-        <Route path="login" element={<LoginPage />} />
-        {/* Fallback để tránh trắng màn hình nếu gõ sai URL */}
-        <Route path="*" element={<div className="p-6">404 — Trang không tồn tại</div>} />
+        {publicRoutes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
+        ))}
       </Route>
+
+      {/* Canonical teacher dashboard at /dashboard (uses TeacherLayout) */}
+      <Route
+        path="/dashboard"
+        element={<ProtectedRoute allowedRoles={["teacher"]}><TeacherLayout /></ProtectedRoute>}
+      >
+        <Route index element={<TeacherDashboard />} />
+      </Route>
+
+      {/* Role-based Layout Routes (admin/staff removed) */}
+
+      <Route
+        path="/manager"
+        element={<ProtectedRoute allowedRoles={['manager']}><DashboardLayout /></ProtectedRoute>}
+      >
+        {managerRoutes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
+        ))}
+        <Route index element={<Navigate to="dashboard" replace />} />
+      </Route>
+
+      <Route
+        path="/teacher"
+        element={<ProtectedRoute allowedRoles={['teacher']}><TeacherLayout /></ProtectedRoute>}
+      >
+        {/* Redirect legacy /teacher/dashboard to canonical /dashboard */}
+        <Route path="dashboard" element={<Navigate to="/dashboard" replace />} />
+        {teacherChildRoutes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
+        ))}
+        {/* Redirect /teacher to /dashboard */}
+        <Route index element={<Navigate to="/dashboard" replace />} />
+      </Route>
+
+      {/* Fallback Route */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
-}
+};
+
+export default AppRouter;

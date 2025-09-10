@@ -1,36 +1,23 @@
-// src/App.jsx
-import { Routes, Route, Navigate } from "react-router-dom";
-import MainLayout from "@/layouts/MainLayout";      
-import TeacherLayout from "@/layouts/TeacherLayout"; 
-import Home from "@/pages/Home/index.jsx";
-import LoginPage from "@/pages/Auth/Login";
-import TeacherDashboard from "@/pages/Dashboard/TeacherDashboard";
+import React, { useEffect } from 'react';
+import AppRouter from './router/AppRouter';
+import { useAuth } from './context/AuthContext';
+import { initializeApi } from './utils/api';
+import { Toaster } from 'react-hot-toast';
 
-function Protected({ children }) {
-  const hasToken = !!localStorage.getItem("token");
-  return hasToken ? children : <Navigate to="/login" replace />;
-}
+function App() {
+  const { logout } = useAuth();
 
-export default function App() {
+  useEffect(() => {
+    // Khởi tạo trình xử lý đăng xuất toàn cục cho các lệnh gọi API
+    initializeApi(logout);
+  }, [logout]);
+
   return (
-    <Routes>
-      <Route element={<MainLayout />}>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<LoginPage />} />
-      </Route>
-
-      <Route
-        path="/dashboard"
-        element={
-          <Protected>
-            <TeacherLayout>
-              <TeacherDashboard />
-            </TeacherLayout>
-          </Protected>
-        }
-      />
-
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
-  );
+      <>
+        <AppRouter/>
+        <Toaster position="top-right" reverseOrder={false} />
+      </>
+  )
 }
+
+export default App

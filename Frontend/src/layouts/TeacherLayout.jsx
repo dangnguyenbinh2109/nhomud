@@ -1,15 +1,17 @@
-// src/layouts/TeacherLayout.jsx
+import React from "react";
 import { Outlet } from "react-router-dom";
-import TeacherHeader from "@/components/Teacher/Header";
+import TeacherHeader from "../components/Teacher/Header";
 
-export default function TeacherLayout({ children }) {
+const TeacherLayout = () => {
   return (
-    <div className="flex min-h-screen flex-col bg-gray-50">
+    <div className="min-h-screen bg-gray-50">
       <TeacherHeader />
-      {/* chừa khoảng cho header fixed giáo viên */}
-      <main className="flex-1 pt-[90px]">
-        {children ?? <Outlet />}
+      <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-[100px] pb-8">
+        <Outlet />
       </main>
     </div>
   );
-}
+};
+
+export default TeacherLayout;
+

@@ -10,6 +10,8 @@ export async function login(username, password) {
     if (data?.user?.role) localStorage.setItem("role", data.user.role);
     if (data?.user?.username) localStorage.setItem("username", data.user.username);
     if (data?.user?.user_id != null) localStorage.setItem("user_id", String(data.user.user_id));
+    // thông báo cho Context biết auth đã thay đổi
+    try { window.dispatchEvent(new Event("auth-updated")); } catch {}
   }
   return data.user;
 }
@@ -30,4 +32,6 @@ export function logout() {
   localStorage.removeItem("role");
   localStorage.removeItem("username");
   localStorage.removeItem("user_id");
+  // thông báo cho Context để đồng bộ ngay lập tức
+  try { window.dispatchEvent(new Event("auth-logout")); } catch {}
 }

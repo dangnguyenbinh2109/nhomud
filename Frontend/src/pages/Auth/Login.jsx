@@ -35,12 +35,15 @@ export default function LoginPage() {
 
       // 👉 Điều hướng theo role
       const role = user?.role || localStorage.getItem("role");
-      if (role === "teacher") {
-        navigate("/dashboard");
-      } else if (role === "admin") {
-        navigate("/admin");
-      } else {
-        navigate("/dashboard"); // fallback
+      switch (role) {
+        case "teacher":
+          navigate("/dashboard");
+          break;
+        case "manager":
+          navigate("/manager/dashboard");
+          break;
+        default:
+          navigate("/");
       }
     } catch (err) {
       // hiện lỗi nhưng KHÔNG đổi UI
