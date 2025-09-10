@@ -1,5 +1,5 @@
-from domain.models.todo import Todo
-from domain.models.itodo_repository import ITodoRepository
+from src.domain.models.todo import Todo
+from src.domain.models.itodo_repository import ITodoRepository
 from typing import List, Optional
 
 class TodoService:

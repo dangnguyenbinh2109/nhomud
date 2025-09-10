@@ -1,26 +1,36 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import MainLayout from "./layouts/MainLayout.jsx";
-import Home from "./pages/Home";
-import About from "./pages/About";
-import Login from "./pages/Auth/Login";
-import Dashboard from "./pages/Dashboard";
+// src/App.jsx
+import { Routes, Route, Navigate } from "react-router-dom";
+import MainLayout from "@/layouts/MainLayout";      
+import TeacherLayout from "@/layouts/TeacherLayout"; 
+import Home from "@/pages/Home/index.jsx";
+import LoginPage from "@/pages/Auth/Login";
+import TeacherDashboard from "@/pages/Dashboard/TeacherDashboard";
+
+function Protected({ children }) {
+  const hasToken = !!localStorage.getItem("token");
+  return hasToken ? children : <Navigate to="/login" replace />;
+}
 
 export default function App() {
   return (
-    <Router>
-      <Routes>
-        {/* Các trang dùng chung Header/Footer */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          {/* thêm các trang khác muốn có header/footer ở đây */}
-        </Route>
+    <Routes>
+      <Route element={<MainLayout />}>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<LoginPage />} />
+      </Route>
 
-        {/* Trang không cần Header/Footer (vd: Login) */}
-        <Route path="/login" element={<Login />} />
-        <Route path="*" element={<div className="p-6">Not found</div>} />
-      </Routes>
-    </Router>
+      <Route
+        path="/dashboard"
+        element={
+          <Protected>
+            <TeacherLayout>
+              <TeacherDashboard />
+            </TeacherLayout>
+          </Protected>
+        }
+      />
+
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }

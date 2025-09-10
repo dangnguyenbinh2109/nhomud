@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
-from infrastructure.databases.mssql import session
-from infrastructure.repositories.question_repository import QuestionRepository
-from services.question_service import QuestionService
-from api.schemas.question import QuestionCreateSchema, QuestionUpdateSchema, QuestionPublicSchema
-from api.middleware import token_required
+from src.infrastructure.databases.mssql import session
+from src.infrastructure.repositories.question_repository import QuestionRepository
+from src.services.question_service import QuestionService
+from src.api.schemas.question import QuestionCreateSchema, QuestionUpdateSchema, QuestionPublicSchema
+from src.api.middleware import token_required
 
 question_repository = QuestionRepository(session)
 question_service = QuestionService(question_repository)

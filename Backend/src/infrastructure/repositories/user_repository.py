@@ -1,9 +1,9 @@
 from typing import Optional, List
 from sqlalchemy.orm import Session
-from infrastructure.models.user_model import UserModel
-from domain.models.user import User
+from src.infrastructure.models.user_model import UserModel
+from src.domain.models.user import User
 from dotenv import load_dotenv
-from utils.env_loader import load_env
+from src.utils.env_loader import load_env
 load_env()
 load_dotenv()
 class UserRepository:

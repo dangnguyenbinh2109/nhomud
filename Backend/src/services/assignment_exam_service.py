@@ -1,7 +1,7 @@
-from domain.models.assignment import Assignment
-from domain.models.exam import Exam
-from infrastructure.repositories.assignment_repository import AssignmentRepository
-from infrastructure.repositories.exam_repository import ExamRepository
+from src.domain.models.assignment import Assignment
+from src.domain.models.exam import Exam
+from src.infrastructure.repositories.assignment_repository import AssignmentRepository
+from src.infrastructure.repositories.exam_repository import ExamRepository
 from typing import List
 from datetime import datetime
 

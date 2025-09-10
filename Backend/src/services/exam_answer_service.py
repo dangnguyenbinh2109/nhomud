@@ -1,4 +1,4 @@
-from infrastructure.repositories.exam_answer_repository import ExamAnswerRepository
+from src.infrastructure.repositories.exam_answer_repository import ExamAnswerRepository
 
 class ExamAnswerService:
     def __init__(self, repository: ExamAnswerRepository):

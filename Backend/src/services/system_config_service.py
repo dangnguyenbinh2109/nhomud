@@ -1,5 +1,5 @@
-from infrastructure.repositories.system_config_repository import SystemConfigRepository
-from domain.models.system_config import SystemConfig
+from src.infrastructure.repositories.system_config_repository import SystemConfigRepository
+from src.domain.models.system_config import SystemConfig
 from typing import List
 
 class SystemConfigService:

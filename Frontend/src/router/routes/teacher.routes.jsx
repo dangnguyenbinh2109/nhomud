@@ -1,8 +1,14 @@
-import UserInfoPage from "../../pages/User/UserInfo";
+import TeacherLayout from "./layouts/TeacherLayout.jsx";
+import TeacherDashboard from "./pages/Dashboard/TeacherDashboard.jsx";
 
-export const teacherRoutes = [
-    {
-        path: "/user/info",
-        element: <UserInfoPage/>
+<Route element={<TeacherLayout />}>
+  <Route
+    path="/dashboard"
+    element={
+      <ProtectedRoute
+        allowedRoles={["admin", "teacher", "staff", "manager"]}
+        element={<TeacherDashboard />}
+      />
     }
-];
+  />
+</Route>

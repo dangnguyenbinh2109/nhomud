@@ -1,6 +1,6 @@
 from typing import List, Optional
-from domain.models.question import Question
-from infrastructure.repositories.question_repository import QuestionRepository
+from src.domain.models.question import Question
+from src.infrastructure.repositories.question_repository import QuestionRepository
 from datetime import datetime
 
 class QuestionService:

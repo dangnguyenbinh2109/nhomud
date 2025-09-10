@@ -1,9 +1,9 @@
 # infrastructure/repositories/ocr_repository.py
 from sqlalchemy.orm import Session
-from infrastructure.models.ocr_model import OCRResultModel
-from domain.models.ocr_result import OCRResult
+from src.infrastructure.models.ocr_model import OCRResultModel
+from src.domain.models.ocr_result import OCRResult
 from dotenv import load_dotenv
-from utils.env_loader import load_env
+from src.utils.env_loader import load_env
 load_env()
 load_dotenv()
 class OCRRepository:

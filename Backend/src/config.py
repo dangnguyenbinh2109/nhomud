@@ -2,7 +2,7 @@
 
 import os
 from dotenv import load_dotenv
-from utils.env_loader import load_env
+from src.utils.env_loader import load_env
 load_env()
 load_dotenv()
 

@@ -1,10 +1,10 @@
 from sqlalchemy.orm import Session
 from typing import List, Optional
-from infrastructure.models.exam_model import ExamModel
-from infrastructure.models.exam_question_model import ExamQuestionModel
-from domain.models.exam import Exam
+from src.infrastructure.models.exam_model import ExamModel
+from src.infrastructure.models.exam_question_model import ExamQuestionModel
+from src.domain.models.exam import Exam
 from dotenv import load_dotenv
-from utils.env_loader import load_env
+from src.utils.env_loader import load_env
 load_env()
 load_dotenv()
 class ExamRepository:

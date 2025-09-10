@@ -1,9 +1,9 @@
 from flask import Blueprint, request, jsonify
-from services.todo_service import TodoService
-from infrastructure.repositories.todo_repository import TodoRepository
-from api.schemas.todo import TodoRequestSchema, TodoResponseSchema
+from src.services.todo_service import TodoService
+from src.infrastructure.repositories.todo_repository import TodoRepository
+from src.api.schemas.todo import TodoRequestSchema, TodoResponseSchema
 from datetime import datetime
-from infrastructure.databases.mssql import session
+from src.infrastructure.databases.mssql import session
 bp = Blueprint('todo', __name__, url_prefix='/todos')
 
 todo_service = TodoService(TodoRepository(session))

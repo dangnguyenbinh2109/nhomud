@@ -15,7 +15,7 @@ cd "$ROOT_DIR/Backend" || {
 }
 
 if [ -d ".venv" ]; then
-    . .venv/Scripts/activate
+    . .venv/bin/activate
     echo "✅ Virtual environment activated."
 else
     echo "❌ Không tìm thấy virtual environment (.venv). Vui lòng chạy setup.sh trước!"

@@ -1,8 +1,8 @@
 from marshmallow import Schema, fields, validates, ValidationError
 from marshmallow import post_dump
-from utils.validators import is_email
-from infrastructure.models.role_model import Role
-from infrastructure.databases.mssql import session
+from src.utils.validators import is_email
+from src.infrastructure.models.role_model import Role
+from src.infrastructure.databases.mssql import session
 
 class UserCreateSchema(Schema):
     username = fields.String(required=True)

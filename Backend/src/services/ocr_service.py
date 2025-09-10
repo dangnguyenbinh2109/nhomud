@@ -1,11 +1,11 @@
 # services/ocr_service.py
 import requests
 import re
-from domain.models.ocr_result import OCRResult
-from infrastructure.repositories.ocr_repository import OCRRepository
-from infrastructure.models.exam_question_model import ExamQuestionModel
-from infrastructure.models.question_model import QuestionModel
-from config import Config
+from src.domain.models.ocr_result import OCRResult
+from src.infrastructure.repositories.ocr_repository import OCRRepository
+from src.infrastructure.models.exam_question_model import ExamQuestionModel
+from src.infrastructure.models.question_model import QuestionModel
+from src.config import Config
 class OCRService:
     GEMINI_URL = Config.GEMINI_URL
     GEMINI_KEY = Config.GEMINI_KEY

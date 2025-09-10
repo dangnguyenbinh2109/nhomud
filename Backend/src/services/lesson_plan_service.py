@@ -1,5 +1,5 @@
-from domain.models.lesson_plan import LessonPlan
-from infrastructure.repositories.lesson_plan_repository import LessonPlanRepository
+from src.domain.models.lesson_plan import LessonPlan
+from src.infrastructure.repositories.lesson_plan_repository import LessonPlanRepository
 from typing import List, Optional
 from datetime import datetime
 

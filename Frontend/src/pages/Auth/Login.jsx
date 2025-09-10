@@ -1,16 +1,19 @@
 // src/pages/Auth/Login.jsx
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login as doLogin } from "@/services/auth";          // dùng service axios đã cấu hình
 import { FcGoogle } from "react-icons/fc";
 import { LuQrCode } from "react-icons/lu";
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
   const [showPw, setShowPw] = useState(false);
   const [errors, setErrors] = useState({});
   const [loading, setLoading] = useState(false);
 
+  // validate input
   const validate = () => {
     const e = {};
     if (!id.trim()) e.id = "Vui lòng nhập đúng phone, email hoặc username của bạn";
@@ -19,13 +22,29 @@ export default function LoginPage() {
     return Object.keys(e).length === 0;
   };
 
+  // submit login
   const onSubmit = async (ev) => {
     ev.preventDefault();
     if (!validate()) return;
+
     try {
       setLoading(true);
-      // TODO: call API thật ở đây
-      alert("Đăng nhập demo thành công (mock)!");
+
+      // gọi API qua service (service sẽ tự lưu token/refresh_token/role,... vào localStorage)
+      const user = await doLogin(String(id ?? "").trim(), String(pw ?? ""));
+
+      // 👉 Điều hướng theo role
+      const role = user?.role || localStorage.getItem("role");
+      if (role === "teacher") {
+        navigate("/dashboard");
+      } else if (role === "admin") {
+        navigate("/admin");
+      } else {
+        navigate("/dashboard"); // fallback
+      }
+    } catch (err) {
+      // hiện lỗi nhưng KHÔNG đổi UI
+      alert(err?.response?.data?.message || err?.message || "Đăng nhập thất bại");
     } finally {
       setLoading(false);
     }
@@ -68,7 +87,7 @@ export default function LoginPage() {
                 {errors.id && <p id="error-id" className="mt-2 text-sm text-red-600">{errors.id}</p>}
               </div>
 
-              {/* Password với 👁️ chớp / 🙈 */}
+              {/* Password với 👁️/🙈 giữ nguyên UI */}
               <div>
                 <label htmlFor="login-pw" className="sr-only">Mật khẩu</label>
                 <div className="relative">
@@ -92,10 +111,8 @@ export default function LoginPage() {
                     title={showPw ? "Ẩn mật khẩu" : "Hiện mật khẩu"}
                   >
                     {showPw ? (
-                      // đang Hiện mật khẩu: hiện 👁️ chớp
                       <span className="eye-blink text-lg leading-none">👁️</span>
                     ) : (
-                      // đang Ẩn mật khẩu: hiện 🙈
                       <span className="text-lg leading-none">🙈</span>
                     )}
                   </button>
@@ -124,9 +141,7 @@ export default function LoginPage() {
 
               {/* Divider */}
               <div className="relative my-4">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t" />
-                </div>
+                <div className="absolute inset-0 flex items-center"><div className="w-full border-t" /></div>
                 <div className="relative flex justify-center text-sm">
                   <span className="bg-white px-2 text-gray-500">Hoặc</span>
                 </div>
