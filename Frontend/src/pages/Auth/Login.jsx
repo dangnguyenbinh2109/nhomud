@@ -45,6 +45,9 @@ export default function LoginPage() {
         case "staff":
           navigate("/staff/dashboard");
           break;
+        case "admin":
+          navigate("/admin/dashboard");
+          break;
         default:
           navigate("/");
       }

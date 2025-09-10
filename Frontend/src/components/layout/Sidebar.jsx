@@ -26,6 +26,16 @@ const Sidebar = () => {
 
   const renderNavItems = () => {
     switch (role) {
+      case 'admin':
+        return (
+          <>
+            <SidebarItem to="/admin/dashboard" icon={<Home size={20} />}>Tổng quan</SidebarItem>
+            <SidebarItem to="/admin/user-management" icon={<Users size={20} />}>Quản lý người dùng</SidebarItem>
+            <SidebarItem to="/admin/lesson-plan-templates" icon={<BookCopy size={20} />}>Khung chương trình</SidebarItem>
+            <SidebarItem to="/admin/system-settings" icon={<Settings size={20} />}>Cấu hình hệ thống</SidebarItem>
+            <SidebarItem to="/admin/revenue" icon={<BarChart3 size={20} />}>Doanh thu</SidebarItem>
+          </>
+        );
       case 'manager':
         return (
           <>

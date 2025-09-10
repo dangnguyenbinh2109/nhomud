@@ -26,6 +26,16 @@ const Navbar = ({ role }) => {
             <NavItem to="/manager/content-approval">Phê duyệt</NavItem>
           </>
         );
+      case 'admin':
+        return (
+          <>
+            <NavItem to="/admin/dashboard">Tổng quan</NavItem>
+            <NavItem to="/admin/user-management">Quản lý người dùng</NavItem>
+            <NavItem to="/admin/lesson-plan-templates">Khung chương trình</NavItem>
+            <NavItem to="/admin/system-settings">Cấu hình hệ thống</NavItem>
+            <NavItem to="/admin/revenue">Doanh thu</NavItem>
+          </>
+        );
       case 'staff':
         return (
           <>

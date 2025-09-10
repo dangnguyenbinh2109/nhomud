@@ -24,6 +24,8 @@ const Header = () => {
         return '/dashboard';
       case 'staff':
         return '/staff/dashboard';
+      case 'admin':
+        return '/admin/dashboard';
       default:
         return '/';
     }
