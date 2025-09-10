@@ -59,7 +59,7 @@ def create_package(user_id):
     }), 201
 
 @package_bp.route("", methods=["GET"])
-@token_required(roles=["admin", "manager"])
+@token_required
 def get_packages(user_id):
     """
     Lấy tất cả package

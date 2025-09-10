@@ -57,7 +57,7 @@ def create_order(user_id):
     }), 201
 
 @order_bp.route("", methods=["GET"])
-@token_required(roles=["admin", "manager"])
+@token_required
 def get_orders(user_id):
     """
     Lấy tất cả order
