@@ -1,5 +1,5 @@
 // src/services/lessonPlans.js
-import api from "@/lib/api";
+import api from "@/libz/api";
 
 export async function listLessonPlans(params = {}) {
   const { data } = await api.get("/lesson-plans", { params });

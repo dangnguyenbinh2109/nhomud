@@ -2,7 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import { publicRoutes } from "./routes/public.routes";
 import { teacherRoutes } from "./routes/teacher.routes";
-// Removed staff/admin routes
+import { staffRoutes } from "./routes/staff.routes";
 import { managerRoutes } from "./routes/manager.routes";
 import MainLayout from "../layouts/MainLayout";
 import DashboardLayout from "../layouts/DashboardLayout";
@@ -30,7 +30,15 @@ const AppRouter = () => {
         <Route index element={<TeacherDashboard />} />
       </Route>
 
-      {/* Role-based Layout Routes (admin/staff removed) */}
+      <Route
+        path="/staff"
+        element={<ProtectedRoute allowedRoles={['staff']}><DashboardLayout /></ProtectedRoute>}
+      >
+        {staffRoutes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
+        ))}
+        <Route index element={<Navigate to="dashboard" replace />} />
+      </Route>
 
       <Route
         path="/manager"

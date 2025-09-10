@@ -45,6 +45,15 @@ const Sidebar = () => {
             <SidebarItem to="/teacher/resources" icon={<FolderKanban size={20} />}>Tài nguyên</SidebarItem>
           </>
         );
+      case 'staff':
+              return (
+                <>
+                  <SidebarItem to="/staff/dashboard" icon={<Home size={20} />}>Tổng quan</SidebarItem>
+                  <SidebarItem to="/staff/lesson-plans" icon={<BookCopy size={20} />}>Kế hoạch bài học</SidebarItem>
+                  <SidebarItem to="/staff/question-bank" icon={<Database size={20} />}>Ngân hàng câu hỏi</SidebarItem>
+                  <SidebarItem to="/staff/prompt-templates" icon={<Bot size={20} />}>Mẫu Prompt</SidebarItem>
+                </>
+              );
       default:
         return null;
     }

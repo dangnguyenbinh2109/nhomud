@@ -26,6 +26,15 @@ const Navbar = ({ role }) => {
             <NavItem to="/manager/content-approval">Phê duyệt</NavItem>
           </>
         );
+      case 'staff':
+        return (
+          <>
+            <NavItem to="/staff/dashboard">Tổng quan</NavItem>
+            <NavItem to="/staff/lesson-plans">Kế hoạch bài học</NavItem>
+            <NavItem to="/staff/question-bank">Ngân hàng câu hỏi</NavItem>
+            <NavItem to="/staff/prompt-templates">Mẫu Prompt</NavItem>
+          </>
+        );
       // Teacher và người dùng chưa đăng nhập sẽ không có nav item đặc biệt ở đây
       default:
         return <NavItem to="/">Trang chủ</NavItem>;

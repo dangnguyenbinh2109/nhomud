@@ -1,5 +1,5 @@
 // src/services/packages.js
-import api from "@/lib/api";
+import api from "@/libz/api";
 
 export async function listPackages(params = {}) {
   const { data } = await api.get("/packages", { params });

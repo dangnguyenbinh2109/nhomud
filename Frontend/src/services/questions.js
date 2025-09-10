@@ -1,5 +1,5 @@
 // src/services/questions.js
-import api from "@/lib/api";
+import api from "@/libz/api";
 
 export async function listQuestions(params = {}) {
   const { data } = await api.get("/questions", { params });

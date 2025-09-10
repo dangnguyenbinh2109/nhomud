@@ -1,5 +1,5 @@
 // src/services/assignments.js
-import api from "@/lib/api";
+import api from "@/libz/api";
 
 export async function listAssignments(params = {}) {
   const { data } = await api.get("/assignments", { params });

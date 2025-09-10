@@ -1,5 +1,5 @@
 // src/services/ocr.js
-import api from "@/lib/api";
+import api from "@/libz/api";
 
 // Backend consolidates OCR into POST /ocr/upload
 export async function ocrExtractText(image_base64) {

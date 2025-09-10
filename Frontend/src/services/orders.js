@@ -1,5 +1,5 @@
 // src/services/orders.js
-import api from "@/lib/api";
+import api from "@/libz/api";
 
 export async function listOrders(params = {}) {
   const { data } = await api.get("/orders", { params });

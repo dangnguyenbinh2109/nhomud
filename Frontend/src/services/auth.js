@@ -1,5 +1,5 @@
 // src/services/auth.js
-import api from "@/lib/api";
+import api from "@/libz/api";
 
 export async function login(username, password) {
   const res = await api.post("/auth/login", { username, password });
