@@ -1,112 +1,311 @@
 # Dự án WebApp PBA
 # Architecture
 ```bash
+File Tree: nhomud
+Generated on: 9/11/2025, 11:54:48 AM
+
 ────────────────────────────────────────────────────────────────────────────────
-├── .git/ 🚫 (auto-hidden)
-├── Backend/
-│   ├── docs/
-│   │   └── flask-clean-architecture.md
-│   ├── src/
-│   │   ├── .venv/ 🚫 (auto-hidden)
-│   │   ├── __pycache__/ 🚫 (auto-hidden)
-│   │   ├── api/
-│   │   │   ├── __pycache__/ 🚫 (auto-hidden)
-│   │   │   ├── controllers/
-│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
-│   │   │   │   ├── auth_controller.py
-│   │   │   │   ├── course_controller.py
-│   │   │   │   └── todo_controller.py
-│   │   │   ├── schemas/
-│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
-│   │   │   │   ├── ...  # Marshmallow schemas
-│   │   │   │   ├── todo.py
-│   │   │   │   └── user.py
-│   │   │   ├── middleware.py
-│   │   │   ├── requests.py
-│   │   │   ├── responses.py
-│   │   │   ├── routes.py
-│   │   │   └── swagger.py
-│   │   ├── domain/
-│   │   │   ├── models/
-│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
-│   │   │   │   ├── ...  # Business logic models
-│   │   │   │   ├── course.py
-│   │   │   │   ├── icourse_repository.py
-│   │   │   │   ├── itodo_repository.py
-│   │   │   │   ├── todo.py
-│   │   │   │   └── user.py
-│   │   │   ├── constants.py
-│   │   │   └── exceptions.py
-│   │   ├── infrastructure/
-│   │   │   ├── databases/
-│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── base.py
-│   │   │   │   ├── mssql.py
-│   │   │   │   └── mysql.py
-│   │   │   ├── models/
-│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
-│   │   │   │   ├── __init__.py
-│   │   │   │   ├── appointment_model.py
-│   │   │   │   ├── consultant_model.py
-│   │   │   │   ├── course_model.py
-│   │   │   │   ├── course_register_model.py
-│   │   │   │   ├── feedback_model.py
-│   │   │   │   ├── program_model.py
-│   │   │   │   ├── survey_model.py
-│   │   │   │   ├── todo_model.py
-│   │   │   │   └── user_model.py
-│   │   │   ├── repositories/
-│   │   │   │   ├── __pycache__/ 🚫 (auto-hidden)
-│   │   │   │   ├── course_repository.py
-│   │   │   │   ├── todo_repository.py
-│   │   │   │   └── user_repository.py
-│   │   │   └── services/
-│   │   │       └── ...  # Services that use third party libraries or services (e.g. email service)
-│   │   ├── scripts/
-│   │   │   └── run_postgres.sh
-│   │   ├── services/
-│   │   │   ├── __pycache__/ 🚫 (auto-hidden)
-│   │   │   ├── ...  # Services for interacting with the domain (business logic)
-│   │   │   ├── course_service.py
-│   │   │   └── todo_service.py
-│   │   ├── .env 🚫 (auto-hidden)
-│   │   ├── README.md
-│   │   ├── app.py
-│   │   ├── app_logging.py
-│   │   ├── config.py
-│   │   ├── cors.py
-│   │   ├── create_app.py
-│   │   ├── default.db
-│   │   ├── dependency_container.py
-│   │   ├── error_handler.py
-│   │   ├── migrations
-│   │   ├── requirements.txt
-│   │   └── swagger_config.json
-│   ├── .gitignore
-│   ├── README.md
-│   └── default.db
-├── Frontend/
-│   ├── node_modules/ 🚫 (auto-hidden)
-│   ├── public/
-│   │   └── vite.svg
-│   ├── src/
-│   │   ├── assets/
-│   │   │   └── react.svg
-│   │   ├── App.css
-│   │   ├── App.jsx
-│   │   ├── index.css
-│   │   └── main.jsx
-│   ├── .gitignore
-│   ├── README.md
-│   ├── eslint.config.js
-│   ├── index.html
-│   ├── package-lock.json
-│   ├── package.json
-│   └── vite.config.js
-├── .gitignore
-├── README.md
-└── setup.sh
+├── 📁 .git/ 🚫 (auto-hidden)
+├── 📁 Backend/
+│   ├── 📁 .venv/ 🚫 (auto-hidden)
+│   ├── 📁 docs/
+│   │   └── 📝 flask-clean-architecture.md
+│   ├── 📁 src/
+│   │   ├── 📁 api/
+│   │   │   ├── 📁 controllers/
+│   │   │   │   ├── 🐍 admin_config_controller.py
+│   │   │   │   ├── 🐍 ai_controller.py
+│   │   │   │   ├── 🐍 approval_controller.py
+│   │   │   │   ├── 🐍 assignment_exam_controller.py
+│   │   │   │   ├── 🐍 auth_controller.py
+│   │   │   │   ├── 🐍 course_controller.py
+│   │   │   │   ├── 🐍 flaskauth_controller.py
+│   │   │   │   ├── 🐍 lesson_plan_controller.py
+│   │   │   │   ├── 🐍 lesson_plan_template_controller.py
+│   │   │   │   ├── 🐍 ocr_controller.py
+│   │   │   │   ├── 🐍 order_controller.py
+│   │   │   │   ├── 🐍 package_controller.py
+│   │   │   │   ├── 🐍 prompt_template_controller.py
+│   │   │   │   ├── 🐍 public_exam_controller.py
+│   │   │   │   ├── 🐍 public_question_controller.py
+│   │   │   │   ├── 🐍 question_controller.py
+│   │   │   │   ├── 🐍 todo_controller.py
+│   │   │   │   └── 🐍 user_controller.py
+│   │   │   ├── 📁 schemas/
+│   │   │   │   ├── 📄 ...  # Marshmallow schemas
+│   │   │   │   ├── 🐍 ai_schema.py
+│   │   │   │   ├── 🐍 approval.py
+│   │   │   │   ├── 🐍 assignment_exam.py
+│   │   │   │   ├── 🐍 exam_answer.py
+│   │   │   │   ├── 🐍 flaskuser.py
+│   │   │   │   ├── 🐍 lesson_plan.py
+│   │   │   │   ├── 🐍 lesson_plan_template.py
+│   │   │   │   ├── 🐍 ocr_result.py
+│   │   │   │   ├── 🐍 order.py
+│   │   │   │   ├── 🐍 package.py
+│   │   │   │   ├── 🐍 prompt_template.py
+│   │   │   │   ├── 🐍 question.py
+│   │   │   │   ├── 🐍 system_config.py
+│   │   │   │   ├── 🐍 todo.py
+│   │   │   │   └── 🐍 user.py
+│   │   │   ├── 🐍 middleware.py
+│   │   │   ├── 🐍 requests.py
+│   │   │   ├── 🐍 responses.py
+│   │   │   ├── 🐍 routes.py
+│   │   │   └── 🐍 swagger.py
+│   │   ├── 📁 domain/
+│   │   │   ├── 📁 models/
+│   │   │   │   ├── 📄 ...  # Business logic models
+│   │   │   │   ├── 🐍 approval.py
+│   │   │   │   ├── 🐍 assignment.py
+│   │   │   │   ├── 🐍 course.py
+│   │   │   │   ├── 🐍 exam.py
+│   │   │   │   ├── 🐍 flaskuser.py
+│   │   │   │   ├── 🐍 icourse_repository.py
+│   │   │   │   ├── 🐍 itodo_repository.py
+│   │   │   │   ├── 🐍 lesson_plan.py
+│   │   │   │   ├── 🐍 lesson_plan_template.py
+│   │   │   │   ├── 🐍 ocr_result.py
+│   │   │   │   ├── 🐍 order.py
+│   │   │   │   ├── 🐍 package.py
+│   │   │   │   ├── 🐍 prompt_template.py
+│   │   │   │   ├── 🐍 question.py
+│   │   │   │   ├── 🐍 system_config.py
+│   │   │   │   ├── 🐍 todo.py
+│   │   │   │   ├── 🐍 user.py
+│   │   │   │   └── 🐍 user_subscription.py
+│   │   │   ├── 🐍 constants.py
+│   │   │   └── 🐍 exceptions.py
+│   │   ├── 📁 infrastructure/
+│   │   │   ├── 📁 databases/
+│   │   │   │   ├── 🐍 __init__.py
+│   │   │   │   ├── 🐍 base.py
+│   │   │   │   ├── 🐍 mssql.py
+│   │   │   │   ├── 🐍 mysql.py
+│   │   │   │   └── 🐍 seed.py
+│   │   │   ├── 📁 models/
+│   │   │   │   ├── 🐍 __init__.py
+│   │   │   │   ├── 🐍 appointment_model.py
+│   │   │   │   ├── 🐍 approval_model.py
+│   │   │   │   ├── 🐍 assignment_model.py
+│   │   │   │   ├── 🐍 consultant_model.py
+│   │   │   │   ├── 🐍 course_model.py
+│   │   │   │   ├── 🐍 course_register_model.py
+│   │   │   │   ├── 🐍 exam_answer_model.py
+│   │   │   │   ├── 🐍 exam_model.py
+│   │   │   │   ├── 🐍 exam_question_model.py
+│   │   │   │   ├── 🐍 feedback_model.py
+│   │   │   │   ├── 🐍 flaskuser_model.py
+│   │   │   │   ├── 🐍 lesson_plan_model.py
+│   │   │   │   ├── 🐍 lesson_plan_template_model.py
+│   │   │   │   ├── 🐍 ocr_model.py
+│   │   │   │   ├── 🐍 order.py
+│   │   │   │   ├── 🐍 order_model.py
+│   │   │   │   ├── 🐍 package_model.py
+│   │   │   │   ├── 🐍 program_model.py
+│   │   │   │   ├── 🐍 prompt_template_model.py
+│   │   │   │   ├── 🐍 question_model.py
+│   │   │   │   ├── 🐍 role_model.py
+│   │   │   │   ├── 🐍 survey_model.py
+│   │   │   │   ├── 🐍 system_config_model.py
+│   │   │   │   ├── 🐍 todo_model.py
+│   │   │   │   ├── 🐍 user_model.py
+│   │   │   │   ├── 🐍 user_subscription.py
+│   │   │   │   └── 🐍 user_subscription_model.py
+│   │   │   ├── 📁 repositories/
+│   │   │   │   ├── 🐍 approval_repository.py
+│   │   │   │   ├── 🐍 assignment_repository.py
+│   │   │   │   ├── 🐍 course_repository.py
+│   │   │   │   ├── 🐍 exam_answer_repository.py
+│   │   │   │   ├── 🐍 exam_repository.py
+│   │   │   │   ├── 🐍 flaskuser_repository.py
+│   │   │   │   ├── 🐍 lesson_plan_repository.py
+│   │   │   │   ├── 🐍 lesson_plan_template_repository.py
+│   │   │   │   ├── 🐍 ocr_repository.py
+│   │   │   │   ├── 🐍 order_repository.py
+│   │   │   │   ├── 🐍 package_repository.py
+│   │   │   │   ├── 🐍 prompt_template_repository.py
+│   │   │   │   ├── 🐍 question_repository.py
+│   │   │   │   ├── 🐍 system_config_repository.py
+│   │   │   │   ├── 🐍 todo_repository.py
+│   │   │   │   ├── 🐍 user_repository.py
+│   │   │   │   └── 🐍 user_subscription_repository.py
+│   │   │   └── 📁 services/
+│   │   │       └── 📄 ...  # Services that use third party libraries or services (e.g. email service)
+│   │   ├── 📁 scripts/
+│   │   │   └── 🐚 run_postgres.sh
+│   │   ├── 📁 services/
+│   │   │   ├── 📄 ...  # Services for interacting with the domain (business logic)
+│   │   │   ├── 🐍 ai_service.py
+│   │   │   ├── 🐍 approval_service.py
+│   │   │   ├── 🐍 assignment_exam_service.py
+│   │   │   ├── 🐍 assignment_service.py
+│   │   │   ├── 🐍 course_service.py
+│   │   │   ├── 🐍 exam_answer_service.py
+│   │   │   ├── 🐍 flaskuser_service.py
+│   │   │   ├── 🐍 lesson_plan_service.py
+│   │   │   ├── 🐍 lesson_plan_template_service.py
+│   │   │   ├── 🐍 ocr_service.py
+│   │   │   ├── 🐍 order_service.py
+│   │   │   ├── 🐍 package_service.py
+│   │   │   ├── 🐍 prompt_template_service.py
+│   │   │   ├── 🐍 question_service.py
+│   │   │   ├── 🐍 system_config_service.py
+│   │   │   ├── 🐍 todo_service.py
+│   │   │   └── 🐍 user_service.py
+│   │   ├── 📁 utils/
+│   │   │   ├── 🐍 env_loader.py
+│   │   │   └── 🐍 validators.py
+│   │   ├── 📖 README.md
+│   │   ├── 🐍 app.py
+│   │   ├── 🐍 app_logging.py
+│   │   ├── 🐍 config.py
+│   │   ├── 🐍 cors.py
+│   │   ├── 🐍 create_app.py
+│   │   ├── 🗄️ default.db
+│   │   ├── 🐍 dependency_container.py
+│   │   ├── 🐍 error_handler.py
+│   │   └── 📄 migrations
+│   ├── 🚫 .gitignore
+│   ├── 📄 How to make API.txt
+│   ├── 📖 README.md
+│   ├── 🗄️ default.db
+│   ├── 📄 requirements.txt
+│   └── 📄 swagger_config.json
+├── 📁 Frontend/
+│   ├── 📁 public/
+│   │   ├── 📁 images/
+│   │   │   ├── 🖼️ cat-rich.jpg
+│   │   │   ├── 🖼️ cat-shocked.jpg
+│   │   │   └── 🖼️ logo.png
+│   │   └── 🖼️ vite.svg
+│   ├── 📁 src/
+│   │   ├── 📁 assets/
+│   │   │   └── 🖼️ react.svg
+│   │   ├── 📁 components/
+│   │   │   ├── 📁 Teacher/
+│   │   │   │   ├── 📄 AITools.jsx
+│   │   │   │   ├── 📄 Header.jsx
+│   │   │   │   ├── 📄 LessonPlanManagement.jsx
+│   │   │   │   ├── 📄 Modal.jsx
+│   │   │   │   ├── 📄 QuickActions.jsx
+│   │   │   │   ├── 📄 RecentActivity.jsx
+│   │   │   │   ├── 📄 StatCards.jsx
+│   │   │   │   ├── 📄 SubjectFocus.jsx
+│   │   │   │   ├── 📄 Toasts.jsx
+│   │   │   │   ├── 📄 ToolCard.jsx
+│   │   │   │   └── 📄 useToasts.js
+│   │   │   ├── 📁 layout/
+│   │   │   │   ├── 📄 AdminLayout.jsx
+│   │   │   │   ├── 📄 Header.jsx
+│   │   │   │   ├── 📄 Navbar.jsx
+│   │   │   │   ├── 📄 Sidebar.jsx
+│   │   │   │   └── 📄 TeacherDashboard.jsx
+│   │   │   ├── 📄 Footer.jsx
+│   │   │   └── 📄 Header.jsx
+│   │   ├── 📁 context/
+│   │   │   └── 📄 AuthContext.jsx
+│   │   ├── 📁 layouts/
+│   │   │   ├── 📄 AdminLayout.jsx
+│   │   │   ├── 📄 ContentApproval.jsx
+│   │   │   ├── 📄 DashboardLayout.jsx
+│   │   │   ├── 📄 LessonPlanManagement.jsx
+│   │   │   ├── 📄 MainLayout.jsx
+│   │   │   ├── 📄 ManagerDashboard.jsx
+│   │   │   ├── 📄 OrderManagement.jsx
+│   │   │   ├── 📄 PackageManager.jsx
+│   │   │   ├── 📄 PromptTemplateManagement.jsx
+│   │   │   ├── 📄 QuestionBankManagement.jsx
+│   │   │   ├── 📄 StaffDashboard.jsx
+│   │   │   ├── 📄 TeacherDashboard.jsx
+│   │   │   └── 📄 TeacherLayout.jsx
+│   │   ├── 📁 libz/
+│   │   │   └── 📄 api.js
+│   │   ├── 📁 pages/
+│   │   │   ├── 📁 About/
+│   │   │   │   └── 📄 index.jsx
+│   │   │   ├── 📁 Admin/
+│   │   │   │   ├── 📄 AdminDashboard.jsx
+│   │   │   │   ├── 📄 LessonPlanTemplateManagement.jsx
+│   │   │   │   ├── 📄 Revenue.jsx
+│   │   │   │   ├── 📄 SystemConfigPage.jsx
+│   │   │   │   ├── 📄 UserManagementPage.jsx
+│   │   │   │   └── 📄 UserReports.jsx
+│   │   │   ├── 📁 Auth/
+│   │   │   │   ├── 📄 ForgotPassword.jsx
+│   │   │   │   ├── 📄 Login.jsx
+│   │   │   │   ├── 📄 ResetPassword.jsx
+│   │   │   │   └── 📄 index.jsx
+│   │   │   ├── 📁 Dashboard/
+│   │   │   │   ├── 📄 TeacherDashboard.jsx
+│   │   │   │   └── 📄 TeacherDataPanels.jsx
+│   │   │   ├── 📁 Home/
+│   │   │   │   └── 📄 index.jsx
+│   │   │   ├── 📁 Product/
+│   │   │   │   └── 📄 index.jsx
+│   │   │   ├── 📁 Teacher/
+│   │   │   │   ├── 📄 ExamCreation.jsx
+│   │   │   │   ├── 📄 ExamView.jsx
+│   │   │   │   ├── 📄 LessonPlanManagement.jsx
+│   │   │   │   ├── 📄 OcrGrading.jsx
+│   │   │   │   ├── 📄 ResourceManagement.jsx
+│   │   │   │   ├── 📄 StudentAnalytics.jsx
+│   │   │   │   └── 📄 TeacherDashboard.jsx
+│   │   │   ├── 📁 User/
+│   │   │   │   └── 📄 UserInfo.jsx
+│   │   │   ├── 📄 Contact.jsx
+│   │   │   ├── 📄 ExamPublicView.jsx
+│   │   │   └── 📄 Lession.jsx
+│   │   ├── 📁 router/
+│   │   │   ├── 📁 routes/
+│   │   │   │   ├── 📄 admin.routes.jsx
+│   │   │   │   ├── 📄 manager.routes.jsx
+│   │   │   │   ├── 📄 public.routes.jsx
+│   │   │   │   ├── 📄 staff.routes.jsx
+│   │   │   │   └── 📄 teacher.routes.jsx
+│   │   │   ├── 📄 AppRouter.jsx
+│   │   │   └── 📄 ProtectedRoute.jsx
+│   │   ├── 📁 services/
+│   │   │   ├── 📄 assignments.js
+│   │   │   ├── 📄 auth.js
+│   │   │   ├── 📄 exams.js
+│   │   │   ├── 📄 lessonPlans.js
+│   │   │   ├── 📄 ocr.js
+│   │   │   ├── 📄 orders.js
+│   │   │   ├── 📄 packages.js
+│   │   │   └── 📄 questions.js
+│   │   ├── 📁 utils/
+│   │   │   └── 📄 api.js
+│   │   ├── 📄 App.jsx
+│   │   ├── 🎨 index.css
+│   │   └── 📄 main.jsx
+│   ├── 🚫 .gitignore
+│   ├── 📖 README.md
+│   ├── 📄 eslint.config.js
+│   ├── 🌐 index.html
+│   ├── 📄 package-lock.json
+│   ├── 📄 package.json
+│   ├── 📄 postcss.config.js
+│   └── 📄 vite.config.js
+├── 📁 docs/
+│   └── 📁 diagrams/
+│       ├── 🖼️ bieu_do_tac_nhan.png
+│       ├── 🖼️ bieu_do_usecase_admin.png
+│       ├── 🖼️ bieu_do_usecase_manager.png
+│       ├── 🖼️ bieu_do_usecase_staff.png
+│       ├── 🖼️ bieu_do_usecase_teacher.png
+│       ├── 🖼️ bieu_do_usecase_tong_quat.png
+│       ├── 🖼️ luong_cham_diem_ocr.png
+│       ├── 🖼️ luong_ngan_hang_cau_hoi.png
+│       ├── 🖼️ luong_quan_ly_nguoi_dung.png
+│       ├── 🖼️ quy_trinh_cham_diem.png
+│       ├── 🖼️ quy_trinh_phe_duyet_noi_dung.png
+│       └── 🖼️ quy_trinh_quan_ly_bai_tap.png
+├── 🚫 .gitignore
+├── 📖 README.md
+├── 📄 package-lock.json
+├── 🐚 run.sh
+└── 🐚 setup.sh
 
 ────────────────────────────────────────────────────────────────────────────────
 Generated by FileTree Pro Extension
