@@ -6,6 +6,7 @@ import { ocrExtractText, ocrGrade } from "@/services/ocr";
 import { listOrders, createOrder } from "@/services/orders";
 import { listPackages } from "@/services/packages";
 import { listQuestions } from "@/services/questions";
+import TeacherLessonPlanManagement from "../../pages/Teacher/LessonPlanManagement";
 
 const Card = ({ children }) => (
   <div className="rounded-2xl border border-gray-200 shadow-sm p-4 bg-white">{children}</div>
@@ -43,71 +44,6 @@ const Empty = ({ title="Chưa có dữ liệu", desc="Hãy tạo mới để b�
     <div className="text-sm mt-1">{desc}</div>
   </div>
 );
-
-/* -------- Lesson Plans -------- */
-function LessonPlansPanel() {
-  const [items, setItems] = useState([]); const [loading, setLoading] = useState(true);
-  const [title, setTitle] = useState(""); const [desc, setDesc] = useState(""); const [error, setError] = useState("");
-
-  const load = async () => { setLoading(true);
-    try { setItems(await listLessonPlans()); } catch (e) { setError(e.message); } finally { setLoading(false); } };
-  useEffect(() => { load(); }, []);
-
-  const onCreate = async (e) => { e.preventDefault(); setError(""); try {
-    await createLessonPlan({ title, description: desc }); setTitle(""); setDesc(""); await load();
-  } catch (e) { setError(e.message); } };
-
-  const onDeleteRow = async (id) => {
-    if (!confirm("Xoá lesson plan này?")) return;
-    try { await deleteLessonPlan(id); await load(); } catch (e) { alert(e.message); }
-  };
-
-  return (
-    <div id="ocr-panel" className="grid gap-6">
-      <Card>
-        <Section title="Tạo Lesson Plan" />
-        <form onSubmit={onCreate} className="grid md:grid-cols-2 gap-4">
-          <Input label="Tiêu đề" value={title} onChange={(e)=>setTitle(e.target.value)} required />
-          <Textarea label="Mô tả" value={desc} onChange={(e)=>setDesc(e.target.value)} />
-          <div className="md:col-span-2 flex justify-end"><Button type="submit">Tạo lesson plan</Button></div>
-        </form>
-        {error && <div className="text-red-600 text-sm mt-3">{error}</div>}
-      </Card>
-
-      <Card>
-        <Section title="Danh sách Lesson Plans" right={<Button variant="ghost" onClick={load}>Làm mới</Button>} />
-        {loading ? <div className="py-8 text-center text-gray-500">Đang tải…</div> :
-          items.length === 0 ? <Empty /> :
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
-              <thead>
-                <tr className="text-left text-gray-500 border-b">
-                  <th className="py-2 pr-4">#</th>
-                  <th className="py-2 pr-4">Tiêu đề</th>
-                  <th className="py-2 pr-4">Mô tả</th>
-                  <th className="py-2 pr-4">Ngày tạo</th>
-                  <th className="py-2 pr-4">Tạo bởi</th>
-                  <th className="py-2 pr-4">Hành động</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((x) => (
-                  <tr key={x.lesson_id} className="border-b last:border-0">
-                    <td className="py-2 pr-4">{x.lesson_id}</td>
-                    <td className="py-2 pr-4 font-medium">{x.title}</td>
-                    <td className="py-2 pr-4 text-gray-600">{x.description}</td>
-                    <td className="py-2 pr-4">{new Date(x.created_at).toLocaleString()}</td>
-                    <td className="py-2 pr-4">{x.created_by}</td>
-                    <td className="py-2 pr-4"><Button variant="danger" onClick={()=>onDeleteRow(x.lesson_id)}>Xoá</Button></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>}
-      </Card>
-    </div>
-  );
-}
 
 
 /* -------- Exams -------- */
@@ -498,9 +434,11 @@ function OrdersPanel() {
 export default function TeacherDataPanels() {
   return (
     <div className="space-y-10">
-      <LessonPlansPanel />
-      <ExamsPanel />
-      <OCRPanel />
+      <div id="lesson-plan-panel">
+        <TeacherLessonPlanManagement />
+      </div>
+      <div id="exams-panel"><ExamsPanel /></div>
+      <div id="ocr-panel"><OCRPanel /></div>
       <OrdersPanel />
     </div>
   );

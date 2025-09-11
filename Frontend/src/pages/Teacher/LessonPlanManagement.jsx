@@ -1,15 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { BookCopy, PlusCircle, Search, Loader2, Edit, Trash2, X } from 'lucide-react';
+import { BookText, PlusCircle, Search, Loader2, Edit, Trash2, ArrowLeft, X, File, Bot, BookCopy, Wand2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { apiFetch } from '../../utils/api';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://127.0.0.1:6868';
 
-const LessonPlanModal = ({ plan, onClose, onSave, loading }) => {
+const formatApiErrors = (errors) => {
+  if (typeof errors === 'string') return errors;
+  if (typeof errors === 'object' && errors !== null) {
+    return Object.entries(errors)
+      .map(([field, messages]) => `${field}: ${Array.isArray(messages) ? messages.join(', ') : messages}`)
+      .join('; ');
+  }
+  return 'Có lỗi không xác định xảy ra.';
+};
+
+const LessonPlanModal = ({ plan, onClose, onSave, loading, initialData }) => {
   const [formData, setFormData] = useState({
-    title: plan?.title || '',
-    description: plan?.description || '',
+    title: plan?.title || initialData?.title || '',
+    description: plan?.description || initialData?.description || '',
   });
+
 
   const isEditMode = !!plan;
 
@@ -28,7 +40,7 @@ const LessonPlanModal = ({ plan, onClose, onSave, loading }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
       <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">{isEditMode ? 'Chỉnh sửa Kế hoạch' : 'Tạo Kế hoạch mới'}</h2>
@@ -60,13 +72,178 @@ const LessonPlanModal = ({ plan, onClose, onSave, loading }) => {
   );
 };
 
-const LessonPlanManagement = () => {
+const CreateModeModal = ({ onClose, onSelect }) => (
+  <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+    <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-lg">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-xl font-bold">Chọn phương thức tạo kế hoạch</h2>
+        <button onClick={onClose} className="text-gray-500 hover:text-gray-800"><X size={24} /></button>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <button onClick={() => onSelect('manual')} className="p-4 border rounded-lg hover:bg-gray-100 text-center">
+          <File size={32} className="mx-auto mb-2" />
+          <span className="font-semibold">Tạo thủ công</span>
+        </button>
+        <button onClick={() => onSelect('template')} className="p-4 border rounded-lg hover:bg-gray-100 text-center">
+          <BookCopy size={32} className="mx-auto mb-2" />
+          <span className="font-semibold">Từ khung chương trình</span>
+        </button>
+        <button onClick={() => onSelect('ai')} className="p-4 border rounded-lg hover:bg-gray-100 text-center">
+          <Bot size={32} className="mx-auto mb-2" />
+          <span className="font-semibold">Với Prompt AI</span>
+        </button>
+      </div>
+    </div>
+  </div>
+);
+
+const TemplateSelectorModal = ({ onClose, onSelectTemplate }) => {
+  const [templates, setTemplates] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchTemplates = async () => {
+      try {
+        const response = await apiFetch(`${API_URL}/lesson-plan-templates`);
+        const data = await response.json();
+        if (response.ok && data.status === 'success') {
+          setTemplates(data.data);
+        } else {
+          throw new Error(data.message || 'Không thể tải mẫu.');
+        }
+      } catch (e) {
+        toast.error(e.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchTemplates();
+  }, []);
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+      <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl max-h-[80vh] flex flex-col">
+        <div className="flex justify-between items-center mb-4">
+          <h2 className="text-xl font-bold">Chọn Khung chương trình</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-gray-800"><X size={24} /></button>
+        </div>
+        <div className="overflow-y-auto">
+          {loading ? <Loader2 className="animate-spin mx-auto" /> : (
+            <ul className="divide-y divide-gray-200">
+              {templates.map(template => (
+                <li key={template.template_id} onClick={() => onSelectTemplate(template)} className="p-4 hover:bg-gray-100 cursor-pointer">
+                  <h3 className="font-semibold">{template.name}</h3>
+                  <p className="text-sm text-gray-600">{template.description}</p>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const AiGeneratorModal = ({ onClose, onGenerate }) => {
+  const [prompt, setPrompt] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [promptTemplates, setPromptTemplates] = useState([]);
+  const [loadingTemplates, setLoadingTemplates] = useState(true);
+
+  useEffect(() => {
+    const fetchPromptTemplates = async () => {
+      try {
+        setLoadingTemplates(true);
+        const response = await apiFetch(`${API_URL}/prompt-templates`);
+        const data = await response.json();
+        if (response.ok && data.status === 'success') {
+          setPromptTemplates(data.data);
+        } else {
+          throw new Error(data.message || 'Không thể tải các mẫu prompt.');
+        }
+      } catch (e) {
+        toast.error(e.message);
+      } finally {
+        setLoadingTemplates(false);
+      }
+    };
+    fetchPromptTemplates();
+  }, []);
+
+  const handleTemplateChange = (e) => {
+    const selectedContent = e.target.value;
+    setPrompt(selectedContent);
+  };
+
+  const handleGenerate = async () => {
+    if (!prompt.trim()) {
+      toast.error('Vui lòng nhập prompt.');
+      return;
+    }
+    setLoading(true);
+    try {
+      // This is a presumed API endpoint. The backend needs to implement this.
+      const response = await apiFetch(`${API_URL}/ai/generate-from-prompt`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ prompt }),
+      });
+      const data = await response.json();
+      if (response.ok && data.status === 'success') {
+        onGenerate({ title: 'Kế hoạch bài học từ AI', description: data.content });
+      } else {
+        throw new Error(data.message || 'AI không thể tạo nội dung.');
+      }
+    } catch (e) {
+      toast.error(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 p-4">
+      <div className="bg-white p-6 rounded-lg shadow-xl w-full max-w-2xl">
+        <div className="flex justify-between items-center mb-4">
+            <h2 className="text-xl font-bold">Tạo nội dung với AI</h2>
+            <button onClick={onClose} className="text-gray-500 hover:text-gray-800"><X size={24} /></button>
+        </div>
+        <div className="mb-4">
+            <label className="block text-sm font-medium text-gray-700 mb-1">Chọn mẫu prompt có sẵn (tùy chọn)</label>
+            <select onChange={handleTemplateChange} disabled={loadingTemplates} className="w-full border rounded-md p-2 bg-gray-50">
+                <option value="">{loadingTemplates ? 'Đang tải mẫu...' : 'Tự nhập hoặc chọn một mẫu'}</option>
+                {promptTemplates.map(template => (
+                    <option key={template.prompt_id} value={template.content}>
+                        {template.name}
+                    </option>
+                ))}
+            </select>
+        </div>
+        <textarea value={prompt} onChange={e => setPrompt(e.target.value)} rows="5" placeholder="Nhập yêu cầu của bạn, ví dụ: 'Tạo kế hoạch bài học về chủ đề axit và bazơ cho lớp 11'..." className="w-full border rounded-md p-2 mb-4"></textarea>
+        <div className="flex justify-end gap-4">
+          <button onClick={onClose} className="px-4 py-2 bg-gray-200 rounded-md">Hủy</button>
+          <button onClick={handleGenerate} disabled={loading} className="px-4 py-2 bg-purple-600 text-white rounded-md flex items-center disabled:bg-purple-300">
+            {loading ? <Loader2 className="animate-spin mr-2" /> : <Wand2 className="mr-2" />} Tạo nội dung
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const TeacherLessonPlanManagement = () => {
   const [lessonPlans, setLessonPlans] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingPlan, setEditingPlan] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [modalState, setModalState] = useState({
+    createMode: false,
+    templateSelector: false,
+    aiGenerator: false,
+  });
+  const [initialPlanData, setInitialPlanData] = useState(null);
 
   const fetchLessonPlans = async () => {
     try {
@@ -78,7 +255,7 @@ const LessonPlanManagement = () => {
       if (data.status === 'success' && Array.isArray(data.lesson_plans)) {
         setLessonPlans(data.lesson_plans);
       } else {
-        throw new Error('Cấu trúc dữ liệu API không hợp lệ');
+        throw new Error('Invalid data structure from API');
       }
     } catch (e) {
       toast.error(`Lỗi tải dữ liệu: ${e.message}`);
@@ -91,14 +268,53 @@ const LessonPlanManagement = () => {
     fetchLessonPlans();
   }, []);
 
+  const handleSelectCreationMode = (mode) => {
+    setModalState({ createMode: false, templateSelector: false, aiGenerator: false });
+    if (mode === 'manual') {
+      setInitialPlanData(null);
+      handleOpenModal();
+    } else if (mode === 'template') {
+      setModalState(prev => ({ ...prev, templateSelector: true }));
+    } else if (mode === 'ai') {
+      setModalState(prev => ({ ...prev, aiGenerator: true }));
+    }
+  };
+
+  const handleTemplateSelected = (template) => {
+    const description = `Dựa trên mẫu: ${template.name}\n\nMục tiêu:\n- ${template.structure.objectives.join('\n- ')}\n\nHoạt động:\n- ${template.structure.activities.join('\n- ')}\n\nĐánh giá:\n- ${template.structure.assessments.join('\n- ')}`;
+    setInitialPlanData({ title: template.name, description });
+    setModalState(prev => ({ ...prev, templateSelector: false }));
+    handleOpenModal();
+  };
+
+  const handleAiContentGenerated = (data) => {
+    setInitialPlanData(data);
+    setModalState(prev => ({ ...prev, aiGenerator: false }));
+    handleOpenModal();
+  };
+
   const handleOpenModal = (plan = null) => {
     setEditingPlan(plan);
     setIsModalOpen(true);
   };
 
+  const handleOpenCreateModal = () => {
+    setModalState(prev => ({ ...prev, createMode: true }));
+  }
+
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setEditingPlan(null);
+    setInitialPlanData(null); // Reset initial data
+  };
+
+  const handleCloseAllModals = () => {
+    setModalState({
+      createMode: false,
+      templateSelector: false,
+      aiGenerator: false,
+    });
+    handleCloseModal();
   };
 
   const handleSavePlan = async (formData, lessonId) => {
@@ -120,10 +336,10 @@ const LessonPlanManagement = () => {
         handleCloseModal();
         fetchLessonPlans();
       } else {
-        throw new Error(result.message || 'Có lỗi xảy ra');
+        throw new Error(formatApiErrors(result.message || result.errors) || 'Có lỗi xảy ra');
       }
     } catch (e) {
-      toast.error(`Lỗi: ${e.message}`);
+      toast.error(`Lỗi lưu kế hoạch: ${e.message}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -154,11 +370,16 @@ const LessonPlanManagement = () => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-md">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800 flex items-center">
-          <BookCopy className="mr-3" />
-          Quản lý Kế hoạch bài học
-        </h1>
-        <button onClick={() => handleOpenModal()} className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
+        <div className="flex items-center gap-4">
+            <Link to="/teacher/dashboard" className="p-2 rounded-full hover:bg-gray-100" title="Quay lại Dashboard">
+                <ArrowLeft size={20} />
+            </Link>
+            <h1 className="text-2xl font-bold text-gray-800 flex items-center">
+                <BookText className="mr-3" />
+                Quản lý Kế hoạch bài học cá nhân
+            </h1>
+        </div>
+        <button onClick={handleOpenCreateModal} className="flex items-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
           <PlusCircle className="mr-2 h-5 w-5" />
           Thêm kế hoạch mới
         </button>
@@ -202,7 +423,7 @@ const LessonPlanManagement = () => {
             ))}
           </tbody>
         </table>
-        {!loading && filteredPlans.length === 0 && <div className="text-center py-10 text-gray-500">Không tìm thấy kế hoạch bài học nào.</div>}
+        {!loading && filteredPlans.length === 0 && <div className="text-center py-10 text-gray-500">Bạn chưa có kế hoạch bài học nào.</div>}
       </div>
 
       {isModalOpen && (
@@ -211,10 +432,32 @@ const LessonPlanManagement = () => {
           onClose={handleCloseModal}
           onSave={handleSavePlan}
           loading={isSubmitting}
+          initialData={initialPlanData}
+        />
+      )}
+
+      {modalState.createMode && (
+        <CreateModeModal
+          onClose={handleCloseAllModals}
+          onSelect={handleSelectCreationMode}
+        />
+      )}
+
+      {modalState.templateSelector && (
+        <TemplateSelectorModal
+          onClose={handleCloseAllModals}
+          onSelectTemplate={handleTemplateSelected}
+        />
+      )}
+
+      {modalState.aiGenerator && (
+        <AiGeneratorModal
+          onClose={handleCloseAllModals}
+          onGenerate={handleAiContentGenerated}
         />
       )}
     </div>
   );
 };
 
-export default LessonPlanManagement;
+export default TeacherLessonPlanManagement;

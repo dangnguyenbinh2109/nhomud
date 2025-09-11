@@ -22,16 +22,21 @@ export default function TeacherDashboard() {
 
   const onOpenTool = (tool) => {
     const map = {
+      "lesson-plan": "Đang chuyển đến khu vực quản lý kế hoạch...",
       questionBank: "Đang mở Ngân hàng câu hỏi...",
       exercise: "Đang khởi động AI tạo bài tập...",
       test: "Đang mở công cụ tạo đề thi...",
       ocr: "Đang khởi động OCR chấm thi...",
     };
     push(map[tool] || "Đang mở...", "info");
-    if (tool === "ocr") {
+
+    const panelIdMap = { "lesson-plan": "lesson-plan-panel", ocr: "ocr-panel", test: "exams-panel" };
+    const panelId = panelIdMap[tool];
+
+    if (panelId) {
       // cuộn tới khu vực OCR nếu có trên trang
       setTimeout(() => {
-        const el = document.getElementById("ocr-panel");
+        const el = document.getElementById(panelId);
         if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 0);
     }
