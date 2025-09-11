@@ -11,17 +11,3 @@ services/ → viết logic nghiệp vụ.
 api/controllers/ → định nghĩa route.
 
 Đăng ký blueprint trong app.py
-uyowroiy i  jojs do  mư h 
-fnb dhgie  bưn 
-ẻigisgnk  
-ưkrn iohwog 
-ưejgkrewng  
-ưerng kưernre
- e gẻow j
- ẻngkhwr
- ư h nhiwr 
-ewrgnreigh knwl;hg ọikeb 
- rẹgb ehr jgjdbghgjekbg 
- gnjwhu ihwhgnskg
- grughrhn kíhb 
-bjgnw jbgn 
