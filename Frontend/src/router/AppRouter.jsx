@@ -29,6 +29,9 @@ const AppRouter = () => {
         element={<ProtectedRoute allowedRoles={["teacher"]}><TeacherLayout /></ProtectedRoute>}
       >
         <Route index element={<TeacherDashboard />} />
+        {teacherChildRoutes.map((route) => (
+          <Route key={route.path} path={route.path} element={route.element} />
+        ))}
       </Route>
 
       <Route
@@ -59,19 +62,6 @@ const AppRouter = () => {
           <Route key={route.path} path={route.path} element={route.element} />
         ))}
         <Route index element={<Navigate to="dashboard" replace />} />
-      </Route>
-
-      <Route
-        path="/teacher"
-        element={<ProtectedRoute allowedRoles={['teacher']}><TeacherLayout /></ProtectedRoute>}
-      >
-        {/* Redirect legacy /teacher/dashboard to canonical /dashboard */}
-        <Route path="dashboard" element={<Navigate to="/dashboard" replace />} />
-        {teacherChildRoutes.map((route) => (
-          <Route key={route.path} path={route.path} element={route.element} />
-        ))}
-        {/* Redirect /teacher to /dashboard */}
-        <Route index element={<Navigate to="/dashboard" replace />} />
       </Route>
 
       {/* Fallback Route */}

@@ -68,6 +68,29 @@ class QuestionService:
             questions_with_status.append(question)
         return questions_with_status
 
+    def get_all_public_questions(self) -> List[Question]:
+        """
+        Lấy tất cả câu hỏi đã được duyệt và công khai.
+        Quan trọng: Không bao giờ trả về 'correct_answer'.
+        """
+        models = self.repository.get_all()
+        public_questions = []
+        for m in models:
+            status = self.approval_service.get_status("question", m.question_id)
+            if status in ['approved', 'pending']: # Tạm thời hiển thị cả câu hỏi đang chờ duyệt
+                question = Question(
+                    question_id=m.question_id,
+                    content=m.content,
+                    subject=m.subject,
+                    difficulty_level=m.difficulty_level,
+                    correct_answer=None,  # Luôn ẩn đáp án
+                    approval_status=status,
+                    created_by=m.created_by,
+                    created_at=m.created_at
+                )
+                public_questions.append(question)
+        return public_questions
+
     def update_question(self, question_id: int, data: dict) -> Optional[Question]:
         # Logic nghiệp vụ: Có thể bạn muốn chỉ cho phép sửa khi chưa được duyệt,
         # hoặc cho phép sửa và tự động gửi lại yêu cầu duyệt.

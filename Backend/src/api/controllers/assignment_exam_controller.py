@@ -10,13 +10,14 @@ from infrastructure.models.lesson_plan_model import LessonPlanModel
 from services.assignment_exam_service import AssignmentExamService
 from api.middleware import token_required
 from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.orm import joinedload
 from infrastructure.models.question_model import QuestionModel
 from infrastructure.models.exam_model import ExamModel
 from infrastructure.models.exam_question_model import ExamQuestionModel
 
 
-assignment_bp = Blueprint('assignments', __name__, url_prefix='/assignments')
-exam_bp = Blueprint('exams', __name__, url_prefix='/exams')
+assignment_bp = Blueprint('assignments', __name__)
+exam_bp = Blueprint('exams', __name__)
 
 assignment_repo = AssignmentRepository(session)
 exam_repo = ExamRepository(session)
@@ -149,6 +150,33 @@ def get_exams(user_id):
             "message": "Database error occurred",
             "details": str(e)
         }), 500
+
+@exam_bp.route('/<int:exam_id>', methods=['GET'])
+def get_exam(exam_id):
+    try:
+        # Sử dụng join để lấy thông tin exam và các câu hỏi liên quan trong 1 query
+        exam = (
+            session.query(ExamModel)
+            .options(joinedload(ExamModel.questions))
+            .filter(ExamModel.exam_id == exam_id)
+            .first()
+        )
+
+        if not exam:
+            return jsonify({"status": "error", "message": "Exam not found"}), 404
+
+        # Dùng schema để dump dữ liệu, schema sẽ tự động xử lý các relationship
+        # Điều này yêu cầu ExamPublicSchema phải được cấu hình để xử lý nested questions
+        exam_data = single_exam_schema.dump(exam)
+
+        return jsonify({
+            "status": "success",
+            "data": exam_data
+        }), 200
+
+    except SQLAlchemyError as e:
+        session.rollback()
+        return jsonify({"status": "error", "message": "Database error occurred", "details": str(e)}), 500
 
 @exam_bp.route('/<int:exam_id>', methods=['PUT'])
 @token_required

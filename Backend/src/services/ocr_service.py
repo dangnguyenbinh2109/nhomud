@@ -11,6 +11,7 @@ class OCRService:
     GEMINI_URL = Config.GEMINI_URL
     GEMINI_KEY = Config.GEMINI_KEY
 
+
     def __init__(self, ocr_repo: OCRRepository, db_session):
         self.ocr_repo = ocr_repo
         self.db_session = db_session
@@ -80,6 +81,47 @@ class OCRService:
         )
         self.ocr_repo.save_result(ocr_result)
         return ocr_result
+
+    def grade_exam_from_answers(self, exam_id: int, student_name: str, student_id: str, answers: dict) -> OCRResult:
+        """
+        Chấm điểm dựa trên câu trả lời được gửi trực tiếp, không qua OCR.
+        answers: dict dạng {'question_id': 'selected_answer'}
+        """
+        # Lấy danh sách câu hỏi & đáp án đúng từ DB
+        exam_questions = (
+            self.db_session.query(QuestionModel)
+            .join(ExamQuestionModel, ExamQuestionModel.question_id == QuestionModel.question_id)
+            .filter(ExamQuestionModel.exam_id == exam_id)
+            .all()
+        )
+
+        if not exam_questions:
+            raise ValueError("Exam has no questions or does not exist.")
+
+        correct_count = 0
+        total_questions = len(exam_questions)
+
+        for question in exam_questions:
+            question_id_str = str(question.question_id)
+            correct_answer = (question.correct_answer or "").strip().upper()
+            student_answer = (answers.get(question_id_str) or "").strip().upper()
+
+            if correct_answer and student_answer == correct_answer:
+                correct_count += 1
+
+        # Tính điểm thang 10
+        score = round((correct_count / total_questions) * 10, 2) if total_questions > 0 else 0.0
+
+        # Lưu kết quả vào DB
+        ocr_result = OCRResult(
+            ocr_id=None,
+            exam_id=exam_id,
+            student_name=student_name,
+            score=score
+        )
+        self.ocr_repo.save_result(ocr_result)
+        return ocr_result
+
     def read_text_from_image(self, image_base64: str) -> str:
         """
         Chỉ đọc text từ ảnh, không lưu DB, không grade.

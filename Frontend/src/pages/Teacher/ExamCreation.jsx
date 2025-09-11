@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FileText, PlusCircle, Search, Loader2, Edit, Trash2, X } from 'lucide-react';
+import { FileText, PlusCircle, Search, Loader2, Edit, Trash2, X, Eye, Share2 } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { apiFetch } from '../../utils/api';
 
@@ -192,6 +193,15 @@ const ExamCreation = () => {
     }
   };
 
+  const handleShareExam = (examId) => {
+    const url = `${window.location.origin}/exam/view/${examId}`; // Đảm bảo URL này đúng
+    navigator.clipboard.writeText(url).then(() => {
+      toast.success('Đã sao chép link chia sẻ!');
+    }, () => {
+      toast.error('Không thể sao chép link.');
+    });
+  };
+
   const isLoading = loading.exams || loading.questions;
 
   return (
@@ -228,6 +238,12 @@ const ExamCreation = () => {
                 <td className="px-6 py-4 text-right text-sm font-medium">
                   <button onClick={() => handleOpenModal(exam)} className="text-indigo-600 hover:text-indigo-900 p-1" title="Chỉnh sửa">
                     <Edit size={18} />
+                  </button>
+                  <Link to={`/exam/view/${exam.exam_id}`} className="text-blue-600 hover:text-blue-900 ml-2 p-1" title="Xem chi tiết">
+                    <Eye size={18} />
+                  </Link>
+                  <button onClick={() => handleShareExam(exam.exam_id)} className="text-green-600 hover:text-green-900 ml-2 p-1" title="Chia sẻ link làm bài">
+                    <Share2 size={18} />
                   </button>
                   <button onClick={() => handleDeleteExam(exam)} className="text-red-600 hover:text-red-900 ml-2 p-1" title="Xóa">
                     <Trash2 size={18} />

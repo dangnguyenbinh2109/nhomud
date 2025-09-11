@@ -1,11 +1,10 @@
 // src/pages/Dashboard/TeacherDataPanels.jsx
 import { useEffect, useRef, useState } from "react";
-import { listExams, createExam, updateExam } from "@/services/exams";
 import { ocrExtractText, ocrGrade } from "@/services/ocr";
 import { listOrders, createOrder } from "@/services/orders";
 import { listPackages } from "@/services/packages";
-import { listQuestions } from "@/services/questions";
 import TeacherLessonPlanManagement from "../../components/Teacher/LessonPlanManagement";
+import ExamCreation from "../Teacher/ExamCreation";
 
 const Card = ({ children }) => (
   <div className="rounded-2xl border border-gray-200 shadow-sm p-4 bg-white">{children}</div>
@@ -43,155 +42,6 @@ const Empty = ({ title="Chưa có dữ liệu", desc="Hãy tạo mới để b�
     <div className="text-sm mt-1">{desc}</div>
   </div>
 );
-
-
-/* -------- Exams -------- */
-function ExamsPanel() {
-  const [items, setItems] = useState([]); const [loading, setLoading] = useState(true);
-  const [title, setTitle] = useState(""); const [subject, setSubject] = useState("");
-  const [qLoading, setQLoading] = useState(false);
-  const [questions, setQuestions] = useState([]); // from API
-  const [selected, setSelected] = useState([]); // array of ids
-  const [search, setSearch] = useState("");
-  const [filterSubject, setFilterSubject] = useState("");
-
-  const load = async () => { setLoading(true); try { setItems(await listExams()); } finally { setLoading(false); } };
-  const loadQuestions = async () => {
-    setQLoading(true);
-    try { const qs = await listQuestions(); setQuestions(Array.isArray(qs) ? qs : []); }
-    finally { setQLoading(false); }
-  };
-  useEffect(() => { load(); loadQuestions(); }, []);
-
-  const onCreate = async (e) => { e.preventDefault();
-    if (!selected.length) { alert("Vui lòng chọn ít nhất 1 câu hỏi"); return; }
-    await createExam({ title, subject, questions: selected });
-    setTitle(""); setSubject(""); setSelected([]);
-    await load(); };
-
-  const onQuickUpdate = async (examId) => {
-    const q = prompt("Nhập question IDs (vd: 1,2,3)", selected.length? selected.join(",") : "1,2,3"); if (!q) return;
-    const arr = q.split(",").map((s)=>Number(s.trim())).filter(Boolean);
-    await updateExam(examId, { title: `Exam #${examId}`, subject: "Updated", questions: arr }); await load();
-  };
-
-  const subjects = Array.from(new Set(questions.map(q => q.subject).filter(Boolean)));
-  const filtered = questions.filter(q => {
-    if (filterSubject && String(q.subject||"") !== filterSubject) return false;
-    if (search && !String(q.content||"").toLowerCase().includes(search.toLowerCase())) return false;
-    return true;
-  });
-  const toggle = (id) => setSelected((cur) => cur.includes(id) ? cur.filter(x=>x!==id) : [...cur, id]);
-  const allFilteredIds = filtered.map(q => q.question_id).filter(Boolean);
-  const onSelectAllFiltered = () => setSelected((cur) => {
-    const set = new Set(cur);
-    let changed = false;
-    allFilteredIds.forEach(id => { if (!set.has(id)) { set.add(id); changed = true; } });
-    return changed ? Array.from(set) : cur;
-  });
-  const onClearSelected = () => setSelected([]);
-
-  return (
-    <div className="grid gap-6">
-      <Card>
-        <Section title="Tạo Đề thi" />
-        <form onSubmit={onCreate} className="grid md:grid-cols-3 gap-4">
-          <Input label="Tiêu đề" value={title} onChange={(e)=>setTitle(e.target.value)} required />
-          <Input label="Môn học" value={subject} onChange={(e)=>setSubject(e.target.value)} required />
-          <div className="md:col-span-3">
-            <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium">Chọn câu hỏi từ ngân hàng ({qLoading?"đang tải…":`${questions.length} câu`})</div>
-              <div className="text-sm text-gray-600">Đã chọn: <span className="font-semibold">{selected.length}</span></div>
-            </div>
-            <div className="grid md:grid-cols-3 gap-3 mb-2">
-              <input
-                type="text"
-                placeholder="Tìm nội dung câu hỏi…"
-                value={search}
-                onChange={(e)=>setSearch(e.target.value)}
-                className="w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              <select
-                value={filterSubject}
-                onChange={(e)=>setFilterSubject(e.target.value)}
-                className="w-full rounded-xl border px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Tất cả môn</option>
-                {subjects.map((s)=>(<option key={s} value={s}>{s}</option>))}
-              </select>
-              <div className="flex gap-2">
-                <Button type="button" variant="ghost" onClick={onSelectAllFiltered}>Chọn tất cả (lọc)</Button>
-                <Button type="button" variant="ghost" onClick={onClearSelected}>Bỏ chọn</Button>
-              </div>
-            </div>
-            <div className="max-h-64 overflow-auto rounded-xl border">
-              <table className="min-w-full text-sm">
-                <thead>
-                  <tr className="text-left text-gray-500 border-b bg-gray-50">
-                    <th className="py-2 px-3 w-10">Chọn</th>
-                    <th className="py-2 px-3">Nội dung</th>
-                    <th className="py-2 px-3">Môn</th>
-                    <th className="py-2 px-3">Độ khó</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filtered.map((q)=> (
-                    <tr key={q.question_id} className="border-b last:border-0">
-                      <td className="py-2 px-3 align-top">
-                        <input type="checkbox" checked={selected.includes(q.question_id)} onChange={()=>toggle(q.question_id)} />
-                      </td>
-                      <td className="py-2 px-3">
-                        <div className="line-clamp-2 text-gray-800">{q.content}</div>
-                      </td>
-                      <td className="py-2 px-3">{q.subject || "—"}</td>
-                      <td className="py-2 px-3">{q.difficulty_level || "—"}</td>
-                    </tr>
-                  ))}
-                  {!qLoading && filtered.length===0 && (
-                    <tr><td colSpan={4} className="py-4 text-center text-gray-500">Không có câu hỏi phù hợp</td></tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div className="md:col-span-3 flex justify-end"><Button type="submit">Tạo đề thi</Button></div>
-        </form>
-      </Card>
-
-      <Card>
-        <Section title="Danh sách Đề thi" right={<Button variant="ghost" onClick={load}>Làm mới</Button>} />
-        {loading ? <div className="py-8 text-center text-gray-500">Đang tải…</div> :
-          items.length === 0 ? <Empty /> :
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
-              <thead>
-                <tr className="text-left text-gray-500 border-b">
-                  <th className="py-2 pr-4">#</th>
-                  <th className="py-2 pr-4">Tiêu đề</th>
-                  <th className="py-2 pr-4">Môn</th>
-                  <th className="py-2 pr-4">Câu hỏi</th>
-                  <th className="py-2 pr-4">Ngày tạo</th>
-                  <th className="py-2 pr-4">Hành động</th>
-                </tr>
-              </thead>
-              <tbody>
-                {items.map((x) => (
-                  <tr key={x.exam_id} className="border-b last:border-0">
-                    <td className="py-2 pr-4">{x.exam_id}</td>
-                    <td className="py-2 pr-4 font-medium">{x.title}</td>
-                    <td className="py-2 pr-4">{x.subject}</td>
-                    <td className="py-2 pr-4 text-gray-600">{Array.isArray(x.questions)?x.questions.join(", "):""}</td>
-                    <td className="py-2 pr-4">{new Date(x.created_at).toLocaleString()}</td>
-                    <td className="py-2 pr-4"><Button variant="ghost" onClick={()=>onQuickUpdate(x.exam_id)}>Sửa nhanh</Button></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>}
-      </Card>
-    </div>
-  );
-}
 
 /* -------- OCR -------- */
 function fileToBase64(file){ return new Promise((res, rej)=>{ const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]); r.onerror=rej; r.readAsDataURL(file); }); }
@@ -436,7 +286,7 @@ export default function TeacherDataPanels() {
       <div id="lesson-plan-panel">
         <TeacherLessonPlanManagement />
       </div>
-      <div id="exams-panel"><ExamsPanel /></div>
+      <div id="exams-panel"><ExamCreation /></div>
       <div id="ocr-panel"><OCRPanel /></div>
       <OrdersPanel />
     </div>
