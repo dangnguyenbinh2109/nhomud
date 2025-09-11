@@ -1,12 +1,11 @@
 // src/pages/Dashboard/TeacherDataPanels.jsx
-import React, { useEffect, useRef, useState } from "react";
-import { listLessonPlans, createLessonPlan, deleteLessonPlan } from "@/services/lessonPlans";
+import { useEffect, useRef, useState } from "react";
 import { listExams, createExam, updateExam } from "@/services/exams";
 import { ocrExtractText, ocrGrade } from "@/services/ocr";
 import { listOrders, createOrder } from "@/services/orders";
 import { listPackages } from "@/services/packages";
 import { listQuestions } from "@/services/questions";
-import TeacherLessonPlanManagement from "../../pages/Teacher/LessonPlanManagement";
+import TeacherLessonPlanManagement from "../../components/Teacher/LessonPlanManagement";
 
 const Card = ({ children }) => (
   <div className="rounded-2xl border border-gray-200 shadow-sm p-4 bg-white">{children}</div>
@@ -223,7 +222,7 @@ function OCRPanel() {
       setImgB64(base64);
       setImgInfo({ name: file.name, type: file.type || "image/*", size: file.size });
     } catch (err) {
-      alert("Không đọc được ảnh");
+      alert("Không đọc được ảnh", `${err}`);
     } finally { setBusy(false); }
   };
 

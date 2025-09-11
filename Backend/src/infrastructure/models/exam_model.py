@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Unicode
 from sqlalchemy.orm import relationship
 from infrastructure.databases.base import Base
 from datetime import datetime
@@ -7,8 +7,8 @@ class ExamModel(Base):
     __tablename__ = "exams"
 
     exam_id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(255), nullable=False)
-    subject = Column(String(100), nullable=False)
+    title = Column(Unicode(255), nullable=False)
+    subject = Column(Unicode(100), nullable=False)
     created_by = Column(Integer, ForeignKey("users.user_id"), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
 
